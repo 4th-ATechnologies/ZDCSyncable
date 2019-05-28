@@ -673,7 +673,7 @@ static NSString *const kChangeset_deleted = @"deleted";
 			// this would throw off our calculations below.
 			//
 			
-			originalIdx = [originalIndexes[key] unsignedLongLongValue];
+			originalIdx = [originalIndexes[key] unsignedIntegerValue];
 		}
 		else
 		{
@@ -826,7 +826,7 @@ static NSString *const kChangeset_deleted = @"deleted";
 	
 	for (id key in originalIndexes)
 	{
-		NSUInteger originalIdx = [originalIndexes[key] unsignedLongLongValue];
+		NSUInteger originalIdx = [originalIndexes[key] unsignedIntegerValue];
 		NSAssert(originalIdx != NSNotFound, @"Calculated originalIdx is wrong (within originalIndexes)");
 		
 		if ([existing containsIndex:originalIdx])
