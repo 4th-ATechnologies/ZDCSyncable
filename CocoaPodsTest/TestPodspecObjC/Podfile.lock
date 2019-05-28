@@ -1,0 +1,16 @@
+PODS:
+  - ZDCSyncable/ObjC (1.0)
+
+DEPENDENCIES:
+  - ZDCSyncable/ObjC (from `../../`)
+
+EXTERNAL SOURCES:
+  ZDCSyncable:
+    :path: "../../"
+
+SPEC CHECKSUMS:
+  ZDCSyncable: c1017394f196514f3878bf4fd4e91b5d810eac08
+
+PODFILE CHECKSUM: b14814b5b560b640d3ce37c3eb2cb5fa529805ad
+
+COCOAPODS: 1.6.1

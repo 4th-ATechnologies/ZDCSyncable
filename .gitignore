@@ -25,6 +25,10 @@ xcuserdata/
 *.xcuserstate
 *.xcscmblueprint
 
+## CocoaPodsTest
+
+CocoaPodsTest/*/Pods/**/*
+
 ## Jazzy
 
 Jazzy
