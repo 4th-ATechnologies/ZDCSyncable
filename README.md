@@ -15,8 +15,8 @@ Swift example #1
 ```swift
 class FooBar: ZDCRecord { // < Just extend ZDCRecord
 
-	@objc dynamic var someString: String? // add your properties
-	@objc dynamic var someInt: Int = 0    // and make sure they're '@objc dynamic'
+  @objc dynamic var someString: String? // add your properties
+  @objc dynamic var someInt: Int = 0    // and make sure they're '@objc dynamic'
 }
 
 // And now you get undo & redo support (for free!)
@@ -31,17 +31,17 @@ foobar.someInt = 2
 		
 let changeset = foobar.changeset() // changes since starting point
 do {
-	let redo = try foobar.undo(changeset!) // revert to starting point
-			
-	// Current state:
-	// foobar.someString == "init"
-	// foobar.someInt == 1
-	
-	let _ = try foobar.undo(redo) // redo == (undo an undo)
-	
-	// Current state:
-	// foobar.someString == "modified"
-	// foobar.someInt == 2
+  let redo = try foobar.undo(changeset!) // revert to starting point
+
+  // Current state:
+  // foobar.someString == "init"
+  // foobar.someInt == 1
+
+  let _ = try foobar.undo(redo) // redo == (undo an undo)
+
+  // Current state:
+  // foobar.someString == "modified"
+  // foobar.someInt == 2
 			
 } catch _ {}
 ```
@@ -59,10 +59,10 @@ Swift Example #2
 ```swift
 class FooBuzz: ZDCRecord { // < Just extend ZDCRecord
 
-	@objc dynamic var someInt: Int = 0 // add your properties
-  
+  @objc dynamic var someInt: Int = 0 // add your properties
+
   // or use smart containers !
-	dynamic let dict = ZDCDictionary<String, String>() 
+  dynamic let dict = ZDCDictionary<String, String>() 
 }
 
 let foobuzz = FooBuzz()
@@ -75,17 +75,17 @@ foobuzz.dict["foo"] = "modified"
 		
 let changeset = foobuzz.changeset() // changes since starting point
 do {
-	let redo = try foobuzz.undo(changeset!) // revert to starting point
-	
-	// Current state:
-	// foobuzz.someInt == 1
-	// foobuzz.dict["foo"] == "buzz"
-	
-	let _ = try foobuzz.undo(redo) // redo == (undo an undo)
-			
-	// Current state:
-	// foobuzz.someInt == 2
-	// foobuzz.dict["foo"] == "modified"
+  let redo = try foobuzz.undo(changeset!) // revert to starting point
+  
+  // Current state:
+  // foobuzz.someInt == 1
+  // foobuzz.dict["foo"] == "buzz"
+
+  let _ = try foobuzz.undo(redo) // redo == (undo an undo)
+
+  // Current state:
+  // foobuzz.someInt == 2
+  // foobuzz.dict["foo"] == "modified"
 			
 } catch _ {}
 ```
@@ -123,12 +123,12 @@ cloud.dict["duck"]  = "quack"
 // Automatically take into account our pending local changes.
 
 do {
-	try local.mergeCloudVersion(cloud, withPendingChangesets: changesets)
+  try local.mergeCloudVersion(cloud, withPendingChangesets: changesets)
 	
-    // Merged state:
-	  // local.someInt == 2
-    // local.dict["foo"] == "buzz"
-    // local.dict["duck"] == "quack"
+  // Merged state:
+  // local.someInt == 2
+  // local.dict["foo"] == "buzz"
+  // local.dict["duck"] == "quack"
 } catch _ {}
 ```
 
@@ -169,9 +169,11 @@ What if one of your properties is an array? Or a dictionary? Or a set?
 
 Truth be told, it's not THAT hard to code this stuff. It's not rocket science. But it does require **a TON of unit testing** to get all the little edge-cases correct. Which means you could spend all that time writing those unit tests yourself, or you could use an open-source version that's already been battle-tested by the community. (And then spend your extra time making your app awesome.)
 
+&nbsp;
+
 ## Getting Started
 
-ZDCSyncable is available via CocoaPods & Carthage.
+ZDCSyncable is available via CocoaPods.
 
 #### CocoaPods
 
@@ -194,17 +196,7 @@ Then just run `pod install` as usual. And then you can import it via:
 import ZDCSyncable
 ```
 
-
-
-#### Carthage
-
-Add the following to your Cartfile:
-
-```
-// ?
-```
-
-
+&nbsp;
 
 ## NSObject complaints
 
@@ -213,6 +205,8 @@ Add the following to your Cartfile:
 It's unfortunate, but it's true that we still need to rely on KVO from Objective-C to get the basic required functionality for a task like this. I know many people have requested this feature from the Swift team, and certainly several steps have been taken toward achieving this goal. But it appears we'll have to wait for another major Swift version before we can truly move to a pure Swift approach.
 
 The good news is that when that finally happens, we'll have all the logic and all the unit tests ready. And the transition will be a breeze.
+
+&nbsp;
 
 ## Immutability: Classes vs Structs in Swift
 
