@@ -123,7 +123,7 @@ cloud.dict["duck"]  = "quack"
 // Automatically take into account our pending local changes.
 
 do {
-  try local.mergeCloudVersion(cloud, withPendingChangesets: changesets)
+  try local.merge(cloudVersion: cloud, pendingChangesets: changesets)
 	
   // Merged state:
   // local.someInt == 2
