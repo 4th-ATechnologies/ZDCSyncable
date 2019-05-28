@@ -193,8 +193,17 @@ pod 'ZDCSyncable/ObjC'
 Then just run `pod install` as usual. And then you can import it via:
 
 ```swift
+// Swift
 import ZDCSyncable
 ```
+
+```objective-c
+// Objective-C
+@import ZDCSyncable; // using module-style import
+#import <ZDCSyncable/ZDCSyncable.h> // or you can use classic-style
+```
+
+
 
 &nbsp;
 
