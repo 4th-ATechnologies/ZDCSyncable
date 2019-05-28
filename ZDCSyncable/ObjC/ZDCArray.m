@@ -945,7 +945,7 @@ static NSString *const kChangeset_deleted = @"deleted";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSDictionary *)changeset
 {
@@ -956,7 +956,7 @@ static NSString *const kChangeset_deleted = @"deleted";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSDictionary *)peakChangeset
 {
@@ -1352,7 +1352,7 @@ static NSString *const kChangeset_deleted = @"deleted";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSDictionary *)undo:(NSDictionary *)changeset error:(NSError **)errPtr
 {
@@ -1373,7 +1373,7 @@ static NSString *const kChangeset_deleted = @"deleted";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSError *)performUndo:(NSDictionary *)changeset
 {
@@ -1406,7 +1406,7 @@ static NSString *const kChangeset_deleted = @"deleted";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (void)rollback
 {
@@ -1418,7 +1418,7 @@ static NSString *const kChangeset_deleted = @"deleted";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSDictionary *)mergeChangesets:(NSArray<NSDictionary*> *)orderedChangesets
                                      error:(NSError *_Nullable *_Nullable)errPtr

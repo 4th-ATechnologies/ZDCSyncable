@@ -4,7 +4,7 @@
 **/
 
 #import "AppDelegate.h"
-#import <ZDCSyncable_ObjC_macOS/ZDCSyncableUmbrella.h>
+#import <ZDCSyncable/ZDCSyncable.h>
 
 /**
  * How to use ZDCSyncable project in your app:

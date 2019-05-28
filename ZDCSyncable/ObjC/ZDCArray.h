@@ -4,7 +4,7 @@
 **/
 
 #import "ZDCObject.h"
-#import "ZDCSyncable.h"
+#import "ZDCSyncableProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

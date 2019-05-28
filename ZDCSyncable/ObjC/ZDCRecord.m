@@ -242,7 +242,7 @@ static NSString *const kChangeset_values = @"values";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSDictionary *)changeset
 {
@@ -253,7 +253,7 @@ static NSString *const kChangeset_values = @"values";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSDictionary *)peakChangeset
 {
@@ -362,7 +362,7 @@ static NSString *const kChangeset_values = @"values";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSDictionary *)undo:(NSDictionary *)changeset error:(NSError **)errPtr
 {
@@ -383,7 +383,7 @@ static NSString *const kChangeset_values = @"values";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSError *)performUndo:(NSDictionary *)changeset
 {
@@ -416,7 +416,7 @@ static NSString *const kChangeset_values = @"values";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (void)rollback
 {
@@ -428,7 +428,7 @@ static NSString *const kChangeset_values = @"values";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSDictionary *)mergeChangesets:(NSArray<NSDictionary*> *)orderedChangesets
                                      error:(NSError *_Nullable *_Nullable)errPtr
@@ -449,7 +449,7 @@ static NSString *const kChangeset_values = @"values";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSError *)importChangesets:(NSArray<NSDictionary*> *)orderedChangesets
 {
@@ -521,7 +521,7 @@ static NSString *const kChangeset_values = @"values";
 }
 
 /**
- * See ZDCSyncable.h for method description.
+ * See ZDCSyncableProtocol.h for method description.
  */
 - (nullable NSDictionary *)mergeCloudVersion:(id)inCloudVersion
                        withPendingChangesets:(NSArray<NSDictionary *> *)pendingChangesets

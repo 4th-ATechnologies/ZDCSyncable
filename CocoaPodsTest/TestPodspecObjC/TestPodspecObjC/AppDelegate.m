@@ -1,7 +1,11 @@
 #import "AppDelegate.h"
 
-#import <ZDCSyncable/ZDCSyncable.h>
-#import <ZDCSyncable/ZDCDictionary.h>
+// Using module-style import
+@import ZDCSyncable;
+
+// Or using classic-style import
+//#import <ZDCSyncable/ZDCSyncable.h>
+
 
 @implementation AppDelegate
 

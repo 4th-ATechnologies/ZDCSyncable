@@ -28,12 +28,12 @@
 		DC20AC392251597400678A20 /* ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E32251559600284C12 /* ZDCOrder.m */; };
 		DC20AC3A2251597500678A20 /* ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E32251559600284C12 /* ZDCOrder.m */; };
 		DC20AC3B2251597500678A20 /* ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E32251559600284C12 /* ZDCOrder.m */; };
-		DC20AC3C2251597900678A20 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E52251559600284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC3D2251597900678A20 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E52251559600284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC3E2251597A00678A20 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E52251559600284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC3F2251598500678A20 /* ZDCSyncableUmbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D52251559600284C12 /* ZDCSyncableUmbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC402251598500678A20 /* ZDCSyncableUmbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D52251559600284C12 /* ZDCSyncableUmbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC412251598600678A20 /* ZDCSyncableUmbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D52251559600284C12 /* ZDCSyncableUmbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC20AC3C2251597900678A20 /* ZDCSyncableProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E52251559600284C12 /* ZDCSyncableProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC20AC3D2251597900678A20 /* ZDCSyncableProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E52251559600284C12 /* ZDCSyncableProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC20AC3E2251597A00678A20 /* ZDCSyncableProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E52251559600284C12 /* ZDCSyncableProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC20AC3F2251598500678A20 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D52251559600284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC20AC402251598500678A20 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D52251559600284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DC20AC412251598600678A20 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D52251559600284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DC20AC422251599000678A20 /* ZDCObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D92251559600284C12 /* ZDCObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DC20AC432251599100678A20 /* ZDCObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D92251559600284C12 /* ZDCObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DC20AC442251599100678A20 /* ZDCObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D92251559600284C12 /* ZDCObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -70,7 +70,7 @@
 		DC20AC6622515A0D00678A20 /* ZDCSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E62251559600284C12 /* ZDCSet.m */; };
 		DC20AC6722515A0D00678A20 /* ZDCSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E62251559600284C12 /* ZDCSet.m */; };
 		DC20AC6822515A0F00678A20 /* ZDCSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E62251559600284C12 /* ZDCSet.m */; };
-		DC20AC7422515AC000678A20 /* ZDCSyncable_ObjC_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC69865225158B300284C12 /* ZDCSyncable_ObjC_iOS.framework */; };
+		DC20AC7422515AC000678A20 /* ZDCSyncable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC69865225158B300284C12 /* ZDCSyncable.framework */; };
 		DC20AC8222515BC200678A20 /* test_layered.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7B22515BC100678A20 /* test_layered.m */; };
 		DC20AC8322515BC200678A20 /* test_ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7C22515BC200678A20 /* test_ZDCOrder.m */; };
 		DC20AC8422515BC200678A20 /* test_ZDCDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7D22515BC200678A20 /* test_ZDCDictionary.m */; };
@@ -80,7 +80,7 @@
 		DC20AC8822515BC200678A20 /* test_ZDCOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8122515BC200678A20 /* test_ZDCOrderedSet.m */; };
 		DC20AC8D22515C8000678A20 /* SimpleRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8922515C8000678A20 /* SimpleRecord.m */; };
 		DC20AC8E22515C8000678A20 /* ComplexRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8C22515C8000678A20 /* ComplexRecord.m */; };
-		DC20AC9922515CE300678A20 /* ZDCSyncable_ObjC_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC69872225158C400284C12 /* ZDCSyncable_ObjC_macOS.framework */; };
+		DC20AC9922515CE300678A20 /* ZDCSyncable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC69872225158C400284C12 /* ZDCSyncable.framework */; };
 		DC20AC9F22515D5300678A20 /* test_layered.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7B22515BC100678A20 /* test_layered.m */; };
 		DC20ACA022515D5600678A20 /* test_ZDCDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7D22515BC200678A20 /* test_ZDCDictionary.m */; };
 		DC20ACA122515D5B00678A20 /* test_ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7C22515BC200678A20 /* test_ZDCOrder.m */; };
@@ -90,7 +90,7 @@
 		DC20ACA522515D5B00678A20 /* test_ZDCSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7E22515BC200678A20 /* test_ZDCSet.m */; };
 		DC20ACA622515D6300678A20 /* ComplexRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8C22515C8000678A20 /* ComplexRecord.m */; };
 		DC20ACA722515D6700678A20 /* SimpleRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8922515C8000678A20 /* SimpleRecord.m */; };
-		DC20ACB122515DEA00678A20 /* ZDCSyncable_ObjC_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC6987F225158D400284C12 /* ZDCSyncable_ObjC_tvOS.framework */; };
+		DC20ACB122515DEA00678A20 /* ZDCSyncable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC6987F225158D400284C12 /* ZDCSyncable.framework */; };
 		DC20ACB722515E4B00678A20 /* test_layered.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7B22515BC100678A20 /* test_layered.m */; };
 		DC20ACB822515E4B00678A20 /* test_ZDCDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7D22515BC200678A20 /* test_ZDCDictionary.m */; };
 		DC20ACB922515E4B00678A20 /* test_ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7C22515BC200678A20 /* test_ZDCOrder.m */; };
@@ -165,9 +165,6 @@
 		DCC697BF2251545100284C12 /* ZDCSynable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977C2251504900284C12 /* ZDCSynable.swift */; };
 		DCC697C02251545400284C12 /* ZDCObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC697772251504900284C12 /* ZDCObject.swift */; };
 		DCC697C12251545700284C12 /* ZDCSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977B2251504900284C12 /* ZDCSet.swift */; };
-		DCC69869225158B300284C12 /* ZDCSyncable_ObjC_iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC69867225158B300284C12 /* ZDCSyncable_ObjC_iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DCC69876225158C400284C12 /* ZDCSyncable_ObjC_macOS.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC69874225158C400284C12 /* ZDCSyncable_ObjC_macOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DCC69883225158D400284C12 /* ZDCSyncable_ObjC_tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC69881225158D400284C12 /* ZDCSyncable_ObjC_tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DCE6260F225A8C0B000D19E3 /* ZDCSyncableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE6260E225A8C0B000D19E3 /* ZDCSyncableError.swift */; };
 		DCE62610225A8C0B000D19E3 /* ZDCSyncableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE6260E225A8C0B000D19E3 /* ZDCSyncableError.swift */; };
 		DCE62611225A8C0B000D19E3 /* ZDCSyncableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE6260E225A8C0B000D19E3 /* ZDCSyncableError.swift */; };
@@ -316,7 +313,7 @@
 		DCC697D22251559500284C12 /* ZDCOrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCOrderedSet.m; sourceTree = "<group>"; };
 		DCC697D32251559500284C12 /* ZDCSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCSet.h; sourceTree = "<group>"; };
 		DCC697D42251559500284C12 /* ZDCRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCRecord.h; sourceTree = "<group>"; };
-		DCC697D52251559600284C12 /* ZDCSyncableUmbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCSyncableUmbrella.h; sourceTree = "<group>"; };
+		DCC697D52251559600284C12 /* ZDCSyncable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCSyncable.h; sourceTree = "<group>"; };
 		DCC697D62251559600284C12 /* ZDCOrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCOrderedDictionary.h; sourceTree = "<group>"; };
 		DCC697D72251559600284C12 /* ZDCOrderedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCOrderedSet.h; sourceTree = "<group>"; };
 		DCC697D82251559600284C12 /* ZDCArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCArray.m; sourceTree = "<group>"; };
@@ -330,17 +327,14 @@
 		DCC697E22251559600284C12 /* ZDCObjectSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCObjectSubclass.h; sourceTree = "<group>"; };
 		DCC697E32251559600284C12 /* ZDCOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCOrder.m; sourceTree = "<group>"; };
 		DCC697E42251559600284C12 /* ZDCDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCDictionary.h; sourceTree = "<group>"; };
-		DCC697E52251559600284C12 /* ZDCSyncable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCSyncable.h; sourceTree = "<group>"; };
+		DCC697E52251559600284C12 /* ZDCSyncableProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCSyncableProtocol.h; sourceTree = "<group>"; };
 		DCC697E62251559600284C12 /* ZDCSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCSet.m; sourceTree = "<group>"; };
 		DCC697E72251559600284C12 /* ZDCObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCObject.m; sourceTree = "<group>"; };
-		DCC69865225158B300284C12 /* ZDCSyncable_ObjC_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable_ObjC_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCC69867225158B300284C12 /* ZDCSyncable_ObjC_iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZDCSyncable_ObjC_iOS.h; sourceTree = "<group>"; };
+		DCC69865225158B300284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC69868225158B300284C12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCC69872225158C400284C12 /* ZDCSyncable_ObjC_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable_ObjC_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCC69874225158C400284C12 /* ZDCSyncable_ObjC_macOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZDCSyncable_ObjC_macOS.h; sourceTree = "<group>"; };
+		DCC69872225158C400284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC69875225158C400284C12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCC6987F225158D400284C12 /* ZDCSyncable_ObjC_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable_ObjC_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCC69881225158D400284C12 /* ZDCSyncable_ObjC_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZDCSyncable_ObjC_tvOS.h; sourceTree = "<group>"; };
+		DCC6987F225158D400284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC69882225158D400284C12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCE6260E225A8C0B000D19E3 /* ZDCSyncableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZDCSyncableError.swift; sourceTree = "<group>"; };
 		DCE62616225A8F04000D19E3 /* Demo_Swift_macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo_Swift_macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -370,7 +364,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC20AC7422515AC000678A20 /* ZDCSyncable_ObjC_iOS.framework in Frameworks */,
+				DC20AC7422515AC000678A20 /* ZDCSyncable.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,7 +372,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC20AC9922515CE300678A20 /* ZDCSyncable_ObjC_macOS.framework in Frameworks */,
+				DC20AC9922515CE300678A20 /* ZDCSyncable.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,7 +380,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC20ACB122515DEA00678A20 /* ZDCSyncable_ObjC_tvOS.framework in Frameworks */,
+				DC20ACB122515DEA00678A20 /* ZDCSyncable.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,9 +572,9 @@
 				DCC6976A22514F9300284C12 /* ZDCSyncable.framework */,
 				DCC6979F2251531C00284C12 /* ZDCSyncable.framework */,
 				DCC697B32251541800284C12 /* ZDCSyncable.framework */,
-				DCC69865225158B300284C12 /* ZDCSyncable_ObjC_iOS.framework */,
-				DCC69872225158C400284C12 /* ZDCSyncable_ObjC_macOS.framework */,
-				DCC6987F225158D400284C12 /* ZDCSyncable_ObjC_tvOS.framework */,
+				DCC69865225158B300284C12 /* ZDCSyncable.framework */,
+				DCC69872225158C400284C12 /* ZDCSyncable.framework */,
+				DCC6987F225158D400284C12 /* ZDCSyncable.framework */,
 				DC20AC6F22515AC000678A20 /* UnitTests_ObjC_iOS.xctest */,
 				DC20AC9422515CE300678A20 /* UnitTests_ObjC_macOS.xctest */,
 				DC20ACAC22515DEA00678A20 /* UnitTests_ObjC_tvOS.xctest */,
@@ -669,8 +663,8 @@
 			children = (
 				DCC697DB2251559600284C12 /* Internal */,
 				DCC697E02251559600284C12 /* Utilities */,
-				DCC697E52251559600284C12 /* ZDCSyncable.h */,
-				DCC697D52251559600284C12 /* ZDCSyncableUmbrella.h */,
+				DCC697E52251559600284C12 /* ZDCSyncableProtocol.h */,
+				DCC697D52251559600284C12 /* ZDCSyncable.h */,
 				DCC697D92251559600284C12 /* ZDCObject.h */,
 				DCC697E72251559600284C12 /* ZDCObject.m */,
 				DCC697D12251559500284C12 /* ZDCArray.h */,
@@ -731,7 +725,6 @@
 		DCC69866225158B300284C12 /* ZDCSyncable_ObjC_iOS */ = {
 			isa = PBXGroup;
 			children = (
-				DCC69867225158B300284C12 /* ZDCSyncable_ObjC_iOS.h */,
 				DCC69868225158B300284C12 /* Info.plist */,
 			);
 			path = ZDCSyncable_ObjC_iOS;
@@ -740,7 +733,6 @@
 		DCC69873225158C400284C12 /* ZDCSyncable_ObjC_macOS */ = {
 			isa = PBXGroup;
 			children = (
-				DCC69874225158C400284C12 /* ZDCSyncable_ObjC_macOS.h */,
 				DCC69875225158C400284C12 /* Info.plist */,
 			);
 			path = ZDCSyncable_ObjC_macOS;
@@ -749,7 +741,6 @@
 		DCC69880225158D400284C12 /* ZDCSyncable_ObjC_tvOS */ = {
 			isa = PBXGroup;
 			children = (
-				DCC69881225158D400284C12 /* ZDCSyncable_ObjC_tvOS.h */,
 				DCC69882225158D400284C12 /* Info.plist */,
 			);
 			path = ZDCSyncable_ObjC_tvOS;
@@ -835,15 +826,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC20AC422251599000678A20 /* ZDCObject.h in Headers */,
-				DC20AC3F2251598500678A20 /* ZDCSyncableUmbrella.h in Headers */,
+				DC20AC3F2251598500678A20 /* ZDCSyncable.h in Headers */,
 				DC20AC51225159C500678A20 /* ZDCOrderedDictionary.h in Headers */,
 				DC20AC332251595F00678A20 /* ZDCObjectSubclass.h in Headers */,
 				DCC2FA182252C75D007E60BA /* ZDCArray.h in Headers */,
 				DC20AC4B225159B200678A20 /* ZDCDictionary.h in Headers */,
 				DC20AC2D2251595500678A20 /* ZDCRef.h in Headers */,
 				DC20AC57225159D800678A20 /* ZDCOrderedSet.h in Headers */,
-				DCC69869225158B300284C12 /* ZDCSyncable_ObjC_iOS.h in Headers */,
-				DC20AC3C2251597900678A20 /* ZDCSyncable.h in Headers */,
+				DC20AC3C2251597900678A20 /* ZDCSyncableProtocol.h in Headers */,
 				DC20AC5D225159EF00678A20 /* ZDCRecord.h in Headers */,
 				DC20AC362251596A00678A20 /* ZDCOrder.h in Headers */,
 				DC20AC272251594B00678A20 /* ZDCNull.h in Headers */,
@@ -856,15 +846,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC20AC432251599100678A20 /* ZDCObject.h in Headers */,
-				DC20AC402251598500678A20 /* ZDCSyncableUmbrella.h in Headers */,
+				DC20AC402251598500678A20 /* ZDCSyncable.h in Headers */,
 				DC20AC52225159C600678A20 /* ZDCOrderedDictionary.h in Headers */,
 				DC20AC342251596000678A20 /* ZDCObjectSubclass.h in Headers */,
 				DCC2FA192252C75E007E60BA /* ZDCArray.h in Headers */,
 				DC20AC4C225159B300678A20 /* ZDCDictionary.h in Headers */,
 				DC20AC2E2251595600678A20 /* ZDCRef.h in Headers */,
 				DC20AC58225159D900678A20 /* ZDCOrderedSet.h in Headers */,
-				DCC69876225158C400284C12 /* ZDCSyncable_ObjC_macOS.h in Headers */,
-				DC20AC3D2251597900678A20 /* ZDCSyncable.h in Headers */,
+				DC20AC3D2251597900678A20 /* ZDCSyncableProtocol.h in Headers */,
 				DC20AC5E225159F000678A20 /* ZDCRecord.h in Headers */,
 				DC20AC372251596A00678A20 /* ZDCOrder.h in Headers */,
 				DC20AC282251594C00678A20 /* ZDCNull.h in Headers */,
@@ -877,15 +866,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC20AC442251599100678A20 /* ZDCObject.h in Headers */,
-				DC20AC412251598600678A20 /* ZDCSyncableUmbrella.h in Headers */,
+				DC20AC412251598600678A20 /* ZDCSyncable.h in Headers */,
 				DC20AC53225159C600678A20 /* ZDCOrderedDictionary.h in Headers */,
 				DC20AC352251596100678A20 /* ZDCObjectSubclass.h in Headers */,
 				DCC2FA1A2252C75F007E60BA /* ZDCArray.h in Headers */,
 				DC20AC4D225159B400678A20 /* ZDCDictionary.h in Headers */,
 				DC20AC2F2251595700678A20 /* ZDCRef.h in Headers */,
 				DC20AC59225159D900678A20 /* ZDCOrderedSet.h in Headers */,
-				DCC69883225158D400284C12 /* ZDCSyncable_ObjC_tvOS.h in Headers */,
-				DC20AC3E2251597A00678A20 /* ZDCSyncable.h in Headers */,
+				DC20AC3E2251597A00678A20 /* ZDCSyncableProtocol.h in Headers */,
 				DC20AC5F225159F100678A20 /* ZDCRecord.h in Headers */,
 				DC20AC382251596B00678A20 /* ZDCOrder.h in Headers */,
 				DC20AC292251594D00678A20 /* ZDCNull.h in Headers */,
@@ -1073,7 +1061,7 @@
 			);
 			name = ZDCSyncable_ObjC_iOS;
 			productName = ZDCSyncable_ObjC_iOS;
-			productReference = DCC69865225158B300284C12 /* ZDCSyncable_ObjC_iOS.framework */;
+			productReference = DCC69865225158B300284C12 /* ZDCSyncable.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		DCC69871225158C400284C12 /* ZDCSyncable_ObjC_macOS */ = {
@@ -1091,7 +1079,7 @@
 			);
 			name = ZDCSyncable_ObjC_macOS;
 			productName = ZDCSyncable_ObjC_macOS;
-			productReference = DCC69872225158C400284C12 /* ZDCSyncable_ObjC_macOS.framework */;
+			productReference = DCC69872225158C400284C12 /* ZDCSyncable.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		DCC6987E225158D400284C12 /* ZDCSyncable_ObjC_tvOS */ = {
@@ -1109,7 +1097,7 @@
 			);
 			name = ZDCSyncable_ObjC_tvOS;
 			productName = ZDCSyncable_ObjC_tvOS;
-			productReference = DCC6987F225158D400284C12 /* ZDCSyncable_ObjC_tvOS.framework */;
+			productReference = DCC6987F225158D400284C12 /* ZDCSyncable.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		DCE62615225A8F04000D19E3 /* Demo_Swift_macOS */ = {
@@ -2181,7 +2169,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = ZDCSyncable;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2207,7 +2195,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = ZDCSyncable;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2236,7 +2224,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = ZDCSyncable;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -2262,7 +2250,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = ZDCSyncable;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -2285,7 +2273,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = ZDCSyncable;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -2311,7 +2299,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = ZDCSyncable;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
