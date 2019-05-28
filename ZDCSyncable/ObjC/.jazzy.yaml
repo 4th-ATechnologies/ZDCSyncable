@@ -1,0 +1,6 @@
+objc: true
+output: Jazzy
+framework_root: Model
+umbrella_header: Model/ZDCSyncableUmbrella.h
+theme: fullwidth
+author: 4th-A Technologies
