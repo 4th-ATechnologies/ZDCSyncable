@@ -1,6 +1,6 @@
 /**
  * Syncable
- * <GitHub URL goes here>
+ * https://github.com/4th-ATechnologies/ZDCSyncable
 **/
 
 #import "ZDCSwiftWorkarounds.h"

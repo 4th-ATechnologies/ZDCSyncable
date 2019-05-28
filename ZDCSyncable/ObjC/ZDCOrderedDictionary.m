@@ -1,6 +1,6 @@
 /**
  * ZDCSyncable
- * <GitHub URL goes here>
+ * https://github.com/4th-ATechnologies/ZDCSyncable
 **/
 
 #import "ZDCOrderedDictionary.h"

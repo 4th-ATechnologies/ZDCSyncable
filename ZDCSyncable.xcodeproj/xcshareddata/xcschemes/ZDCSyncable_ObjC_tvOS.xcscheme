@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DCC6987E225158D400284C12"
-               BuildableName = "ZDCSyncable_ObjC_tvOS.framework"
+               BuildableName = "ZDCSyncable.framework"
                BlueprintName = "ZDCSyncable_ObjC_tvOS"
                ReferencedContainer = "container:ZDCSyncable.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DCC6987E225158D400284C12"
-            BuildableName = "ZDCSyncable_ObjC_tvOS.framework"
+            BuildableName = "ZDCSyncable.framework"
             BlueprintName = "ZDCSyncable_ObjC_tvOS"
             ReferencedContainer = "container:ZDCSyncable.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DCC6987E225158D400284C12"
-            BuildableName = "ZDCSyncable_ObjC_tvOS.framework"
+            BuildableName = "ZDCSyncable.framework"
             BlueprintName = "ZDCSyncable_ObjC_tvOS"
             ReferencedContainer = "container:ZDCSyncable.xcodeproj">
          </BuildableReference>

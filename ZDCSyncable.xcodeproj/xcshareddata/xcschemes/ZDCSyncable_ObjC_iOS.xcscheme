@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DCC69864225158B300284C12"
-               BuildableName = "ZDCSyncable_ObjC_iOS.framework"
+               BuildableName = "ZDCSyncable.framework"
                BlueprintName = "ZDCSyncable_ObjC_iOS"
                ReferencedContainer = "container:ZDCSyncable.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DCC69864225158B300284C12"
-            BuildableName = "ZDCSyncable_ObjC_iOS.framework"
+            BuildableName = "ZDCSyncable.framework"
             BlueprintName = "ZDCSyncable_ObjC_iOS"
             ReferencedContainer = "container:ZDCSyncable.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DCC69864225158B300284C12"
-            BuildableName = "ZDCSyncable_ObjC_iOS.framework"
+            BuildableName = "ZDCSyncable.framework"
             BlueprintName = "ZDCSyncable_ObjC_iOS"
             ReferencedContainer = "container:ZDCSyncable.xcodeproj">
          </BuildableReference>
