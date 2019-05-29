@@ -7,99 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DC20AC272251594B00678A20 /* ZDCNull.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697DE2251559600284C12 /* ZDCNull.h */; };
-		DC20AC282251594C00678A20 /* ZDCNull.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697DE2251559600284C12 /* ZDCNull.h */; };
-		DC20AC292251594D00678A20 /* ZDCNull.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697DE2251559600284C12 /* ZDCNull.h */; };
-		DC20AC2A2251595000678A20 /* ZDCNull.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697DC2251559600284C12 /* ZDCNull.m */; };
-		DC20AC2B2251595100678A20 /* ZDCNull.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697DC2251559600284C12 /* ZDCNull.m */; };
-		DC20AC2C2251595200678A20 /* ZDCNull.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697DC2251559600284C12 /* ZDCNull.m */; };
-		DC20AC2D2251595500678A20 /* ZDCRef.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697DD2251559600284C12 /* ZDCRef.h */; };
-		DC20AC2E2251595600678A20 /* ZDCRef.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697DD2251559600284C12 /* ZDCRef.h */; };
-		DC20AC2F2251595700678A20 /* ZDCRef.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697DD2251559600284C12 /* ZDCRef.h */; };
-		DC20AC302251595A00678A20 /* ZDCRef.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697DF2251559600284C12 /* ZDCRef.m */; };
-		DC20AC312251595B00678A20 /* ZDCRef.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697DF2251559600284C12 /* ZDCRef.m */; };
-		DC20AC322251595B00678A20 /* ZDCRef.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697DF2251559600284C12 /* ZDCRef.m */; };
-		DC20AC332251595F00678A20 /* ZDCObjectSubclass.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E22251559600284C12 /* ZDCObjectSubclass.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC342251596000678A20 /* ZDCObjectSubclass.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E22251559600284C12 /* ZDCObjectSubclass.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC352251596100678A20 /* ZDCObjectSubclass.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E22251559600284C12 /* ZDCObjectSubclass.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC362251596A00678A20 /* ZDCOrder.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E12251559600284C12 /* ZDCOrder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC372251596A00678A20 /* ZDCOrder.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E12251559600284C12 /* ZDCOrder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC382251596B00678A20 /* ZDCOrder.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E12251559600284C12 /* ZDCOrder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC392251597400678A20 /* ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E32251559600284C12 /* ZDCOrder.m */; };
-		DC20AC3A2251597500678A20 /* ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E32251559600284C12 /* ZDCOrder.m */; };
-		DC20AC3B2251597500678A20 /* ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E32251559600284C12 /* ZDCOrder.m */; };
-		DC20AC3C2251597900678A20 /* ZDCSyncableProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E52251559600284C12 /* ZDCSyncableProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC3D2251597900678A20 /* ZDCSyncableProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E52251559600284C12 /* ZDCSyncableProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC3E2251597A00678A20 /* ZDCSyncableProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E52251559600284C12 /* ZDCSyncableProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC3F2251598500678A20 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D52251559600284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC402251598500678A20 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D52251559600284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC412251598600678A20 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D52251559600284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC422251599000678A20 /* ZDCObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D92251559600284C12 /* ZDCObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC432251599100678A20 /* ZDCObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D92251559600284C12 /* ZDCObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC442251599100678A20 /* ZDCObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D92251559600284C12 /* ZDCObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC452251599B00678A20 /* ZDCObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E72251559600284C12 /* ZDCObject.m */; };
-		DC20AC462251599B00678A20 /* ZDCObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E72251559600284C12 /* ZDCObject.m */; };
-		DC20AC472251599C00678A20 /* ZDCObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E72251559600284C12 /* ZDCObject.m */; };
-		DC20AC4B225159B200678A20 /* ZDCDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E42251559600284C12 /* ZDCDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC4C225159B300678A20 /* ZDCDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E42251559600284C12 /* ZDCDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC4D225159B400678A20 /* ZDCDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697E42251559600284C12 /* ZDCDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC4E225159C100678A20 /* ZDCDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697CF2251559500284C12 /* ZDCDictionary.m */; };
-		DC20AC4F225159C100678A20 /* ZDCDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697CF2251559500284C12 /* ZDCDictionary.m */; };
-		DC20AC50225159C200678A20 /* ZDCDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697CF2251559500284C12 /* ZDCDictionary.m */; };
-		DC20AC51225159C500678A20 /* ZDCOrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D62251559600284C12 /* ZDCOrderedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC52225159C600678A20 /* ZDCOrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D62251559600284C12 /* ZDCOrderedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC53225159C600678A20 /* ZDCOrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D62251559600284C12 /* ZDCOrderedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC54225159D200678A20 /* ZDCOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697D02251559500284C12 /* ZDCOrderedDictionary.m */; };
-		DC20AC55225159D400678A20 /* ZDCOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697D02251559500284C12 /* ZDCOrderedDictionary.m */; };
-		DC20AC56225159D400678A20 /* ZDCOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697D02251559500284C12 /* ZDCOrderedDictionary.m */; };
-		DC20AC57225159D800678A20 /* ZDCOrderedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D72251559600284C12 /* ZDCOrderedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC58225159D900678A20 /* ZDCOrderedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D72251559600284C12 /* ZDCOrderedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC59225159D900678A20 /* ZDCOrderedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D72251559600284C12 /* ZDCOrderedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC5A225159EB00678A20 /* ZDCOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697D22251559500284C12 /* ZDCOrderedSet.m */; };
-		DC20AC5B225159EB00678A20 /* ZDCOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697D22251559500284C12 /* ZDCOrderedSet.m */; };
-		DC20AC5C225159EC00678A20 /* ZDCOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697D22251559500284C12 /* ZDCOrderedSet.m */; };
-		DC20AC5D225159EF00678A20 /* ZDCRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D42251559500284C12 /* ZDCRecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC5E225159F000678A20 /* ZDCRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D42251559500284C12 /* ZDCRecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC5F225159F100678A20 /* ZDCRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D42251559500284C12 /* ZDCRecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC60225159FC00678A20 /* ZDCRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697DA2251559600284C12 /* ZDCRecord.m */; };
-		DC20AC61225159FD00678A20 /* ZDCRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697DA2251559600284C12 /* ZDCRecord.m */; };
-		DC20AC62225159FE00678A20 /* ZDCRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697DA2251559600284C12 /* ZDCRecord.m */; };
-		DC20AC6322515A0100678A20 /* ZDCSet.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D32251559500284C12 /* ZDCSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC6422515A0200678A20 /* ZDCSet.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D32251559500284C12 /* ZDCSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC6522515A0300678A20 /* ZDCSet.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D32251559500284C12 /* ZDCSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC20AC6622515A0D00678A20 /* ZDCSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E62251559600284C12 /* ZDCSet.m */; };
-		DC20AC6722515A0D00678A20 /* ZDCSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E62251559600284C12 /* ZDCSet.m */; };
-		DC20AC6822515A0F00678A20 /* ZDCSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697E62251559600284C12 /* ZDCSet.m */; };
-		DC20AC7422515AC000678A20 /* ZDCSyncable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC69865225158B300284C12 /* ZDCSyncable.framework */; };
-		DC20AC8222515BC200678A20 /* test_layered.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7B22515BC100678A20 /* test_layered.m */; };
-		DC20AC8322515BC200678A20 /* test_ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7C22515BC200678A20 /* test_ZDCOrder.m */; };
-		DC20AC8422515BC200678A20 /* test_ZDCDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7D22515BC200678A20 /* test_ZDCDictionary.m */; };
-		DC20AC8522515BC200678A20 /* test_ZDCSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7E22515BC200678A20 /* test_ZDCSet.m */; };
-		DC20AC8622515BC200678A20 /* test_ZDCOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7F22515BC200678A20 /* test_ZDCOrderedDictionary.m */; };
-		DC20AC8722515BC200678A20 /* test_ZDCRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8022515BC200678A20 /* test_ZDCRecord.m */; };
-		DC20AC8822515BC200678A20 /* test_ZDCOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8122515BC200678A20 /* test_ZDCOrderedSet.m */; };
-		DC20AC8D22515C8000678A20 /* SimpleRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8922515C8000678A20 /* SimpleRecord.m */; };
-		DC20AC8E22515C8000678A20 /* ComplexRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8C22515C8000678A20 /* ComplexRecord.m */; };
-		DC20AC9922515CE300678A20 /* ZDCSyncable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC69872225158C400284C12 /* ZDCSyncable.framework */; };
-		DC20AC9F22515D5300678A20 /* test_layered.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7B22515BC100678A20 /* test_layered.m */; };
-		DC20ACA022515D5600678A20 /* test_ZDCDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7D22515BC200678A20 /* test_ZDCDictionary.m */; };
-		DC20ACA122515D5B00678A20 /* test_ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7C22515BC200678A20 /* test_ZDCOrder.m */; };
-		DC20ACA222515D5B00678A20 /* test_ZDCOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7F22515BC200678A20 /* test_ZDCOrderedDictionary.m */; };
-		DC20ACA322515D5B00678A20 /* test_ZDCOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8122515BC200678A20 /* test_ZDCOrderedSet.m */; };
-		DC20ACA422515D5B00678A20 /* test_ZDCRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8022515BC200678A20 /* test_ZDCRecord.m */; };
-		DC20ACA522515D5B00678A20 /* test_ZDCSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7E22515BC200678A20 /* test_ZDCSet.m */; };
-		DC20ACA622515D6300678A20 /* ComplexRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8C22515C8000678A20 /* ComplexRecord.m */; };
-		DC20ACA722515D6700678A20 /* SimpleRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8922515C8000678A20 /* SimpleRecord.m */; };
-		DC20ACB122515DEA00678A20 /* ZDCSyncable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC6987F225158D400284C12 /* ZDCSyncable.framework */; };
-		DC20ACB722515E4B00678A20 /* test_layered.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7B22515BC100678A20 /* test_layered.m */; };
-		DC20ACB822515E4B00678A20 /* test_ZDCDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7D22515BC200678A20 /* test_ZDCDictionary.m */; };
-		DC20ACB922515E4B00678A20 /* test_ZDCOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7C22515BC200678A20 /* test_ZDCOrder.m */; };
-		DC20ACBA22515E4B00678A20 /* test_ZDCOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7F22515BC200678A20 /* test_ZDCOrderedDictionary.m */; };
-		DC20ACBB22515E4B00678A20 /* test_ZDCOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8122515BC200678A20 /* test_ZDCOrderedSet.m */; };
-		DC20ACBC22515E4B00678A20 /* test_ZDCRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8022515BC200678A20 /* test_ZDCRecord.m */; };
-		DC20ACBD22515E4B00678A20 /* test_ZDCSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC7E22515BC200678A20 /* test_ZDCSet.m */; };
-		DC20ACBE22515E5100678A20 /* ComplexRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8C22515C8000678A20 /* ComplexRecord.m */; };
-		DC20ACBF22515E5500678A20 /* SimpleRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = DC20AC8922515C8000678A20 /* SimpleRecord.m */; };
 		DC3AE27E227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */; };
 		DC3AE27F227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */; };
 		DC3AE280227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */; };
@@ -128,20 +35,6 @@
 		DCA1B54B229D68FD00AD8ACF /* test_ZDCDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEA81AC2279F05600FBC86B /* test_ZDCDictionary.swift */; };
 		DCA1B54C229D68FD00AD8ACF /* test_ZDCOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AE281227C9ADC006FC3DC /* test_ZDCOrderedDictionary.swift */; };
 		DCA1B54D229D68FD00AD8ACF /* test_ZDCArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEC303122999C6E00BE7A79 /* test_ZDCArray.swift */; };
-		DCC2FA062252C6CA007E60BA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC2FA052252C6CA007E60BA /* AppDelegate.m */; };
-		DCC2FA092252C6CA007E60BA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC2FA082252C6CA007E60BA /* ViewController.m */; };
-		DCC2FA0B2252C6CC007E60BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCC2FA0A2252C6CC007E60BA /* Assets.xcassets */; };
-		DCC2FA0E2252C6CC007E60BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCC2FA0C2252C6CC007E60BA /* Main.storyboard */; };
-		DCC2FA112252C6CC007E60BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC2FA102252C6CC007E60BA /* main.m */; };
-		DCC2FA182252C75D007E60BA /* ZDCArray.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D12251559500284C12 /* ZDCArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DCC2FA192252C75E007E60BA /* ZDCArray.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D12251559500284C12 /* ZDCArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DCC2FA1A2252C75F007E60BA /* ZDCArray.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697D12251559500284C12 /* ZDCArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DCC2FA1B2252C769007E60BA /* ZDCArray.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697D82251559600284C12 /* ZDCArray.m */; };
-		DCC2FA1C2252C76A007E60BA /* ZDCArray.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697D82251559600284C12 /* ZDCArray.m */; };
-		DCC2FA1D2252C76A007E60BA /* ZDCArray.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697D82251559600284C12 /* ZDCArray.m */; };
-		DCC2FA1F225413A8007E60BA /* test_ZDCArray.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC2FA1E225413A8007E60BA /* test_ZDCArray.m */; };
-		DCC2FA20225413A8007E60BA /* test_ZDCArray.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC2FA1E225413A8007E60BA /* test_ZDCArray.m */; };
-		DCC2FA21225413A8007E60BA /* test_ZDCArray.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC2FA1E225413A8007E60BA /* test_ZDCArray.m */; };
 		DCC6976E22514F9300284C12 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC6976C22514F9300284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DCC6977D2251504900284C12 /* ZDCSwiftWorkarounds.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697752251504900284C12 /* ZDCSwiftWorkarounds.m */; };
 		DCC6977E2251504900284C12 /* ZDCSwiftWorkarounds.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697762251504900284C12 /* ZDCSwiftWorkarounds.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -196,27 +89,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		DC20AC7522515AC000678A20 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DCBCC446225019F40085B27F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DCC69864225158B300284C12;
-			remoteInfo = ZDCSyncable_ObjC_iOS;
-		};
-		DC20AC9A22515CE300678A20 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DCBCC446225019F40085B27F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DCC69871225158C400284C12;
-			remoteInfo = ZDCSyncable_ObjC_macOS;
-		};
-		DC20ACB222515DEA00678A20 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DCBCC446225019F40085B27F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DCC6987E225158D400284C12;
-			remoteInfo = ZDCSyncable_ObjC_tvOS;
-		};
 		DCA1B528229D67FE00AD8ACF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DCBCC446225019F40085B27F /* Project object */;
@@ -230,13 +102,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = DCC697B22251541800284C12;
 			remoteInfo = ZDCSyncable_Swift_tvOS;
-		};
-		DCC2FA162252C749007E60BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DCBCC446225019F40085B27F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DCC69871225158C400284C12;
-			remoteInfo = ZDCSyncable_ObjC_macOS;
 		};
 		DCE62626225A8F1C000D19E3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -255,42 +120,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		DC20AC6F22515AC000678A20 /* UnitTests_ObjC_iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_ObjC_iOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC20AC7322515AC000678A20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DC20AC7B22515BC100678A20 /* test_layered.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test_layered.m; sourceTree = "<group>"; };
-		DC20AC7C22515BC200678A20 /* test_ZDCOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test_ZDCOrder.m; sourceTree = "<group>"; };
-		DC20AC7D22515BC200678A20 /* test_ZDCDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test_ZDCDictionary.m; sourceTree = "<group>"; };
-		DC20AC7E22515BC200678A20 /* test_ZDCSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test_ZDCSet.m; sourceTree = "<group>"; };
-		DC20AC7F22515BC200678A20 /* test_ZDCOrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test_ZDCOrderedDictionary.m; sourceTree = "<group>"; };
-		DC20AC8022515BC200678A20 /* test_ZDCRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test_ZDCRecord.m; sourceTree = "<group>"; };
-		DC20AC8122515BC200678A20 /* test_ZDCOrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test_ZDCOrderedSet.m; sourceTree = "<group>"; };
-		DC20AC8922515C8000678A20 /* SimpleRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRecord.m; sourceTree = "<group>"; };
-		DC20AC8A22515C8000678A20 /* SimpleRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRecord.h; sourceTree = "<group>"; };
-		DC20AC8B22515C8000678A20 /* ComplexRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComplexRecord.h; sourceTree = "<group>"; };
-		DC20AC8C22515C8000678A20 /* ComplexRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComplexRecord.m; sourceTree = "<group>"; };
-		DC20AC9422515CE300678A20 /* UnitTests_ObjC_macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_ObjC_macOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC20AC9822515CE300678A20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DC20ACAC22515DEA00678A20 /* UnitTests_ObjC_tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_ObjC_tvOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC20ACB022515DEA00678A20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZDCOrderedDictionary.swift; sourceTree = "<group>"; };
 		DC3AE281227C9ADC006FC3DC /* test_ZDCOrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_ZDCOrderedDictionary.swift; sourceTree = "<group>"; };
 		DC9ACBCA2275DF2D0031FE3E /* ZDCOrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZDCOrderedSet.swift; sourceTree = "<group>"; };
 		DC9ACBCE22762A680031FE3E /* test_ZDCOrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_ZDCOrderedSet.swift; sourceTree = "<group>"; };
-		DCA1B522229D67FE00AD8ACF /* UnitTests_Swift_iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_Swift_iOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCA1B522229D67FE00AD8ACF /* UnitTests_iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_iOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA1B526229D67FE00AD8ACF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCA1B53A229D68D300AD8ACF /* UnitTests_Swift_tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_Swift_tvOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCA1B53A229D68D300AD8ACF /* UnitTests_tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_tvOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA1B53E229D68D300AD8ACF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCC2FA022252C6C9007E60BA /* Demo_ObjC_macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo_ObjC_macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCC2FA042252C6C9007E60BA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		DCC2FA052252C6CA007E60BA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		DCC2FA072252C6CA007E60BA /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		DCC2FA082252C6CA007E60BA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		DCC2FA0A2252C6CC007E60BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		DCC2FA0D2252C6CC007E60BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		DCC2FA0F2252C6CC007E60BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCC2FA102252C6CC007E60BA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		DCC2FA122252C6CC007E60BA /* Demo_ObjC_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Demo_ObjC_macOS.entitlements; sourceTree = "<group>"; };
-		DCC2FA1E225413A8007E60BA /* test_ZDCArray.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = test_ZDCArray.m; path = UnitTests/ObjC/test_ZDCArray.m; sourceTree = SOURCE_ROOT; };
 		DCC6976A22514F9300284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC6976C22514F9300284C12 /* ZDCSyncable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZDCSyncable.h; sourceTree = "<group>"; };
 		DCC6976D22514F9300284C12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -307,44 +144,15 @@
 		DCC697B32251541800284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC697B52251541800284C12 /* ZDCSyncable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZDCSyncable.h; sourceTree = "<group>"; };
 		DCC697B62251541800284C12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCC697CF2251559500284C12 /* ZDCDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCDictionary.m; sourceTree = "<group>"; };
-		DCC697D02251559500284C12 /* ZDCOrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCOrderedDictionary.m; sourceTree = "<group>"; };
-		DCC697D12251559500284C12 /* ZDCArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCArray.h; sourceTree = "<group>"; };
-		DCC697D22251559500284C12 /* ZDCOrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCOrderedSet.m; sourceTree = "<group>"; };
-		DCC697D32251559500284C12 /* ZDCSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCSet.h; sourceTree = "<group>"; };
-		DCC697D42251559500284C12 /* ZDCRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCRecord.h; sourceTree = "<group>"; };
-		DCC697D52251559600284C12 /* ZDCSyncable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCSyncable.h; sourceTree = "<group>"; };
-		DCC697D62251559600284C12 /* ZDCOrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCOrderedDictionary.h; sourceTree = "<group>"; };
-		DCC697D72251559600284C12 /* ZDCOrderedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCOrderedSet.h; sourceTree = "<group>"; };
-		DCC697D82251559600284C12 /* ZDCArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCArray.m; sourceTree = "<group>"; };
-		DCC697D92251559600284C12 /* ZDCObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCObject.h; sourceTree = "<group>"; };
-		DCC697DA2251559600284C12 /* ZDCRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCRecord.m; sourceTree = "<group>"; };
-		DCC697DC2251559600284C12 /* ZDCNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCNull.m; sourceTree = "<group>"; };
-		DCC697DD2251559600284C12 /* ZDCRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCRef.h; sourceTree = "<group>"; };
-		DCC697DE2251559600284C12 /* ZDCNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCNull.h; sourceTree = "<group>"; };
-		DCC697DF2251559600284C12 /* ZDCRef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCRef.m; sourceTree = "<group>"; };
-		DCC697E12251559600284C12 /* ZDCOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCOrder.h; sourceTree = "<group>"; };
-		DCC697E22251559600284C12 /* ZDCObjectSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCObjectSubclass.h; sourceTree = "<group>"; };
-		DCC697E32251559600284C12 /* ZDCOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCOrder.m; sourceTree = "<group>"; };
-		DCC697E42251559600284C12 /* ZDCDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCDictionary.h; sourceTree = "<group>"; };
-		DCC697E52251559600284C12 /* ZDCSyncableProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCSyncableProtocol.h; sourceTree = "<group>"; };
-		DCC697E62251559600284C12 /* ZDCSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCSet.m; sourceTree = "<group>"; };
-		DCC697E72251559600284C12 /* ZDCObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCObject.m; sourceTree = "<group>"; };
-		DCC69865225158B300284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCC69868225158B300284C12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCC69872225158C400284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCC69875225158C400284C12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCC6987F225158D400284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCC69882225158D400284C12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCE6260E225A8C0B000D19E3 /* ZDCSyncableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZDCSyncableError.swift; sourceTree = "<group>"; };
-		DCE62616225A8F04000D19E3 /* Demo_Swift_macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo_Swift_macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCE62616225A8F04000D19E3 /* Demo_macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo_macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCE62618225A8F04000D19E3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCE6261A225A8F04000D19E3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DCE6261C225A8F0A000D19E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DCE6261F225A8F0A000D19E3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DCE62621225A8F0A000D19E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCE62622225A8F0B000D19E3 /* Demo_Swift_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Demo_Swift_macOS.entitlements; sourceTree = "<group>"; };
-		DCE6262D225A9488000D19E3 /* UnitTests_Swift_macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_Swift_macOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCE62622225A8F0B000D19E3 /* Demo_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Demo_macOS.entitlements; sourceTree = "<group>"; };
+		DCE6262D225A9488000D19E3 /* UnitTests_macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_macOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCE62631225A9488000D19E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCE62638225A952D000D19E3 /* test_ZDCSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_ZDCSet.swift; sourceTree = "<group>"; };
 		DCE6263A225BF1F4000D19E3 /* ZDCRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZDCRecord.swift; sourceTree = "<group>"; };
@@ -360,30 +168,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		DC20AC6C22515AC000678A20 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20AC7422515AC000678A20 /* ZDCSyncable.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DC20AC9122515CE300678A20 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20AC9922515CE300678A20 /* ZDCSyncable.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DC20ACA922515DEA00678A20 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20ACB122515DEA00678A20 /* ZDCSyncable.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		DCA1B51F229D67FE00AD8ACF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -397,13 +181,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCA1B53F229D68D300AD8ACF /* ZDCSyncable.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC2F9FF2252C6C9007E60BA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,27 +199,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		DCC697B02251541800284C12 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC69862225158B300284C12 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC6986F225158C400284C12 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC6987C225158D400284C12 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -470,98 +226,46 @@
 		DC20AC6922515A8900678A20 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				DC20AC6A22515A9500678A20 /* ObjC */,
-				DCE62628225A943C000D19E3 /* Swift */,
+				DCE62640225C00B9000D19E3 /* Models */,
+				DCEA81982278946A00FBC86B /* test_ZDCOrder.swift */,
+				DC9ACBCE22762A680031FE3E /* test_ZDCOrderedSet.swift */,
+				DCE62638225A952D000D19E3 /* test_ZDCSet.swift */,
+				DCE6263E225BFF49000D19E3 /* test_ZDCRecord.swift */,
+				DCEA81AC2279F05600FBC86B /* test_ZDCDictionary.swift */,
+				DC3AE281227C9ADC006FC3DC /* test_ZDCOrderedDictionary.swift */,
+				DCEC303122999C6E00BE7A79 /* test_ZDCArray.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
 		};
-		DC20AC6A22515A9500678A20 /* ObjC */ = {
-			isa = PBXGroup;
-			children = (
-				DC20AC8F22515C8C00678A20 /* Models */,
-				DC20AC7B22515BC100678A20 /* test_layered.m */,
-				DC20AC7D22515BC200678A20 /* test_ZDCDictionary.m */,
-				DC20AC7C22515BC200678A20 /* test_ZDCOrder.m */,
-				DC20AC7F22515BC200678A20 /* test_ZDCOrderedDictionary.m */,
-				DC20AC8122515BC200678A20 /* test_ZDCOrderedSet.m */,
-				DC20AC8022515BC200678A20 /* test_ZDCRecord.m */,
-				DC20AC7E22515BC200678A20 /* test_ZDCSet.m */,
-				DCC2FA1E225413A8007E60BA /* test_ZDCArray.m */,
-			);
-			path = ObjC;
-			sourceTree = "<group>";
-		};
-		DC20AC7022515AC000678A20 /* UnitTests_ObjC_iOS */ = {
-			isa = PBXGroup;
-			children = (
-				DC20AC7322515AC000678A20 /* Info.plist */,
-			);
-			path = UnitTests_ObjC_iOS;
-			sourceTree = "<group>";
-		};
-		DC20AC8F22515C8C00678A20 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				DC20AC8B22515C8000678A20 /* ComplexRecord.h */,
-				DC20AC8C22515C8000678A20 /* ComplexRecord.m */,
-				DC20AC8A22515C8000678A20 /* SimpleRecord.h */,
-				DC20AC8922515C8000678A20 /* SimpleRecord.m */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		DC20AC9522515CE300678A20 /* UnitTests_ObjC_macOS */ = {
-			isa = PBXGroup;
-			children = (
-				DC20AC9822515CE300678A20 /* Info.plist */,
-			);
-			path = UnitTests_ObjC_macOS;
-			sourceTree = "<group>";
-		};
-		DC20ACAD22515DEA00678A20 /* UnitTests_ObjC_tvOS */ = {
-			isa = PBXGroup;
-			children = (
-				DC20ACB022515DEA00678A20 /* Info.plist */,
-			);
-			path = UnitTests_ObjC_tvOS;
-			sourceTree = "<group>";
-		};
-		DCA1B523229D67FE00AD8ACF /* UnitTests_Swift_iOS */ = {
+		DCA1B523229D67FE00AD8ACF /* UnitTests_iOS */ = {
 			isa = PBXGroup;
 			children = (
 				DCA1B526229D67FE00AD8ACF /* Info.plist */,
 			);
-			path = UnitTests_Swift_iOS;
+			path = UnitTests_iOS;
 			sourceTree = "<group>";
 		};
-		DCA1B53B229D68D300AD8ACF /* UnitTests_Swift_tvOS */ = {
+		DCA1B53B229D68D300AD8ACF /* UnitTests_tvOS */ = {
 			isa = PBXGroup;
 			children = (
 				DCA1B53E229D68D300AD8ACF /* Info.plist */,
 			);
-			path = UnitTests_Swift_tvOS;
+			path = UnitTests_tvOS;
 			sourceTree = "<group>";
 		};
 		DCBCC445225019F40085B27F = {
 			isa = PBXGroup;
 			children = (
-				DC20AC6922515A8900678A20 /* UnitTests */,
 				DCC6977222514FA900284C12 /* ZDCSyncable */,
-				DCC69866225158B300284C12 /* ZDCSyncable_ObjC_iOS */,
-				DCC69873225158C400284C12 /* ZDCSyncable_ObjC_macOS */,
-				DCC69880225158D400284C12 /* ZDCSyncable_ObjC_tvOS */,
-				DCC697A02251531D00284C12 /* ZDCSyncable_Swift_iOS */,
-				DCC6976B22514F9300284C12 /* ZDCSyncable_Swift_macOS */,
-				DCC697B42251541800284C12 /* ZDCSyncable_Swift_tvOS */,
-				DC20AC7022515AC000678A20 /* UnitTests_ObjC_iOS */,
-				DC20AC9522515CE300678A20 /* UnitTests_ObjC_macOS */,
-				DC20ACAD22515DEA00678A20 /* UnitTests_ObjC_tvOS */,
-				DCA1B523229D67FE00AD8ACF /* UnitTests_Swift_iOS */,
-				DCE6262E225A9488000D19E3 /* UnitTests_Swift_macOS */,
-				DCA1B53B229D68D300AD8ACF /* UnitTests_Swift_tvOS */,
-				DCC2FA032252C6C9007E60BA /* Demo_ObjC_macOS */,
-				DCE62617225A8F04000D19E3 /* Demo_Swift_macOS */,
+				DCC697A02251531D00284C12 /* ZDCSyncable_iOS */,
+				DCC6976B22514F9300284C12 /* ZDCSyncable_macOS */,
+				DCC697B42251541800284C12 /* ZDCSyncable_tvOS */,
+				DC20AC6922515A8900678A20 /* UnitTests */,
+				DCA1B523229D67FE00AD8ACF /* UnitTests_iOS */,
+				DCE6262E225A9488000D19E3 /* UnitTests_macOS */,
+				DCA1B53B229D68D300AD8ACF /* UnitTests_tvOS */,
+				DCE62617225A8F04000D19E3 /* Demo_macOS */,
 				DCBCC450225019F40085B27F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -572,51 +276,37 @@
 				DCC6976A22514F9300284C12 /* ZDCSyncable.framework */,
 				DCC6979F2251531C00284C12 /* ZDCSyncable.framework */,
 				DCC697B32251541800284C12 /* ZDCSyncable.framework */,
-				DCC69865225158B300284C12 /* ZDCSyncable.framework */,
-				DCC69872225158C400284C12 /* ZDCSyncable.framework */,
-				DCC6987F225158D400284C12 /* ZDCSyncable.framework */,
-				DC20AC6F22515AC000678A20 /* UnitTests_ObjC_iOS.xctest */,
-				DC20AC9422515CE300678A20 /* UnitTests_ObjC_macOS.xctest */,
-				DC20ACAC22515DEA00678A20 /* UnitTests_ObjC_tvOS.xctest */,
-				DCC2FA022252C6C9007E60BA /* Demo_ObjC_macOS.app */,
-				DCE62616225A8F04000D19E3 /* Demo_Swift_macOS.app */,
-				DCE6262D225A9488000D19E3 /* UnitTests_Swift_macOS.xctest */,
-				DCA1B522229D67FE00AD8ACF /* UnitTests_Swift_iOS.xctest */,
-				DCA1B53A229D68D300AD8ACF /* UnitTests_Swift_tvOS.xctest */,
+				DCE62616225A8F04000D19E3 /* Demo_macOS.app */,
+				DCE6262D225A9488000D19E3 /* UnitTests_macOS.xctest */,
+				DCA1B522229D67FE00AD8ACF /* UnitTests_iOS.xctest */,
+				DCA1B53A229D68D300AD8ACF /* UnitTests_tvOS.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DCC2FA032252C6C9007E60BA /* Demo_ObjC_macOS */ = {
-			isa = PBXGroup;
-			children = (
-				DCC2FA042252C6C9007E60BA /* AppDelegate.h */,
-				DCC2FA052252C6CA007E60BA /* AppDelegate.m */,
-				DCC2FA072252C6CA007E60BA /* ViewController.h */,
-				DCC2FA082252C6CA007E60BA /* ViewController.m */,
-				DCC2FA0A2252C6CC007E60BA /* Assets.xcassets */,
-				DCC2FA0C2252C6CC007E60BA /* Main.storyboard */,
-				DCC2FA0F2252C6CC007E60BA /* Info.plist */,
-				DCC2FA102252C6CC007E60BA /* main.m */,
-				DCC2FA122252C6CC007E60BA /* Demo_ObjC_macOS.entitlements */,
-			);
-			path = Demo_ObjC_macOS;
-			sourceTree = "<group>";
-		};
-		DCC6976B22514F9300284C12 /* ZDCSyncable_Swift_macOS */ = {
+		DCC6976B22514F9300284C12 /* ZDCSyncable_macOS */ = {
 			isa = PBXGroup;
 			children = (
 				DCC6976C22514F9300284C12 /* ZDCSyncable.h */,
 				DCC6976D22514F9300284C12 /* Info.plist */,
 			);
-			path = ZDCSyncable_Swift_macOS;
+			path = ZDCSyncable_macOS;
 			sourceTree = "<group>";
 		};
 		DCC6977222514FA900284C12 /* ZDCSyncable */ = {
 			isa = PBXGroup;
 			children = (
-				DCC697992251524A00284C12 /* ObjC */,
-				DCC697982251522D00284C12 /* Swift */,
+				DCC697782251504900284C12 /* Internal */,
+				DCC697742251504900284C12 /* Utilities */,
+				DCC6977C2251504900284C12 /* ZDCSynable.swift */,
+				DCE6260E225A8C0B000D19E3 /* ZDCSyncableError.swift */,
+				DCC697772251504900284C12 /* ZDCObject.swift */,
+				DCE6263A225BF1F4000D19E3 /* ZDCRecord.swift */,
+				DCEA819C2279CDA700FBC86B /* ZDCDictionary.swift */,
+				DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */,
+				DCC6977B2251504900284C12 /* ZDCSet.swift */,
+				DC9ACBCA2275DF2D0031FE3E /* ZDCOrderedSet.swift */,
+				DCEC302D22997D4D00BE7A79 /* ZDCArray.swift */,
 			);
 			path = ZDCSyncable;
 			sourceTree = "<group>";
@@ -640,113 +330,25 @@
 			path = Internal;
 			sourceTree = "<group>";
 		};
-		DCC697982251522D00284C12 /* Swift */ = {
-			isa = PBXGroup;
-			children = (
-				DCC697782251504900284C12 /* Internal */,
-				DCC697742251504900284C12 /* Utilities */,
-				DCC6977C2251504900284C12 /* ZDCSynable.swift */,
-				DCE6260E225A8C0B000D19E3 /* ZDCSyncableError.swift */,
-				DCC697772251504900284C12 /* ZDCObject.swift */,
-				DCE6263A225BF1F4000D19E3 /* ZDCRecord.swift */,
-				DCEA819C2279CDA700FBC86B /* ZDCDictionary.swift */,
-				DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */,
-				DCC6977B2251504900284C12 /* ZDCSet.swift */,
-				DC9ACBCA2275DF2D0031FE3E /* ZDCOrderedSet.swift */,
-				DCEC302D22997D4D00BE7A79 /* ZDCArray.swift */,
-			);
-			path = Swift;
-			sourceTree = "<group>";
-		};
-		DCC697992251524A00284C12 /* ObjC */ = {
-			isa = PBXGroup;
-			children = (
-				DCC697DB2251559600284C12 /* Internal */,
-				DCC697E02251559600284C12 /* Utilities */,
-				DCC697E52251559600284C12 /* ZDCSyncableProtocol.h */,
-				DCC697D52251559600284C12 /* ZDCSyncable.h */,
-				DCC697D92251559600284C12 /* ZDCObject.h */,
-				DCC697E72251559600284C12 /* ZDCObject.m */,
-				DCC697D12251559500284C12 /* ZDCArray.h */,
-				DCC697D82251559600284C12 /* ZDCArray.m */,
-				DCC697E42251559600284C12 /* ZDCDictionary.h */,
-				DCC697CF2251559500284C12 /* ZDCDictionary.m */,
-				DCC697D62251559600284C12 /* ZDCOrderedDictionary.h */,
-				DCC697D02251559500284C12 /* ZDCOrderedDictionary.m */,
-				DCC697D72251559600284C12 /* ZDCOrderedSet.h */,
-				DCC697D22251559500284C12 /* ZDCOrderedSet.m */,
-				DCC697D42251559500284C12 /* ZDCRecord.h */,
-				DCC697DA2251559600284C12 /* ZDCRecord.m */,
-				DCC697D32251559500284C12 /* ZDCSet.h */,
-				DCC697E62251559600284C12 /* ZDCSet.m */,
-			);
-			path = ObjC;
-			sourceTree = "<group>";
-		};
-		DCC697A02251531D00284C12 /* ZDCSyncable_Swift_iOS */ = {
+		DCC697A02251531D00284C12 /* ZDCSyncable_iOS */ = {
 			isa = PBXGroup;
 			children = (
 				DCC697A12251531D00284C12 /* ZDCSyncable.h */,
 				DCC697A22251531D00284C12 /* Info.plist */,
 			);
-			path = ZDCSyncable_Swift_iOS;
+			path = ZDCSyncable_iOS;
 			sourceTree = "<group>";
 		};
-		DCC697B42251541800284C12 /* ZDCSyncable_Swift_tvOS */ = {
+		DCC697B42251541800284C12 /* ZDCSyncable_tvOS */ = {
 			isa = PBXGroup;
 			children = (
 				DCC697B52251541800284C12 /* ZDCSyncable.h */,
 				DCC697B62251541800284C12 /* Info.plist */,
 			);
-			path = ZDCSyncable_Swift_tvOS;
+			path = ZDCSyncable_tvOS;
 			sourceTree = "<group>";
 		};
-		DCC697DB2251559600284C12 /* Internal */ = {
-			isa = PBXGroup;
-			children = (
-				DCC697DE2251559600284C12 /* ZDCNull.h */,
-				DCC697DC2251559600284C12 /* ZDCNull.m */,
-				DCC697DD2251559600284C12 /* ZDCRef.h */,
-				DCC697DF2251559600284C12 /* ZDCRef.m */,
-			);
-			path = Internal;
-			sourceTree = "<group>";
-		};
-		DCC697E02251559600284C12 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				DCC697E22251559600284C12 /* ZDCObjectSubclass.h */,
-				DCC697E12251559600284C12 /* ZDCOrder.h */,
-				DCC697E32251559600284C12 /* ZDCOrder.m */,
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
-		DCC69866225158B300284C12 /* ZDCSyncable_ObjC_iOS */ = {
-			isa = PBXGroup;
-			children = (
-				DCC69868225158B300284C12 /* Info.plist */,
-			);
-			path = ZDCSyncable_ObjC_iOS;
-			sourceTree = "<group>";
-		};
-		DCC69873225158C400284C12 /* ZDCSyncable_ObjC_macOS */ = {
-			isa = PBXGroup;
-			children = (
-				DCC69875225158C400284C12 /* Info.plist */,
-			);
-			path = ZDCSyncable_ObjC_macOS;
-			sourceTree = "<group>";
-		};
-		DCC69880225158D400284C12 /* ZDCSyncable_ObjC_tvOS */ = {
-			isa = PBXGroup;
-			children = (
-				DCC69882225158D400284C12 /* Info.plist */,
-			);
-			path = ZDCSyncable_ObjC_tvOS;
-			sourceTree = "<group>";
-		};
-		DCE62617225A8F04000D19E3 /* Demo_Swift_macOS */ = {
+		DCE62617225A8F04000D19E3 /* Demo_macOS */ = {
 			isa = PBXGroup;
 			children = (
 				DCE62618225A8F04000D19E3 /* AppDelegate.swift */,
@@ -754,32 +356,17 @@
 				DCE6261C225A8F0A000D19E3 /* Assets.xcassets */,
 				DCE6261E225A8F0A000D19E3 /* Main.storyboard */,
 				DCE62621225A8F0A000D19E3 /* Info.plist */,
-				DCE62622225A8F0B000D19E3 /* Demo_Swift_macOS.entitlements */,
+				DCE62622225A8F0B000D19E3 /* Demo_macOS.entitlements */,
 			);
-			path = Demo_Swift_macOS;
+			path = Demo_macOS;
 			sourceTree = "<group>";
 		};
-		DCE62628225A943C000D19E3 /* Swift */ = {
-			isa = PBXGroup;
-			children = (
-				DCE62640225C00B9000D19E3 /* Models */,
-				DCEA81982278946A00FBC86B /* test_ZDCOrder.swift */,
-				DC9ACBCE22762A680031FE3E /* test_ZDCOrderedSet.swift */,
-				DCE62638225A952D000D19E3 /* test_ZDCSet.swift */,
-				DCE6263E225BFF49000D19E3 /* test_ZDCRecord.swift */,
-				DCEA81AC2279F05600FBC86B /* test_ZDCDictionary.swift */,
-				DC3AE281227C9ADC006FC3DC /* test_ZDCOrderedDictionary.swift */,
-				DCEC303122999C6E00BE7A79 /* test_ZDCArray.swift */,
-			);
-			path = Swift;
-			sourceTree = "<group>";
-		};
-		DCE6262E225A9488000D19E3 /* UnitTests_Swift_macOS */ = {
+		DCE6262E225A9488000D19E3 /* UnitTests_macOS */ = {
 			isa = PBXGroup;
 			children = (
 				DCE62631225A9488000D19E3 /* Info.plist */,
 			);
-			path = UnitTests_Swift_macOS;
+			path = UnitTests_macOS;
 			sourceTree = "<group>";
 		};
 		DCE62640225C00B9000D19E3 /* Models */ = {
@@ -821,126 +408,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DCC69860225158B300284C12 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20AC422251599000678A20 /* ZDCObject.h in Headers */,
-				DC20AC3F2251598500678A20 /* ZDCSyncable.h in Headers */,
-				DC20AC51225159C500678A20 /* ZDCOrderedDictionary.h in Headers */,
-				DC20AC332251595F00678A20 /* ZDCObjectSubclass.h in Headers */,
-				DCC2FA182252C75D007E60BA /* ZDCArray.h in Headers */,
-				DC20AC4B225159B200678A20 /* ZDCDictionary.h in Headers */,
-				DC20AC2D2251595500678A20 /* ZDCRef.h in Headers */,
-				DC20AC57225159D800678A20 /* ZDCOrderedSet.h in Headers */,
-				DC20AC3C2251597900678A20 /* ZDCSyncableProtocol.h in Headers */,
-				DC20AC5D225159EF00678A20 /* ZDCRecord.h in Headers */,
-				DC20AC362251596A00678A20 /* ZDCOrder.h in Headers */,
-				DC20AC272251594B00678A20 /* ZDCNull.h in Headers */,
-				DC20AC6322515A0100678A20 /* ZDCSet.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC6986D225158C400284C12 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20AC432251599100678A20 /* ZDCObject.h in Headers */,
-				DC20AC402251598500678A20 /* ZDCSyncable.h in Headers */,
-				DC20AC52225159C600678A20 /* ZDCOrderedDictionary.h in Headers */,
-				DC20AC342251596000678A20 /* ZDCObjectSubclass.h in Headers */,
-				DCC2FA192252C75E007E60BA /* ZDCArray.h in Headers */,
-				DC20AC4C225159B300678A20 /* ZDCDictionary.h in Headers */,
-				DC20AC2E2251595600678A20 /* ZDCRef.h in Headers */,
-				DC20AC58225159D900678A20 /* ZDCOrderedSet.h in Headers */,
-				DC20AC3D2251597900678A20 /* ZDCSyncableProtocol.h in Headers */,
-				DC20AC5E225159F000678A20 /* ZDCRecord.h in Headers */,
-				DC20AC372251596A00678A20 /* ZDCOrder.h in Headers */,
-				DC20AC282251594C00678A20 /* ZDCNull.h in Headers */,
-				DC20AC6422515A0200678A20 /* ZDCSet.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC6987A225158D400284C12 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20AC442251599100678A20 /* ZDCObject.h in Headers */,
-				DC20AC412251598600678A20 /* ZDCSyncable.h in Headers */,
-				DC20AC53225159C600678A20 /* ZDCOrderedDictionary.h in Headers */,
-				DC20AC352251596100678A20 /* ZDCObjectSubclass.h in Headers */,
-				DCC2FA1A2252C75F007E60BA /* ZDCArray.h in Headers */,
-				DC20AC4D225159B400678A20 /* ZDCDictionary.h in Headers */,
-				DC20AC2F2251595700678A20 /* ZDCRef.h in Headers */,
-				DC20AC59225159D900678A20 /* ZDCOrderedSet.h in Headers */,
-				DC20AC3E2251597A00678A20 /* ZDCSyncableProtocol.h in Headers */,
-				DC20AC5F225159F100678A20 /* ZDCRecord.h in Headers */,
-				DC20AC382251596B00678A20 /* ZDCOrder.h in Headers */,
-				DC20AC292251594D00678A20 /* ZDCNull.h in Headers */,
-				DC20AC6522515A0300678A20 /* ZDCSet.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		DC20AC6E22515AC000678A20 /* UnitTests_ObjC_iOS */ = {
+		DCA1B521229D67FE00AD8ACF /* UnitTests_iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DC20AC7722515AC000678A20 /* Build configuration list for PBXNativeTarget "UnitTests_ObjC_iOS" */;
-			buildPhases = (
-				DC20AC6B22515AC000678A20 /* Sources */,
-				DC20AC6C22515AC000678A20 /* Frameworks */,
-				DC20AC6D22515AC000678A20 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DC20AC7622515AC000678A20 /* PBXTargetDependency */,
-			);
-			name = UnitTests_ObjC_iOS;
-			productName = UnitTests_ObjC_iOS;
-			productReference = DC20AC6F22515AC000678A20 /* UnitTests_ObjC_iOS.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		DC20AC9322515CE300678A20 /* UnitTests_ObjC_macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DC20AC9C22515CE300678A20 /* Build configuration list for PBXNativeTarget "UnitTests_ObjC_macOS" */;
-			buildPhases = (
-				DC20AC9022515CE300678A20 /* Sources */,
-				DC20AC9122515CE300678A20 /* Frameworks */,
-				DC20AC9222515CE300678A20 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DC20AC9B22515CE300678A20 /* PBXTargetDependency */,
-			);
-			name = UnitTests_ObjC_macOS;
-			productName = UnitTests_ObjC_macOS;
-			productReference = DC20AC9422515CE300678A20 /* UnitTests_ObjC_macOS.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		DC20ACAB22515DEA00678A20 /* UnitTests_ObjC_tvOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DC20ACB422515DEA00678A20 /* Build configuration list for PBXNativeTarget "UnitTests_ObjC_tvOS" */;
-			buildPhases = (
-				DC20ACA822515DEA00678A20 /* Sources */,
-				DC20ACA922515DEA00678A20 /* Frameworks */,
-				DC20ACAA22515DEA00678A20 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DC20ACB322515DEA00678A20 /* PBXTargetDependency */,
-			);
-			name = UnitTests_ObjC_tvOS;
-			productName = UnitTests_ObjC_tvOS;
-			productReference = DC20ACAC22515DEA00678A20 /* UnitTests_ObjC_tvOS.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		DCA1B521229D67FE00AD8ACF /* UnitTests_Swift_iOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DCA1B52A229D67FE00AD8ACF /* Build configuration list for PBXNativeTarget "UnitTests_Swift_iOS" */;
+			buildConfigurationList = DCA1B52A229D67FE00AD8ACF /* Build configuration list for PBXNativeTarget "UnitTests_iOS" */;
 			buildPhases = (
 				DCA1B51E229D67FE00AD8ACF /* Sources */,
 				DCA1B51F229D67FE00AD8ACF /* Frameworks */,
@@ -951,14 +424,14 @@
 			dependencies = (
 				DCA1B529229D67FE00AD8ACF /* PBXTargetDependency */,
 			);
-			name = UnitTests_Swift_iOS;
+			name = UnitTests_iOS;
 			productName = UnitTests_Swift_iOS;
-			productReference = DCA1B522229D67FE00AD8ACF /* UnitTests_Swift_iOS.xctest */;
+			productReference = DCA1B522229D67FE00AD8ACF /* UnitTests_iOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		DCA1B539229D68D300AD8ACF /* UnitTests_Swift_tvOS */ = {
+		DCA1B539229D68D300AD8ACF /* UnitTests_tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DCA1B542229D68D300AD8ACF /* Build configuration list for PBXNativeTarget "UnitTests_Swift_tvOS" */;
+			buildConfigurationList = DCA1B542229D68D300AD8ACF /* Build configuration list for PBXNativeTarget "UnitTests_tvOS" */;
 			buildPhases = (
 				DCA1B536229D68D300AD8ACF /* Sources */,
 				DCA1B537229D68D300AD8ACF /* Frameworks */,
@@ -969,32 +442,14 @@
 			dependencies = (
 				DCA1B541229D68D300AD8ACF /* PBXTargetDependency */,
 			);
-			name = UnitTests_Swift_tvOS;
+			name = UnitTests_tvOS;
 			productName = UnitTests_Swift_tvOS;
-			productReference = DCA1B53A229D68D300AD8ACF /* UnitTests_Swift_tvOS.xctest */;
+			productReference = DCA1B53A229D68D300AD8ACF /* UnitTests_tvOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		DCC2FA012252C6C9007E60BA /* Demo_ObjC_macOS */ = {
+		DCC6976922514F9300284C12 /* ZDCSyncable_macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DCC2FA152252C6CC007E60BA /* Build configuration list for PBXNativeTarget "Demo_ObjC_macOS" */;
-			buildPhases = (
-				DCC2F9FE2252C6C9007E60BA /* Sources */,
-				DCC2F9FF2252C6C9007E60BA /* Frameworks */,
-				DCC2FA002252C6C9007E60BA /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DCC2FA172252C749007E60BA /* PBXTargetDependency */,
-			);
-			name = Demo_ObjC_macOS;
-			productName = Demo_ObjC_macOS;
-			productReference = DCC2FA022252C6C9007E60BA /* Demo_ObjC_macOS.app */;
-			productType = "com.apple.product-type.application";
-		};
-		DCC6976922514F9300284C12 /* ZDCSyncable_Swift_macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DCC6976F22514F9300284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_Swift_macOS" */;
+			buildConfigurationList = DCC6976F22514F9300284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_macOS" */;
 			buildPhases = (
 				DCC6976522514F9300284C12 /* Headers */,
 				DCC6976622514F9300284C12 /* Sources */,
@@ -1005,14 +460,14 @@
 			);
 			dependencies = (
 			);
-			name = ZDCSyncable_Swift_macOS;
+			name = ZDCSyncable_macOS;
 			productName = ZDCSyncable_Swift_macOS;
 			productReference = DCC6976A22514F9300284C12 /* ZDCSyncable.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		DCC6979E2251531C00284C12 /* ZDCSyncable_Swift_iOS */ = {
+		DCC6979E2251531C00284C12 /* ZDCSyncable_iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DCC697A42251531D00284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_Swift_iOS" */;
+			buildConfigurationList = DCC697A42251531D00284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_iOS" */;
 			buildPhases = (
 				DCC6979A2251531C00284C12 /* Headers */,
 				DCC6979B2251531C00284C12 /* Sources */,
@@ -1023,14 +478,14 @@
 			);
 			dependencies = (
 			);
-			name = ZDCSyncable_Swift_iOS;
+			name = ZDCSyncable_iOS;
 			productName = ZDCSyncable_Swift_iOS;
 			productReference = DCC6979F2251531C00284C12 /* ZDCSyncable.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		DCC697B22251541800284C12 /* ZDCSyncable_Swift_tvOS */ = {
+		DCC697B22251541800284C12 /* ZDCSyncable_tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DCC697B82251541800284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_Swift_tvOS" */;
+			buildConfigurationList = DCC697B82251541800284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_tvOS" */;
 			buildPhases = (
 				DCC697AE2251541800284C12 /* Headers */,
 				DCC697AF2251541800284C12 /* Sources */,
@@ -1041,68 +496,14 @@
 			);
 			dependencies = (
 			);
-			name = ZDCSyncable_Swift_tvOS;
+			name = ZDCSyncable_tvOS;
 			productName = ZDCSyncable_Swift_tvOS;
 			productReference = DCC697B32251541800284C12 /* ZDCSyncable.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		DCC69864225158B300284C12 /* ZDCSyncable_ObjC_iOS */ = {
+		DCE62615225A8F04000D19E3 /* Demo_macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DCC6986A225158B300284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_ObjC_iOS" */;
-			buildPhases = (
-				DCC69860225158B300284C12 /* Headers */,
-				DCC69861225158B300284C12 /* Sources */,
-				DCC69862225158B300284C12 /* Frameworks */,
-				DCC69863225158B300284C12 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ZDCSyncable_ObjC_iOS;
-			productName = ZDCSyncable_ObjC_iOS;
-			productReference = DCC69865225158B300284C12 /* ZDCSyncable.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		DCC69871225158C400284C12 /* ZDCSyncable_ObjC_macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DCC69877225158C400284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_ObjC_macOS" */;
-			buildPhases = (
-				DCC6986D225158C400284C12 /* Headers */,
-				DCC6986E225158C400284C12 /* Sources */,
-				DCC6986F225158C400284C12 /* Frameworks */,
-				DCC69870225158C400284C12 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ZDCSyncable_ObjC_macOS;
-			productName = ZDCSyncable_ObjC_macOS;
-			productReference = DCC69872225158C400284C12 /* ZDCSyncable.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		DCC6987E225158D400284C12 /* ZDCSyncable_ObjC_tvOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DCC69884225158D400284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_ObjC_tvOS" */;
-			buildPhases = (
-				DCC6987A225158D400284C12 /* Headers */,
-				DCC6987B225158D400284C12 /* Sources */,
-				DCC6987C225158D400284C12 /* Frameworks */,
-				DCC6987D225158D400284C12 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ZDCSyncable_ObjC_tvOS;
-			productName = ZDCSyncable_ObjC_tvOS;
-			productReference = DCC6987F225158D400284C12 /* ZDCSyncable.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		DCE62615225A8F04000D19E3 /* Demo_Swift_macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DCE62623225A8F0B000D19E3 /* Build configuration list for PBXNativeTarget "Demo_Swift_macOS" */;
+			buildConfigurationList = DCE62623225A8F0B000D19E3 /* Build configuration list for PBXNativeTarget "Demo_macOS" */;
 			buildPhases = (
 				DCE62612225A8F04000D19E3 /* Sources */,
 				DCE62613225A8F04000D19E3 /* Frameworks */,
@@ -1113,14 +514,14 @@
 			dependencies = (
 				DCE62627225A8F1C000D19E3 /* PBXTargetDependency */,
 			);
-			name = Demo_Swift_macOS;
+			name = Demo_macOS;
 			productName = Demo_Swift_macOS;
-			productReference = DCE62616225A8F04000D19E3 /* Demo_Swift_macOS.app */;
+			productReference = DCE62616225A8F04000D19E3 /* Demo_macOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DCE6262C225A9488000D19E3 /* UnitTests_Swift_macOS */ = {
+		DCE6262C225A9488000D19E3 /* UnitTests_macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DCE62635225A9488000D19E3 /* Build configuration list for PBXNativeTarget "UnitTests_Swift_macOS" */;
+			buildConfigurationList = DCE62635225A9488000D19E3 /* Build configuration list for PBXNativeTarget "UnitTests_macOS" */;
 			buildPhases = (
 				DCE62629225A9488000D19E3 /* Sources */,
 				DCE6262A225A9488000D19E3 /* Frameworks */,
@@ -1131,9 +532,9 @@
 			dependencies = (
 				DCE62634225A9488000D19E3 /* PBXTargetDependency */,
 			);
-			name = UnitTests_Swift_macOS;
+			name = UnitTests_macOS;
 			productName = UnitTests_Swift_macOS;
-			productReference = DCE6262D225A9488000D19E3 /* UnitTests_Swift_macOS.xctest */;
+			productReference = DCE6262D225A9488000D19E3 /* UnitTests_macOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1146,24 +547,11 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "4th-A Technologies";
 				TargetAttributes = {
-					DC20AC6E22515AC000678A20 = {
-						CreatedOnToolsVersion = 10.2;
-						LastSwiftMigration = 1020;
-					};
-					DC20AC9322515CE300678A20 = {
-						CreatedOnToolsVersion = 10.2;
-					};
-					DC20ACAB22515DEA00678A20 = {
-						CreatedOnToolsVersion = 10.2;
-					};
 					DCA1B521229D67FE00AD8ACF = {
 						CreatedOnToolsVersion = 10.2.1;
 					};
 					DCA1B539229D68D300AD8ACF = {
 						CreatedOnToolsVersion = 10.2.1;
-					};
-					DCC2FA012252C6C9007E60BA = {
-						CreatedOnToolsVersion = 10.2;
 					};
 					DCC6976922514F9300284C12 = {
 						CreatedOnToolsVersion = 10.2;
@@ -1173,15 +561,6 @@
 						CreatedOnToolsVersion = 10.2;
 					};
 					DCC697B22251541800284C12 = {
-						CreatedOnToolsVersion = 10.2;
-					};
-					DCC69864225158B300284C12 = {
-						CreatedOnToolsVersion = 10.2;
-					};
-					DCC69871225158C400284C12 = {
-						CreatedOnToolsVersion = 10.2;
-					};
-					DCC6987E225158D400284C12 = {
 						CreatedOnToolsVersion = 10.2;
 					};
 					DCE62615225A8F04000D19E3 = {
@@ -1205,46 +584,18 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DCC69864225158B300284C12 /* ZDCSyncable_ObjC_iOS */,
-				DCC69871225158C400284C12 /* ZDCSyncable_ObjC_macOS */,
-				DCC6987E225158D400284C12 /* ZDCSyncable_ObjC_tvOS */,
-				DCC6979E2251531C00284C12 /* ZDCSyncable_Swift_iOS */,
-				DCC6976922514F9300284C12 /* ZDCSyncable_Swift_macOS */,
-				DCC697B22251541800284C12 /* ZDCSyncable_Swift_tvOS */,
-				DC20AC6E22515AC000678A20 /* UnitTests_ObjC_iOS */,
-				DC20AC9322515CE300678A20 /* UnitTests_ObjC_macOS */,
-				DC20ACAB22515DEA00678A20 /* UnitTests_ObjC_tvOS */,
-				DCA1B521229D67FE00AD8ACF /* UnitTests_Swift_iOS */,
-				DCE6262C225A9488000D19E3 /* UnitTests_Swift_macOS */,
-				DCA1B539229D68D300AD8ACF /* UnitTests_Swift_tvOS */,
-				DCC2FA012252C6C9007E60BA /* Demo_ObjC_macOS */,
-				DCE62615225A8F04000D19E3 /* Demo_Swift_macOS */,
+				DCC6979E2251531C00284C12 /* ZDCSyncable_iOS */,
+				DCC6976922514F9300284C12 /* ZDCSyncable_macOS */,
+				DCC697B22251541800284C12 /* ZDCSyncable_tvOS */,
+				DCA1B521229D67FE00AD8ACF /* UnitTests_iOS */,
+				DCE6262C225A9488000D19E3 /* UnitTests_macOS */,
+				DCA1B539229D68D300AD8ACF /* UnitTests_tvOS */,
+				DCE62615225A8F04000D19E3 /* Demo_macOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		DC20AC6D22515AC000678A20 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DC20AC9222515CE300678A20 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DC20ACAA22515DEA00678A20 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		DCA1B520229D67FE00AD8ACF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1256,15 +607,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC2FA002252C6C9007E60BA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DCC2FA0B2252C6CC007E60BA /* Assets.xcassets in Resources */,
-				DCC2FA0E2252C6CC007E60BA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1283,27 +625,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		DCC697B12251541800284C12 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC69863225158B300284C12 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC69870225158C400284C12 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC6987D225158D400284C12 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1329,57 +650,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		DC20AC6B22515AC000678A20 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20AC8E22515C8000678A20 /* ComplexRecord.m in Sources */,
-				DC20AC8522515BC200678A20 /* test_ZDCSet.m in Sources */,
-				DC20AC8322515BC200678A20 /* test_ZDCOrder.m in Sources */,
-				DCC2FA1F225413A8007E60BA /* test_ZDCArray.m in Sources */,
-				DC20AC8D22515C8000678A20 /* SimpleRecord.m in Sources */,
-				DC20AC8722515BC200678A20 /* test_ZDCRecord.m in Sources */,
-				DC20AC8622515BC200678A20 /* test_ZDCOrderedDictionary.m in Sources */,
-				DC20AC8222515BC200678A20 /* test_layered.m in Sources */,
-				DC20AC8822515BC200678A20 /* test_ZDCOrderedSet.m in Sources */,
-				DC20AC8422515BC200678A20 /* test_ZDCDictionary.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DC20AC9022515CE300678A20 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20ACA522515D5B00678A20 /* test_ZDCSet.m in Sources */,
-				DC20ACA722515D6700678A20 /* SimpleRecord.m in Sources */,
-				DC20ACA622515D6300678A20 /* ComplexRecord.m in Sources */,
-				DCC2FA20225413A8007E60BA /* test_ZDCArray.m in Sources */,
-				DC20ACA122515D5B00678A20 /* test_ZDCOrder.m in Sources */,
-				DC20ACA222515D5B00678A20 /* test_ZDCOrderedDictionary.m in Sources */,
-				DC20ACA422515D5B00678A20 /* test_ZDCRecord.m in Sources */,
-				DC20AC9F22515D5300678A20 /* test_layered.m in Sources */,
-				DC20ACA022515D5600678A20 /* test_ZDCDictionary.m in Sources */,
-				DC20ACA322515D5B00678A20 /* test_ZDCOrderedSet.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DC20ACA822515DEA00678A20 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20ACBD22515E4B00678A20 /* test_ZDCSet.m in Sources */,
-				DC20ACBF22515E5500678A20 /* SimpleRecord.m in Sources */,
-				DC20ACBE22515E5100678A20 /* ComplexRecord.m in Sources */,
-				DCC2FA21225413A8007E60BA /* test_ZDCArray.m in Sources */,
-				DC20ACB922515E4B00678A20 /* test_ZDCOrder.m in Sources */,
-				DC20ACBA22515E4B00678A20 /* test_ZDCOrderedDictionary.m in Sources */,
-				DC20ACBC22515E4B00678A20 /* test_ZDCRecord.m in Sources */,
-				DC20ACB722515E4B00678A20 /* test_layered.m in Sources */,
-				DC20ACB822515E4B00678A20 /* test_ZDCDictionary.m in Sources */,
-				DC20ACBB22515E4B00678A20 /* test_ZDCOrderedSet.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		DCA1B51E229D67FE00AD8ACF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1409,16 +679,6 @@
 				DCA1B54C229D68FD00AD8ACF /* test_ZDCOrderedDictionary.swift in Sources */,
 				DCA1B549229D68FD00AD8ACF /* test_ZDCSet.swift in Sources */,
 				DCA1B546229D68F700AD8ACF /* ComplexRecord.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC2F9FE2252C6C9007E60BA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DCC2FA092252C6CA007E60BA /* ViewController.m in Sources */,
-				DCC2FA112252C6CC007E60BA /* main.m in Sources */,
-				DCC2FA062252C6CA007E60BA /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1482,57 +742,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DCC69861225158B300284C12 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20AC2A2251595000678A20 /* ZDCNull.m in Sources */,
-				DC20AC452251599B00678A20 /* ZDCObject.m in Sources */,
-				DC20AC4E225159C100678A20 /* ZDCDictionary.m in Sources */,
-				DCC2FA1B2252C769007E60BA /* ZDCArray.m in Sources */,
-				DC20AC54225159D200678A20 /* ZDCOrderedDictionary.m in Sources */,
-				DC20AC5A225159EB00678A20 /* ZDCOrderedSet.m in Sources */,
-				DC20AC6622515A0D00678A20 /* ZDCSet.m in Sources */,
-				DC20AC392251597400678A20 /* ZDCOrder.m in Sources */,
-				DC20AC60225159FC00678A20 /* ZDCRecord.m in Sources */,
-				DC20AC302251595A00678A20 /* ZDCRef.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC6986E225158C400284C12 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20AC2B2251595100678A20 /* ZDCNull.m in Sources */,
-				DC20AC462251599B00678A20 /* ZDCObject.m in Sources */,
-				DC20AC4F225159C100678A20 /* ZDCDictionary.m in Sources */,
-				DCC2FA1C2252C76A007E60BA /* ZDCArray.m in Sources */,
-				DC20AC55225159D400678A20 /* ZDCOrderedDictionary.m in Sources */,
-				DC20AC5B225159EB00678A20 /* ZDCOrderedSet.m in Sources */,
-				DC20AC6722515A0D00678A20 /* ZDCSet.m in Sources */,
-				DC20AC3A2251597500678A20 /* ZDCOrder.m in Sources */,
-				DC20AC61225159FD00678A20 /* ZDCRecord.m in Sources */,
-				DC20AC312251595B00678A20 /* ZDCRef.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DCC6987B225158D400284C12 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DC20AC2C2251595200678A20 /* ZDCNull.m in Sources */,
-				DC20AC472251599C00678A20 /* ZDCObject.m in Sources */,
-				DC20AC50225159C200678A20 /* ZDCDictionary.m in Sources */,
-				DCC2FA1D2252C76A007E60BA /* ZDCArray.m in Sources */,
-				DC20AC56225159D400678A20 /* ZDCOrderedDictionary.m in Sources */,
-				DC20AC5C225159EC00678A20 /* ZDCOrderedSet.m in Sources */,
-				DC20AC6822515A0F00678A20 /* ZDCSet.m in Sources */,
-				DC20AC3B2251597500678A20 /* ZDCOrder.m in Sources */,
-				DC20AC62225159FE00678A20 /* ZDCRecord.m in Sources */,
-				DC20AC322251595B00678A20 /* ZDCRef.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		DCE62612225A8F04000D19E3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1561,57 +770,29 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		DC20AC7622515AC000678A20 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DCC69864225158B300284C12 /* ZDCSyncable_ObjC_iOS */;
-			targetProxy = DC20AC7522515AC000678A20 /* PBXContainerItemProxy */;
-		};
-		DC20AC9B22515CE300678A20 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DCC69871225158C400284C12 /* ZDCSyncable_ObjC_macOS */;
-			targetProxy = DC20AC9A22515CE300678A20 /* PBXContainerItemProxy */;
-		};
-		DC20ACB322515DEA00678A20 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DCC6987E225158D400284C12 /* ZDCSyncable_ObjC_tvOS */;
-			targetProxy = DC20ACB222515DEA00678A20 /* PBXContainerItemProxy */;
-		};
 		DCA1B529229D67FE00AD8ACF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DCC6979E2251531C00284C12 /* ZDCSyncable_Swift_iOS */;
+			target = DCC6979E2251531C00284C12 /* ZDCSyncable_iOS */;
 			targetProxy = DCA1B528229D67FE00AD8ACF /* PBXContainerItemProxy */;
 		};
 		DCA1B541229D68D300AD8ACF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DCC697B22251541800284C12 /* ZDCSyncable_Swift_tvOS */;
+			target = DCC697B22251541800284C12 /* ZDCSyncable_tvOS */;
 			targetProxy = DCA1B540229D68D300AD8ACF /* PBXContainerItemProxy */;
-		};
-		DCC2FA172252C749007E60BA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DCC69871225158C400284C12 /* ZDCSyncable_ObjC_macOS */;
-			targetProxy = DCC2FA162252C749007E60BA /* PBXContainerItemProxy */;
 		};
 		DCE62627225A8F1C000D19E3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DCC6976922514F9300284C12 /* ZDCSyncable_Swift_macOS */;
+			target = DCC6976922514F9300284C12 /* ZDCSyncable_macOS */;
 			targetProxy = DCE62626225A8F1C000D19E3 /* PBXContainerItemProxy */;
 		};
 		DCE62634225A9488000D19E3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DCC6976922514F9300284C12 /* ZDCSyncable_Swift_macOS */;
+			target = DCC6976922514F9300284C12 /* ZDCSyncable_macOS */;
 			targetProxy = DCE62633225A9488000D19E3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		DCC2FA0C2252C6CC007E60BA /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DCC2FA0D2252C6CC007E60BA /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		DCE6261E225A8F0A000D19E3 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1623,132 +804,13 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		DC20AC7822515AC000678A20 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_ObjC_iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.UnitTests-ObjC-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		DC20AC7922515AC000678A20 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_ObjC_iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.UnitTests-ObjC-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		DC20AC9D22515CE300678A20 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_ObjC_macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.UnitTests-ObjC-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		DC20AC9E22515CE300678A20 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_ObjC_macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.UnitTests-ObjC-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		DC20ACB522515DEA00678A20 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_ObjC_tvOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.UnitTests-ObjC-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 12.2;
-			};
-			name = Debug;
-		};
-		DC20ACB622515DEA00678A20 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_ObjC_tvOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.UnitTests-ObjC-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 12.2;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		DCA1B52B229D67FE00AD8ACF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_Swift_iOS/Info.plist;
+				INFOPLIST_FILE = UnitTests_iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1769,7 +831,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_Swift_iOS/Info.plist;
+				INFOPLIST_FILE = UnitTests_iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1790,7 +852,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_Swift_tvOS/Info.plist;
+				INFOPLIST_FILE = UnitTests_tvOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1810,7 +872,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_Swift_tvOS/Info.plist;
+				INFOPLIST_FILE = UnitTests_tvOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1947,42 +1009,6 @@
 			};
 			name = Release;
 		};
-		DCC2FA132252C6CC007E60BA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo_ObjC_macOS/Demo_ObjC_macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = Demo_ObjC_macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.Demo-ObjC-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		DCC2FA142252C6CC007E60BA /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo_ObjC_macOS/Demo_ObjC_macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = Demo_ObjC_macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.Demo-ObjC-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		DCC6977022514F9300284C12 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1996,7 +1022,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = ZDCSyncable_Swift_macOS/Info.plist;
+				INFOPLIST_FILE = ZDCSyncable_macOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2025,7 +1051,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = ZDCSyncable_Swift_macOS/Info.plist;
+				INFOPLIST_FILE = ZDCSyncable_macOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2050,7 +1076,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ZDCSyncable_Swift_iOS/Info.plist;
+				INFOPLIST_FILE = ZDCSyncable_iOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2077,7 +1103,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ZDCSyncable_Swift_iOS/Info.plist;
+				INFOPLIST_FILE = ZDCSyncable_iOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2105,7 +1131,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ZDCSyncable_Swift_tvOS/Info.plist;
+				INFOPLIST_FILE = ZDCSyncable_tvOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2132,7 +1158,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ZDCSyncable_Swift_tvOS/Info.plist;
+				INFOPLIST_FILE = ZDCSyncable_tvOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2150,173 +1176,15 @@
 			};
 			name = Release;
 		};
-		DCC6986B225158B300284C12 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ZDCSyncable_ObjC_iOS/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-iOS";
-				PRODUCT_NAME = ZDCSyncable;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		DCC6986C225158B300284C12 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ZDCSyncable_ObjC_iOS/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-iOS";
-				PRODUCT_NAME = ZDCSyncable;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		DCC69878225158C400284C12 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = ZDCSyncable_ObjC_macOS/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-macOS";
-				PRODUCT_NAME = ZDCSyncable;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		DCC69879225158C400284C12 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = ZDCSyncable_ObjC_macOS/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-macOS";
-				PRODUCT_NAME = ZDCSyncable;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		DCC69885225158D400284C12 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ZDCSyncable_ObjC_tvOS/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-tvOS";
-				PRODUCT_NAME = ZDCSyncable;
-				SDKROOT = appletvos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-			};
-			name = Debug;
-		};
-		DCC69886225158D400284C12 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = VT5GYGYX83;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ZDCSyncable_ObjC_tvOS/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.ZDCSyncable-ObjC-tvOS";
-				PRODUCT_NAME = ZDCSyncable;
-				SDKROOT = appletvos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		DCE62624225A8F0B000D19E3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo_Swift_macOS/Demo_Swift_macOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Demo_macOS/Demo_macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = Demo_Swift_macOS/Info.plist;
+				INFOPLIST_FILE = Demo_macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2331,11 +1199,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo_Swift_macOS/Demo_Swift_macOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Demo_macOS/Demo_macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = Demo_Swift_macOS/Info.plist;
+				INFOPLIST_FILE = Demo_macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2352,7 +1220,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_Swift_macOS/Info.plist;
+				INFOPLIST_FILE = UnitTests_macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2370,7 +1238,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = UnitTests_Swift_macOS/Info.plist;
+				INFOPLIST_FILE = UnitTests_macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2385,34 +1253,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DC20AC7722515AC000678A20 /* Build configuration list for PBXNativeTarget "UnitTests_ObjC_iOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DC20AC7822515AC000678A20 /* Debug */,
-				DC20AC7922515AC000678A20 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DC20AC9C22515CE300678A20 /* Build configuration list for PBXNativeTarget "UnitTests_ObjC_macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DC20AC9D22515CE300678A20 /* Debug */,
-				DC20AC9E22515CE300678A20 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DC20ACB422515DEA00678A20 /* Build configuration list for PBXNativeTarget "UnitTests_ObjC_tvOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DC20ACB522515DEA00678A20 /* Debug */,
-				DC20ACB622515DEA00678A20 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DCA1B52A229D67FE00AD8ACF /* Build configuration list for PBXNativeTarget "UnitTests_Swift_iOS" */ = {
+		DCA1B52A229D67FE00AD8ACF /* Build configuration list for PBXNativeTarget "UnitTests_iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DCA1B52B229D67FE00AD8ACF /* Debug */,
@@ -2421,7 +1262,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DCA1B542229D68D300AD8ACF /* Build configuration list for PBXNativeTarget "UnitTests_Swift_tvOS" */ = {
+		DCA1B542229D68D300AD8ACF /* Build configuration list for PBXNativeTarget "UnitTests_tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DCA1B543229D68D300AD8ACF /* Debug */,
@@ -2439,16 +1280,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DCC2FA152252C6CC007E60BA /* Build configuration list for PBXNativeTarget "Demo_ObjC_macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DCC2FA132252C6CC007E60BA /* Debug */,
-				DCC2FA142252C6CC007E60BA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DCC6976F22514F9300284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_Swift_macOS" */ = {
+		DCC6976F22514F9300284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DCC6977022514F9300284C12 /* Debug */,
@@ -2457,7 +1289,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DCC697A42251531D00284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_Swift_iOS" */ = {
+		DCC697A42251531D00284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DCC697A52251531D00284C12 /* Debug */,
@@ -2466,7 +1298,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DCC697B82251541800284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_Swift_tvOS" */ = {
+		DCC697B82251541800284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DCC697B92251541800284C12 /* Debug */,
@@ -2475,34 +1307,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DCC6986A225158B300284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_ObjC_iOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DCC6986B225158B300284C12 /* Debug */,
-				DCC6986C225158B300284C12 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DCC69877225158C400284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_ObjC_macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DCC69878225158C400284C12 /* Debug */,
-				DCC69879225158C400284C12 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DCC69884225158D400284C12 /* Build configuration list for PBXNativeTarget "ZDCSyncable_ObjC_tvOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DCC69885225158D400284C12 /* Debug */,
-				DCC69886225158D400284C12 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DCE62623225A8F0B000D19E3 /* Build configuration list for PBXNativeTarget "Demo_Swift_macOS" */ = {
+		DCE62623225A8F0B000D19E3 /* Build configuration list for PBXNativeTarget "Demo_macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DCE62624225A8F0B000D19E3 /* Debug */,
@@ -2511,7 +1316,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DCE62635225A9488000D19E3 /* Build configuration list for PBXNativeTarget "UnitTests_Swift_macOS" */ = {
+		DCE62635225A9488000D19E3 /* Build configuration list for PBXNativeTarget "UnitTests_macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DCE62636225A9488000D19E3 /* Debug */,

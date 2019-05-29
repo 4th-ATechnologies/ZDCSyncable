@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DCC69864225158B300284C12"
-               BuildableName = "ZDCSyncable.framework"
-               BlueprintName = "ZDCSyncable_ObjC_iOS"
+               BlueprintIdentifier = "DCE62615225A8F04000D19E3"
+               BuildableName = "Demo_macOS.app"
+               BlueprintName = "Demo_macOS"
                ReferencedContainer = "container:ZDCSyncable.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,6 +29,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "DCE62615225A8F04000D19E3"
+            BuildableName = "Demo_macOS.app"
+            BlueprintName = "Demo_macOS"
+            ReferencedContainer = "container:ZDCSyncable.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -42,15 +51,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DCC69864225158B300284C12"
-            BuildableName = "ZDCSyncable.framework"
-            BlueprintName = "ZDCSyncable_ObjC_iOS"
+            BlueprintIdentifier = "DCE62615225A8F04000D19E3"
+            BuildableName = "Demo_macOS.app"
+            BlueprintName = "Demo_macOS"
             ReferencedContainer = "container:ZDCSyncable.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -60,15 +70,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DCC69864225158B300284C12"
-            BuildableName = "ZDCSyncable.framework"
-            BlueprintName = "ZDCSyncable_ObjC_iOS"
+            BlueprintIdentifier = "DCE62615225A8F04000D19E3"
+            BuildableName = "Demo_macOS.app"
+            BlueprintName = "Demo_macOS"
             ReferencedContainer = "container:ZDCSyncable.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

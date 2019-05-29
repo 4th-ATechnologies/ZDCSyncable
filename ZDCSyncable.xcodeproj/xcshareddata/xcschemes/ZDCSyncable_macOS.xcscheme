@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DCC697B22251541800284C12"
+               BlueprintIdentifier = "DCC6976922514F9300284C12"
                BuildableName = "ZDCSyncable.framework"
-               BlueprintName = "ZDCSyncable_Swift_tvOS"
+               BlueprintName = "ZDCSyncable_macOS"
                ReferencedContainer = "container:ZDCSyncable.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DCC697B22251541800284C12"
+            BlueprintIdentifier = "DCC6976922514F9300284C12"
             BuildableName = "ZDCSyncable.framework"
-            BlueprintName = "ZDCSyncable_Swift_tvOS"
+            BlueprintName = "ZDCSyncable_macOS"
             ReferencedContainer = "container:ZDCSyncable.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DCC697B22251541800284C12"
+            BlueprintIdentifier = "DCC6976922514F9300284C12"
             BuildableName = "ZDCSyncable.framework"
-            BlueprintName = "ZDCSyncable_Swift_tvOS"
+            BlueprintName = "ZDCSyncable_macOS"
             ReferencedContainer = "container:ZDCSyncable.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

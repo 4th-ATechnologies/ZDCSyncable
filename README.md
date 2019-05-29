@@ -1,16 +1,16 @@
 # ZDCSyncable
 
-Undo, redo & merge capabilities for plain objects in Swift (and objective-c).
+Undo, redo & merge capabilities for plain objects in Swift.
+
+(There's an objective-c version available [here](https://github.com/4th-ATechnologies/ZDCSyncableObjC).)
 
 By: [ZeroDark.cloud](https://www.zerodark.cloud): A secure sync & messaging framework for your app, built on blockchain & AWS.
 
 &nbsp;
 
----
-
 ## Undo & Redo
 
-Swift example #1
+Example #1
 
 ```swift
 class FooBar: ZDCRecord { // < Just extend ZDCRecord
@@ -54,7 +54,7 @@ Complex objects are supported  via container classes:
 - ZDCOrderedSet
 - ZDCArray
 
-Swift Example #2
+Example #2
 
 ```swift
 class FooBuzz: ZDCRecord { // < Just extend ZDCRecord
@@ -92,8 +92,6 @@ do {
 
 &nbsp;
 
----
-
 ## Merge
 
 You can also merge changes ! (i.e. from the cloud)
@@ -101,7 +99,7 @@ You can also merge changes ! (i.e. from the cloud)
 ```swift
 let local = FooBuzz()
 local.someInt = 1
-local.dict["foo"] = "bar"
+local.dict["foo"] = "buzz"
 local.clearChangeTracking() // starting point
 		
 let cloud = local.copy() as! FooBuzz
@@ -110,7 +108,7 @@ var changesets = Array<Dictionary<String, Any>>()
 // local modifications
 	
 local.someInt = 2
-local.dict["foo"] = "buzz"
+local.dict["foo"] = "modified"
 	
 changesets.append(local.changeset() ?? Dictionary())
 // ^ pending local changes (not yet pushed to cloud)
@@ -127,14 +125,12 @@ do {
 	
   // Merged state:
   // local.someInt == 2
-  // local.dict["foo"] == "buzz"
+  // local.dict["foo"] == "modified"
   // local.dict["duck"] == "quack"
 } catch _ {}
 ```
 
-
-
----
+&nbsp;
 
 ## Motivation
 
@@ -183,27 +179,12 @@ Add the following to your Podfile:
 pod 'ZDCSyncable'
 ```
 
-By default, you'll get only the Swift version. You can be more explicit like this:
-
-```
-pod 'ZDCSyncable/Swift'
-pod 'ZDCSyncable/ObjC'
-```
-
 Then just run `pod install` as usual. And then you can import it via:
 
 ```swift
 // Swift
 import ZDCSyncable
 ```
-
-```objective-c
-// Objective-C
-@import ZDCSyncable; // using module-style import
-#import <ZDCSyncable/ZDCSyncable.h> // or you can use classic-style
-```
-
-
 
 &nbsp;
 

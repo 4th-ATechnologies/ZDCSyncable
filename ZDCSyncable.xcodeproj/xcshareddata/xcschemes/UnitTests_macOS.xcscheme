@@ -16,9 +16,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DCA1B521229D67FE00AD8ACF"
-               BuildableName = "UnitTests_Swift_iOS.xctest"
-               BlueprintName = "UnitTests_Swift_iOS"
+               BlueprintIdentifier = "DCE6262C225A9488000D19E3"
+               BuildableName = "UnitTests_macOS.xctest"
+               BlueprintName = "UnitTests_macOS"
                ReferencedContainer = "container:ZDCSyncable.xcodeproj">
             </BuildableReference>
          </TestableReference>
