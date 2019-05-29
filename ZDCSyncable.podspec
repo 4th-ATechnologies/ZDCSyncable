@@ -18,6 +18,6 @@ Pod::Spec.new do |s|
 	s.tvos.deployment_target = '10.0'
 
 	s.swift_version = '5.0'
-	s.source_files = 'ZDCSyncable/Swift/*.{swift}', 'ZDCSyncable/Swift/{Internal,Utilities}/*.{swift,h,m}'
+	s.source_files = 'ZDCSyncable/*.{swift}', 'ZDCSyncable/{Internal,Utilities}/*.{swift,h,m}'
 
 end

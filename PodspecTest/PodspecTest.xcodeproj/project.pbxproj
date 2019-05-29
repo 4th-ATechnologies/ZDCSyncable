@@ -7,125 +7,125 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A5DED5BBC6306DCE47601B5B /* Pods_TestPodspecSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B478CBEC8CA985D613B149BD /* Pods_TestPodspecSwift.framework */; };
-		DCFE4D32229D84BC005C60A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFE4D31229D84BC005C60A1 /* AppDelegate.swift */; };
-		DCFE4D34229D84BC005C60A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFE4D33229D84BC005C60A1 /* ViewController.swift */; };
-		DCFE4D36229D84BD005C60A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCFE4D35229D84BD005C60A1 /* Assets.xcassets */; };
-		DCFE4D39229D84BD005C60A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCFE4D37229D84BD005C60A1 /* Main.storyboard */; };
+		4F8C4DB7129579EA28DEE9A6 /* Pods_PodspecTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A4E7E398B54DE5F9B37115A /* Pods_PodspecTest.framework */; };
+		DCFE4E7E229F170F005C60A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFE4E7D229F170F005C60A1 /* AppDelegate.swift */; };
+		DCFE4E80229F170F005C60A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFE4E7F229F170F005C60A1 /* ViewController.swift */; };
+		DCFE4E82229F1710005C60A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCFE4E81229F1710005C60A1 /* Assets.xcassets */; };
+		DCFE4E85229F1710005C60A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCFE4E83229F1710005C60A1 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5D3E4CBFFA89790D09855375 /* Pods-TestPodspecSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestPodspecSwift.debug.xcconfig"; path = "Target Support Files/Pods-TestPodspecSwift/Pods-TestPodspecSwift.debug.xcconfig"; sourceTree = "<group>"; };
-		6547A853A8EAD41C1F5BFEFF /* Pods-TestPodspecSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestPodspecSwift.release.xcconfig"; path = "Target Support Files/Pods-TestPodspecSwift/Pods-TestPodspecSwift.release.xcconfig"; sourceTree = "<group>"; };
-		B478CBEC8CA985D613B149BD /* Pods_TestPodspecSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestPodspecSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCFE4D2E229D84BC005C60A1 /* TestPodspecSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestPodspecSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCFE4D31229D84BC005C60A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DCFE4D33229D84BC005C60A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		DCFE4D35229D84BD005C60A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		DCFE4D38229D84BD005C60A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		DCFE4D3A229D84BD005C60A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCFE4D3B229D84BD005C60A1 /* TestPodspecSwift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestPodspecSwift.entitlements; sourceTree = "<group>"; };
+		6A4E7E398B54DE5F9B37115A /* Pods_PodspecTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PodspecTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		83A2FA03CB0AB0F3BE7AC1AC /* Pods-PodspecTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PodspecTest.debug.xcconfig"; path = "Target Support Files/Pods-PodspecTest/Pods-PodspecTest.debug.xcconfig"; sourceTree = "<group>"; };
+		B799ADE05E2F17C24093F3B4 /* Pods-PodspecTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PodspecTest.release.xcconfig"; path = "Target Support Files/Pods-PodspecTest/Pods-PodspecTest.release.xcconfig"; sourceTree = "<group>"; };
+		DCFE4E7A229F170F005C60A1 /* PodspecTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PodspecTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCFE4E7D229F170F005C60A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DCFE4E7F229F170F005C60A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DCFE4E81229F1710005C60A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DCFE4E84229F1710005C60A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DCFE4E86229F1710005C60A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCFE4E87229F1710005C60A1 /* PodspecTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PodspecTest.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		DCFE4D2B229D84BC005C60A1 /* Frameworks */ = {
+		DCFE4E77229F170F005C60A1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5DED5BBC6306DCE47601B5B /* Pods_TestPodspecSwift.framework in Frameworks */,
+				4F8C4DB7129579EA28DEE9A6 /* Pods_PodspecTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D3F650C364459D6AF9FC6AE2 /* Frameworks */ = {
+		997D18456DB30F9660DADC28 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B478CBEC8CA985D613B149BD /* Pods_TestPodspecSwift.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DCFE4D25229D84BC005C60A1 = {
-			isa = PBXGroup;
-			children = (
-				DCFE4D30229D84BC005C60A1 /* TestPodspecSwift */,
-				DCFE4D2F229D84BC005C60A1 /* Products */,
-				FEAED59624671FB6A95C0E51 /* Pods */,
-				D3F650C364459D6AF9FC6AE2 /* Frameworks */,
-			);
-			sourceTree = "<group>";
-		};
-		DCFE4D2F229D84BC005C60A1 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DCFE4D2E229D84BC005C60A1 /* TestPodspecSwift.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		DCFE4D30229D84BC005C60A1 /* TestPodspecSwift */ = {
-			isa = PBXGroup;
-			children = (
-				DCFE4D31229D84BC005C60A1 /* AppDelegate.swift */,
-				DCFE4D33229D84BC005C60A1 /* ViewController.swift */,
-				DCFE4D35229D84BD005C60A1 /* Assets.xcassets */,
-				DCFE4D37229D84BD005C60A1 /* Main.storyboard */,
-				DCFE4D3A229D84BD005C60A1 /* Info.plist */,
-				DCFE4D3B229D84BD005C60A1 /* TestPodspecSwift.entitlements */,
-			);
-			path = TestPodspecSwift;
-			sourceTree = "<group>";
-		};
-		FEAED59624671FB6A95C0E51 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				5D3E4CBFFA89790D09855375 /* Pods-TestPodspecSwift.debug.xcconfig */,
-				6547A853A8EAD41C1F5BFEFF /* Pods-TestPodspecSwift.release.xcconfig */,
+				83A2FA03CB0AB0F3BE7AC1AC /* Pods-PodspecTest.debug.xcconfig */,
+				B799ADE05E2F17C24093F3B4 /* Pods-PodspecTest.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		D282FB202318CF22B85193CB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6A4E7E398B54DE5F9B37115A /* Pods_PodspecTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DCFE4E71229F170F005C60A1 = {
+			isa = PBXGroup;
+			children = (
+				DCFE4E7C229F170F005C60A1 /* PodspecTest */,
+				DCFE4E7B229F170F005C60A1 /* Products */,
+				997D18456DB30F9660DADC28 /* Pods */,
+				D282FB202318CF22B85193CB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		DCFE4E7B229F170F005C60A1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DCFE4E7A229F170F005C60A1 /* PodspecTest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DCFE4E7C229F170F005C60A1 /* PodspecTest */ = {
+			isa = PBXGroup;
+			children = (
+				DCFE4E7D229F170F005C60A1 /* AppDelegate.swift */,
+				DCFE4E7F229F170F005C60A1 /* ViewController.swift */,
+				DCFE4E81229F1710005C60A1 /* Assets.xcassets */,
+				DCFE4E83229F1710005C60A1 /* Main.storyboard */,
+				DCFE4E86229F1710005C60A1 /* Info.plist */,
+				DCFE4E87229F1710005C60A1 /* PodspecTest.entitlements */,
+			);
+			path = PodspecTest;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DCFE4D2D229D84BC005C60A1 /* TestPodspecSwift */ = {
+		DCFE4E79229F170F005C60A1 /* PodspecTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DCFE4D3E229D84BD005C60A1 /* Build configuration list for PBXNativeTarget "TestPodspecSwift" */;
+			buildConfigurationList = DCFE4E8A229F1710005C60A1 /* Build configuration list for PBXNativeTarget "PodspecTest" */;
 			buildPhases = (
-				E61300AC983C8F31459BCC68 /* [CP] Check Pods Manifest.lock */,
-				DCFE4D2A229D84BC005C60A1 /* Sources */,
-				DCFE4D2B229D84BC005C60A1 /* Frameworks */,
-				DCFE4D2C229D84BC005C60A1 /* Resources */,
-				B909B7BB5DAED7DD89011884 /* [CP] Embed Pods Frameworks */,
+				7F6AB1C02ABF04771F80CE6E /* [CP] Check Pods Manifest.lock */,
+				DCFE4E76229F170F005C60A1 /* Sources */,
+				DCFE4E77229F170F005C60A1 /* Frameworks */,
+				DCFE4E78229F170F005C60A1 /* Resources */,
+				524D62A81F3187509FF1388D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = TestPodspecSwift;
-			productName = TestPodspecSwift;
-			productReference = DCFE4D2E229D84BC005C60A1 /* TestPodspecSwift.app */;
+			name = PodspecTest;
+			productName = PodspecTest;
+			productReference = DCFE4E7A229F170F005C60A1 /* PodspecTest.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		DCFE4D26229D84BC005C60A1 /* Project object */ = {
+		DCFE4E72229F170F005C60A1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "4th-A Technologies";
 				TargetAttributes = {
-					DCFE4D2D229D84BC005C60A1 = {
+					DCFE4E79229F170F005C60A1 = {
 						CreatedOnToolsVersion = 10.2.1;
 					};
 				};
 			};
-			buildConfigurationList = DCFE4D29229D84BC005C60A1 /* Build configuration list for PBXProject "TestPodspecSwift" */;
+			buildConfigurationList = DCFE4E75229F170F005C60A1 /* Build configuration list for PBXProject "PodspecTest" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -133,30 +133,30 @@
 				en,
 				Base,
 			);
-			mainGroup = DCFE4D25229D84BC005C60A1;
-			productRefGroup = DCFE4D2F229D84BC005C60A1 /* Products */;
+			mainGroup = DCFE4E71229F170F005C60A1;
+			productRefGroup = DCFE4E7B229F170F005C60A1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DCFE4D2D229D84BC005C60A1 /* TestPodspecSwift */,
+				DCFE4E79229F170F005C60A1 /* PodspecTest */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		DCFE4D2C229D84BC005C60A1 /* Resources */ = {
+		DCFE4E78229F170F005C60A1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCFE4D36229D84BD005C60A1 /* Assets.xcassets in Resources */,
-				DCFE4D39229D84BD005C60A1 /* Main.storyboard in Resources */,
+				DCFE4E82229F1710005C60A1 /* Assets.xcassets in Resources */,
+				DCFE4E85229F1710005C60A1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B909B7BB5DAED7DD89011884 /* [CP] Embed Pods Frameworks */ = {
+		524D62A81F3187509FF1388D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -164,7 +164,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TestPodspecSwift/Pods-TestPodspecSwift-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PodspecTest/Pods-PodspecTest-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ZDCSyncable/ZDCSyncable.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -175,10 +175,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TestPodspecSwift/Pods-TestPodspecSwift-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PodspecTest/Pods-PodspecTest-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E61300AC983C8F31459BCC68 /* [CP] Check Pods Manifest.lock */ = {
+		7F6AB1C02ABF04771F80CE6E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -193,7 +193,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TestPodspecSwift-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PodspecTest-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -203,22 +203,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		DCFE4D2A229D84BC005C60A1 /* Sources */ = {
+		DCFE4E76229F170F005C60A1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCFE4D34229D84BC005C60A1 /* ViewController.swift in Sources */,
-				DCFE4D32229D84BC005C60A1 /* AppDelegate.swift in Sources */,
+				DCFE4E80229F170F005C60A1 /* ViewController.swift in Sources */,
+				DCFE4E7E229F170F005C60A1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		DCFE4D37229D84BD005C60A1 /* Main.storyboard */ = {
+		DCFE4E83229F1710005C60A1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DCFE4D38229D84BD005C60A1 /* Base */,
+				DCFE4E84229F1710005C60A1 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -226,7 +226,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		DCFE4D3C229D84BD005C60A1 /* Debug */ = {
+		DCFE4E88229F1710005C60A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -287,7 +287,7 @@
 			};
 			name = Debug;
 		};
-		DCFE4D3D229D84BD005C60A1 /* Release */ = {
+		DCFE4E89229F1710005C60A1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -341,41 +341,41 @@
 			};
 			name = Release;
 		};
-		DCFE4D3F229D84BD005C60A1 /* Debug */ = {
+		DCFE4E8B229F1710005C60A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D3E4CBFFA89790D09855375 /* Pods-TestPodspecSwift.debug.xcconfig */;
+			baseConfigurationReference = 83A2FA03CB0AB0F3BE7AC1AC /* Pods-PodspecTest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TestPodspecSwift/TestPodspecSwift.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PodspecTest/PodspecTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = TestPodspecSwift/Info.plist;
+				INFOPLIST_FILE = PodspecTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.TestPodspecSwift";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.PodspecTest";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		DCFE4D40229D84BD005C60A1 /* Release */ = {
+		DCFE4E8C229F1710005C60A1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6547A853A8EAD41C1F5BFEFF /* Pods-TestPodspecSwift.release.xcconfig */;
+			baseConfigurationReference = B799ADE05E2F17C24093F3B4 /* Pods-PodspecTest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TestPodspecSwift/TestPodspecSwift.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PodspecTest/PodspecTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = VT5GYGYX83;
-				INFOPLIST_FILE = TestPodspecSwift/Info.plist;
+				INFOPLIST_FILE = PodspecTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.TestPodspecSwift";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.4th-a.PodspecTest";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -384,25 +384,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DCFE4D29229D84BC005C60A1 /* Build configuration list for PBXProject "TestPodspecSwift" */ = {
+		DCFE4E75229F170F005C60A1 /* Build configuration list for PBXProject "PodspecTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DCFE4D3C229D84BD005C60A1 /* Debug */,
-				DCFE4D3D229D84BD005C60A1 /* Release */,
+				DCFE4E88229F1710005C60A1 /* Debug */,
+				DCFE4E89229F1710005C60A1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DCFE4D3E229D84BD005C60A1 /* Build configuration list for PBXNativeTarget "TestPodspecSwift" */ = {
+		DCFE4E8A229F1710005C60A1 /* Build configuration list for PBXNativeTarget "PodspecTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DCFE4D3F229D84BD005C60A1 /* Debug */,
-				DCFE4D40229D84BD005C60A1 /* Release */,
+				DCFE4E8B229F1710005C60A1 /* Debug */,
+				DCFE4E8C229F1710005C60A1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = DCFE4D26229D84BC005C60A1 /* Project object */;
+	rootObject = DCFE4E72229F170F005C60A1 /* Project object */;
 }

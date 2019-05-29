@@ -27,7 +27,7 @@ xcuserdata/
 
 ## CocoaPodsTest
 
-CocoaPodsTest/*/Pods/**/*
+PodspecTest/Pods/**/*
 
 ## Jazzy
 
