@@ -62,7 +62,7 @@ class FooBuzz: ZDCRecord { // < Just extend ZDCRecord
   @objc dynamic var someInt: Int = 0 // add your properties
 
   // or use smart containers !
-  dynamic let dict = ZDCDictionary<String, String>() 
+  let dict = ZDCDictionary<String, String>() 
 }
 
 let foobuzz = FooBuzz()
