@@ -56,6 +56,22 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 		}
 	}
 	
+	public required init(copy source: ZDCObject) {
+		
+		if let source = source as? ZDCSet<Element> {
+			
+			self.set = source.set
+			super.init(copy: source)
+			
+			self.added = source.added
+			self.deleted = source.deleted
+		}
+		else {
+		
+			fatalError("init(copy:) invoked with invalid source")
+		}
+	}
+	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MARK: Properties
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,21 +108,6 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 	public func reserveCapacity(_ minimumCapacity: Int) {
 	
 		set.reserveCapacity(minimumCapacity)
-	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: NSCopying
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	public override func copy(with zone: NSZone? = nil) -> Any {
-		
-		let copy = super.copy(with: zone) as! ZDCSet<Element>
-		
-		copy.set = self.set
-		copy.added = self.added
-		copy.deleted = self.deleted
-		
-		return copy
 	}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

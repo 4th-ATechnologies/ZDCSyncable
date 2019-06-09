@@ -54,6 +54,23 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
+	public required init(copy source: ZDCObject) {
+		
+		if let source = source as? ZDCArray<Element> {
+		
+			self.array = source.array
+			super.init(copy: source)
+			
+			self.added = source.added
+			self.moved = source.moved
+			self.deleted = source.deleted
+		}
+		else {
+			
+			fatalError("init(copy:) invoked with invalid source")
+		}
+	}
+	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MARK: Properties
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,22 +107,6 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 	public func reserveCapacity(_ minimumCapacity: Int) {
 		
 		array.reserveCapacity(minimumCapacity)
-	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: NSCopying
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	public override func copy(with zone: NSZone? = nil) -> Any {
-		
-		let copy = super.copy(with: zone) as! ZDCArray<Element>
-		
-		copy.array = self.array
-		copy.added = self.added
-		copy.moved = self.moved
-		copy.deleted = self.deleted
-		
-		return copy
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

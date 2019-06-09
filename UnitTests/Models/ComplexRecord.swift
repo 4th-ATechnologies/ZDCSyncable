@@ -15,18 +15,37 @@ import ZDCSyncable
  */
 class ComplexRecord: SimpleRecord {
 	
-	dynamic let dict: ZDCDictionary<String, String> = ZDCDictionary()
+	let dict: ZDCDictionary<String, String> = ZDCDictionary()
 	
-	override open func copy(with zone: NSZone? = nil) -> Any {
-		
-		let copy = super.copy(with: zone) as! ComplexRecord
-		
-		for (key, value) in self.dict {
-			copy.dict[key] = value
-		}
-		
-		return copy
+	required init() {
+		super.init()
 	}
+	
+	required init(copy source: ZDCObject) {
+		
+		if let source = source as? ComplexRecord {
+			
+			super.init()
+			for (key, value) in source.dict {
+				self.dict[key] = value
+			}
+			
+		} else {
+			
+			fatalError("init(copy:) invoked with invalid source")
+		}
+	}
+	
+//	override open func copy(with zone: NSZone? = nil) -> Any {
+//
+//		let copy = super.copy(with: zone) as! ComplexRecord
+//
+//		for (key, value) in self.dict {
+//			copy.dict[key] = value
+//		}
+//
+//		return copy
+//	}
 	
 	override public func isEqual(_ object: Any?) -> Bool {
 		

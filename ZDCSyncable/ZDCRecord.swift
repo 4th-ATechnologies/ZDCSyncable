@@ -15,7 +15,7 @@ import Foundation
  * - it supports undo & redo
  * - it supports merge operations
  */
-open class ZDCRecord: ZDCObject, ZDCSyncable, Codable {
+open class ZDCRecord: ZDCObject, ZDCSyncable {
 	
 	enum ChangesetKeys: String {
 		case refs = "refs"
@@ -24,17 +24,21 @@ open class ZDCRecord: ZDCObject, ZDCSyncable, Codable {
 	
 	lazy private var originalValues: Dictionary<String, Any> = Dictionary()
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: NSCopying
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public required init() {
+		super.init()
+	}
 	
-	open override func copy(with zone: NSZone? = nil) -> Any {
+	public required init(copy source: ZDCObject) {
 		
-		let copy = super.copy(with: zone) as! ZDCRecord
-		
-		copy.originalValues = self.originalValues
-		
-		return copy
+		if let source = source as? ZDCRecord {
+			
+			super.init()
+			self.originalValues = source.originalValues
+		}
+		else {
+			
+			fatalError("init(copy:) invoked with invalid source")
+		}
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -81,6 +81,24 @@ public class ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & Co
 		}
 	}
 	
+	public required init(copy source: ZDCObject) {
+		
+		if let source = source as? ZDCOrderedDictionary<Key, Value> {
+			
+			self.dict = source.dict
+			self.order = source.order
+			super.init(copy: source)
+			
+			self.originalValues = source.originalValues
+			self.originalIndexes = source.originalIndexes
+			self.deletedIndexes = source.deletedIndexes
+		}
+		else {
+			
+			fatalError("init(copy:) invoked with invalid source")
+		}
+	}
+	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MARK: Properties
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,24 +137,6 @@ public class ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & Co
 		get {
 			return dict.capacity
 		}
-	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: NSCopying
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	public override func copy(with zone: NSZone? = nil) -> Any {
-		
-		let copy = super.copy(with: zone) as! ZDCOrderedDictionary<Key, Value>
-		
-		copy.dict = self.dict
-		copy.order = self.order
-		
-		copy.originalValues = self.originalValues
-		copy.originalIndexes = self.originalIndexes
-		copy.deletedIndexes = self.deletedIndexes
-		
-		return copy
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

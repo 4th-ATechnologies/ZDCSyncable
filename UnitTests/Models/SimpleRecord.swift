@@ -16,14 +16,22 @@ class SimpleRecord: ZDCRecord {
 	@objc dynamic var someString: String?
 	@objc dynamic var someInteger: Int = 0
 
-	override open func copy(with zone: NSZone? = nil) -> Any {
+	required init() {
+		super.init()
+	}
+	
+	required init(copy source: ZDCObject) {
 		
-		let copy = super.copy(with: zone) as! SimpleRecord
-		
-		copy.someString = self.someString
-		copy.someInteger = self.someInteger
-		
-		return copy;
+		if let source = source as? SimpleRecord {
+			
+			self.someString = source.someString
+			self.someInteger = source.someInteger
+			super.init(copy: source)
+			
+		} else {
+			
+			fatalError("init(copy:) invoked with invalid source")
+		}
 	}
 	
 	override public func isEqual(_ object: Any?) -> Bool {

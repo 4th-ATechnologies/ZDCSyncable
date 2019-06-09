@@ -22,7 +22,20 @@ open class ZDCObject: NSObject, NSCopying {
 	private var _monitoredProperties: Set<String>?
 	
 	required override public init() {
+		
 		super.init()
+		initializeKVO()
+	}
+	
+	required public init(copy source: ZDCObject) {
+		
+		self._isImmutable = false
+		self._hasChanges = source.hasChanges
+		super.init()
+		initializeKVO()
+	}
+	
+	private func initializeKVO() {
 		
 		// Turn on KVO for object.
 		// We do this so we can get notified if the user is about to make changes to one of the object's properties.
@@ -52,21 +65,14 @@ open class ZDCObject: NSObject, NSCopying {
 // MARK: NSCopying
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public func copy(with zone: NSZone? = nil) -> Any {
+	open func copy(with zone: NSZone? = nil) -> Any {
 		
-		// Subclasses should call this method via super.copy(with: zone)
-		// For example:
+		// There's not need to implement/override this method.
+		// Instead, simply implement the following:
 		//
-		//   var copy: MySubclass = super.copy(with: zone)
-		//   copy.ivar1 = ivar1
-		//   copy.ivar2 = ivar2
-		//   return copy
+		// init(copy source: ZDCObject)
 		
-		let copy = type(of: self).init()
-		copy._isImmutable = false
-		copy._hasChanges = _hasChanges
-		
-		return copy
+		return type(of: self).init(copy: self)
 	}
 	
 	public func immutableCopy() -> Any {
