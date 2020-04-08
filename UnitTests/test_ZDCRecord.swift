@@ -24,20 +24,20 @@ class test_ZDCRecord: XCTestCase {
 		sr.someInteger = 42
 		
 		sr.clearChangeTracking()
-		sr_a = sr.immutableCopy() as? SimpleRecord
+		sr_a = SimpleRecord(copy: sr)
 		
 		sr.someString = "def456"
 		sr.someInteger = 23
 		
 		let changeset_undo = sr.changeset() ?? Dictionary()
-		sr_b = sr.immutableCopy() as? SimpleRecord
+		sr_b = SimpleRecord(copy: sr)
 		
 		do {
 			let changeset_redo = try sr.undo(changeset_undo)
-			XCTAssert(sr.isEqual(sr_a))
+			XCTAssert(sr == sr_a)
 			
 			let _ = try sr.undo(changeset_redo)
-			XCTAssert(sr.isEqual(sr_b))
+			XCTAssert(sr == sr_b)
 			
 		} catch {
 			XCTAssert(false, "Threw error: \(error)")
@@ -57,7 +57,7 @@ class test_ZDCRecord: XCTestCase {
 		localRecord.someInteger = 42
 	
 		localRecord.clearChangeTracking()
-		let cloudRecord = localRecord.copy() as! SimpleRecord
+		let cloudRecord = SimpleRecord(copy: localRecord)
 	
 		do { // local changes
 	
@@ -67,7 +67,7 @@ class test_ZDCRecord: XCTestCase {
 		do { // cloud changes
 	
 			cloudRecord.someInteger = 43;
-			cloudRecord.makeImmutable()
+		//	cloudRecord.makeImmutable()
 		}
 	
 		do {
@@ -90,7 +90,7 @@ class test_ZDCRecord: XCTestCase {
 		localRecord.someInteger = 42
 	
 		localRecord.clearChangeTracking()
-		let cloudRecord = localRecord.copy() as! SimpleRecord
+		let cloudRecord = SimpleRecord(copy: localRecord)
 	
 		do { // local changes
 	
@@ -101,7 +101,7 @@ class test_ZDCRecord: XCTestCase {
 	
 			cloudRecord.someString = "xyz789"
 			cloudRecord.someInteger = 43
-			cloudRecord.makeImmutable()
+		//	cloudRecord.makeImmutable()
 		}
 	
 		do {
@@ -124,7 +124,7 @@ class test_ZDCRecord: XCTestCase {
 		localRecord.someInteger = 42
 	
 		localRecord.clearChangeTracking()
-		let cloudRecord = localRecord.copy() as! SimpleRecord
+		let cloudRecord = SimpleRecord(copy: localRecord)
 	
 		do { // local changes
 	
@@ -135,7 +135,7 @@ class test_ZDCRecord: XCTestCase {
 	
 			cloudRecord.someString = "xyz789"
 			cloudRecord.someInteger = 43
-			cloudRecord.makeImmutable()
+		//	cloudRecord.makeImmutable()
 		}
 	
 		do {
@@ -158,7 +158,7 @@ class test_ZDCRecord: XCTestCase {
 		localRecord.someInteger = 42
 	
 		localRecord.clearChangeTracking()
-		let cloudRecord = localRecord.copy() as! SimpleRecord
+		let cloudRecord = SimpleRecord(copy: localRecord)
 	
 		do { // local changes
 	
@@ -167,8 +167,8 @@ class test_ZDCRecord: XCTestCase {
 		}
 		do { // cloud changes
 	
-			cloudRecord.someInteger = 43;
-			cloudRecord.makeImmutable()
+			cloudRecord.someInteger = 43
+		//	cloudRecord.makeImmutable()
 		}
 		
 		do {
@@ -191,7 +191,7 @@ class test_ZDCRecord: XCTestCase {
 		localRecord.someInteger = 42
 	
 		localRecord.clearChangeTracking()
-		let cloudRecord = localRecord.copy() as! SimpleRecord
+		let cloudRecord = SimpleRecord(copy: localRecord)
 	
 		do { // local changes
 	
@@ -200,8 +200,8 @@ class test_ZDCRecord: XCTestCase {
 		}
 		do { // cloud changes
 	
-			cloudRecord.someString = nil;
-			cloudRecord.makeImmutable()
+			cloudRecord.someString = nil
+		//	cloudRecord.makeImmutable()
 		}
 	
 		do {
@@ -224,15 +224,15 @@ class test_ZDCRecord: XCTestCase {
 		let record = ComplexRecord()
 		
 		var count = 0
-		record.enumerateProperties { (key: String, value: Any?) in
+		record.enumerateSyncable { (key: String, value: Any, stop: inout Bool) in
 			
-			print("key: \(key)")
+		//	print("key: \(key)")
 			count += 1
 		}
 		
 		XCTAssert(count == 3)
 	}
-	
+
 	func test_complexMerge_1() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
@@ -241,7 +241,7 @@ class test_ZDCRecord: XCTestCase {
 		localRecord.dict["dog"] = "bark"
 	
 		localRecord.clearChangeTracking()
-		let cloudRecord = localRecord.copy() as! ComplexRecord
+		let cloudRecord = ComplexRecord(copy: localRecord)
 	
 		do { // local changes
 	
@@ -253,7 +253,7 @@ class test_ZDCRecord: XCTestCase {
 	
 			cloudRecord.someInteger = 43
 			cloudRecord.dict["duck"] = "quack"
-			cloudRecord.makeImmutable()
+		//	cloudRecord.makeImmutable()
 		}
 		
 		XCTAssert(localRecord.dict["duck"] == nil, "Shallow copy")

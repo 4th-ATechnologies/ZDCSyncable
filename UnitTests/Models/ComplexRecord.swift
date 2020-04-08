@@ -17,61 +17,29 @@ class ComplexRecord: SimpleRecord {
 	
 	let dict: ZDCDictionary<String, String> = ZDCDictionary()
 	
-	required init() {
+	override init() {
 		super.init()
 	}
 	
-	required init(copy source: ZDCObject) {
+	init(copy source: ComplexRecord) {
 		
-		if let source = source as? ComplexRecord {
-			
-			super.init()
-			for (key, value) in source.dict {
-				self.dict[key] = value
-			}
-			
-		} else {
-			
-			fatalError("init(copy:) invoked with invalid source")
+		for (key, value) in source.dict {
+			self.dict[key] = value
 		}
+		
+		super.init(copy: source)
 	}
 	
-//	override open func copy(with zone: NSZone? = nil) -> Any {
-//
-//		let copy = super.copy(with: zone) as! ComplexRecord
-//
-//		for (key, value) in self.dict {
-//			copy.dict[key] = value
-//		}
-//
-//		return copy
-//	}
-	
-	override public func isEqual(_ object: Any?) -> Bool {
+	static func == (lhs: ComplexRecord, rhs: ComplexRecord) -> Bool {
 		
-		if let another = object as? ComplexRecord {
-			return isEqualToComplexRecord(another)
-		}
-		else {
+		guard (lhs as SimpleRecord) == (rhs as SimpleRecord) else {
 			return false
 		}
+		
+		return lhs.dict == rhs.dict
 	}
 	
-	public func isEqualToComplexRecord(_ another: ComplexRecord) -> Bool {
-		
-		if !self.isEqualToSimpleRecord(another) { return false }
-		if self.dict != another.dict { return false }
-		
-		return true
-	}
-	
-	// MARK: ZDCObject
-	
-	override public func makeImmutable() {
-		
-		super.makeImmutable()
-		dict.makeImmutable()
-	}
+	// MARK: ZDCRecord
 	
 	override public var hasChanges: Bool {
 		get {

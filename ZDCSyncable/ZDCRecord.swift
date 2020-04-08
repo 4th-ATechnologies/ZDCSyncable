@@ -1,61 +1,45 @@
-/**
- * Syncable
- * https://github.com/4th-ATechnologies/ZDCSyncable
-**/
+/// ZDCSyncable
+/// https://github.com/4th-ATechnologies/ZDCSyncable
+///
+/// Undo, redo & merge capabilities for plain objects in Swift.
+/// 
 
 import Foundation
 
-/**
- * The ZDCRecord class is designed to be subclassed.
- *
- * It provides the following set of features for your subclass:
- * - instances can be made immutable (via `ZDCObject.makeImmutable()` function)
- * - it implements the ZDCSyncable protocol and thus:
- * - it tracks all changes and can provide a changeset (which encodes the changes info)
- * - it supports undo & redo
- * - it supports merge operations
- */
-open class ZDCRecord: ZDCObject, ZDCSyncable {
+/// The ZDCRecord class is designed to be subclassed.
+///
+/// It provides the following set of features for your subclass:
+/// - instances can be made immutable (via `ZDCRecord.makeImmutable()` function)
+/// - it implements the ZDCSyncable protocol and thus:
+/// - it tracks all changes and can provide a changeset (which encodes the changes info)
+/// - it supports undo & redo
+/// - it supports merge operations
+///
+open class ZDCRecord: ZDCSyncable {
 	
-	enum ChangesetKeys: String {
+	private enum ChangesetKeys: String {
 		case refs = "refs"
 		case values = "values"
 	}
 	
-	lazy private var originalValues: Dictionary<String, Any> = Dictionary()
+	// --------------------------------------------------
+	// MARK: Init
+	// --------------------------------------------------
 	
-	public required init() {
-		super.init()
+	public init() {
+		// Nothing to do here, but required by Swift compiler.
 	}
 	
-	public required init(copy source: ZDCObject) {
-		
-		if let source = source as? ZDCRecord {
-			
-			super.init()
-			self.originalValues = source.originalValues
-		}
-		else {
-			
-			fatalError("init(copy:) invoked with invalid source")
-		}
-	}
+	// --------------------------------------------------
+	// MARK: Utilities
+	// --------------------------------------------------
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Utilities
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	open func enumerateProperties(_ block: (_ propertyName: String, _ value: Any?) -> Void) {
+	open func enumerateSyncable(_ block: (_ propertyName: String, _ value: Any?, _ stop: inout Bool) -> Void) {
 		
-		let propertyNames = self.monitoredProperties()
-		for propertyName in propertyNames {
-			
-			let value = self.value(forKey: propertyName)
-			block(propertyName, value)
-		}
+		var stop: Bool = false
 		
 		var _mirror: Mirror? = Mirror(reflecting: self)
-		while let mirror = _mirror {
+		outerLoop: while let mirror = _mirror {
 		
 			if mirror.subjectType == ZDCRecord.self {
 				break
@@ -63,92 +47,63 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 			
 			for property in mirror.children {
 		
-				if let label = property.label, !propertyNames.contains(label) {
-		
-					if let zdc_value = property.value as? ZDCSyncable {
-		
-						block(label, zdc_value)
-					}
-		
-				//	if case Optional<Any>.some(let value) = property.value {
-				//		// property.value is not nil
-				//		block(label, value)
-				//	}
-				//	else {
-				//		// property.value is nil
-				//		block(label, nil)
-				//	}
-				}
-			}
-		
-			_mirror = mirror.superclassMirror
-		}
-	}
-	
-	override open func value(forKey key: String) -> Any? {
-
-		let propertyNames = self.monitoredProperties()
-		if propertyNames.contains(key) {
-			return super.value(forKey: key)
-		}
-		
-		var _mirror: Mirror? = Mirror(reflecting: self)
-		while let mirror = _mirror {
-			
-			if mirror.subjectType == ZDCRecord.self {
-				break
-			}
-			
-			for property in mirror.children {
-				
 				if let label = property.label {
 					
-					if label == key {
+					if let zdc_prop = property.value as? ZDCSyncableProperty  {
 						
-						if let zdc_value = property.value as? ZDCSyncable {
-							
-							return zdc_value
-						}
+						block(label, zdc_prop, &stop)
+					}
+					else if let zdc_obj = property.value as? ZDCSyncable {
+		
+						block(label, zdc_obj, &stop)
 					}
 				}
+				
+				if stop {
+					break outerLoop
+				}
 			}
-			
+		
 			_mirror = mirror.superclassMirror
 		}
-		
-		return super.value(forKey: key) // Crash? Did you forget to add required "@objc"?
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: ZDCObject Overrides
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	override open func makeImmutable() {
+	open func syncableValue(key: String) -> Any? {
 		
-		super.makeImmutable()
+		var result: Any? = nil
+		var _result: Any? = nil
 		
-		self.enumerateProperties { (propertyName, value) in
-		
-			if let zdc_value = value as? ZDCObject {
-				zdc_value.makeImmutable()
+		enumerateSyncable { (label, value, stop) in
+			
+			if label == key {
+				result = value
+				_result = nil
+				stop = true
+			}
+			else if label == ("_"+key) { // @Wrapper var foo: Bar => var _foo: Wrapper<Bar>
+				_result = value
 			}
 		}
+		
+		return result ?? _result
 	}
 	
-	override open var hasChanges: Bool {
+	// --------------------------------------------------
+	// MARK: ZDCSyncable
+	// --------------------------------------------------
+	
+	open var hasChanges: Bool {
 		get {
-			if super.hasChanges {
-				return true
-			}
-			
-			if originalValues.count > 0 {
-				return true
-			}
 			
 			var hasChanges = false
-			self.enumerateProperties { (propertyName, value) in
+			enumerateSyncable { (propertyName, value, _) in
 				
-				if let zdc_value = value as? ZDCObject {
+				if let zdc_prop = value as? ZDCSyncableProperty {
+					if zdc_prop.hasChanges {
+						hasChanges = true
+					}
+				}
+				else if let zdc_value = value as? ZDCSyncable {
 					if zdc_value.hasChanges {
 						hasChanges = true
 					}
@@ -159,39 +114,18 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 		}
 	}
 
-	override open func clearChangeTracking() {
+	open func clearChangeTracking() {
 		
-		super.clearChangeTracking()
-		
-		originalValues.removeAll()
-		
-		self.enumerateProperties { (propertyName, value) in
+		self.enumerateSyncable { (propertyName, value, _) in
 			
-			if let zdc_value = value as? ZDCObject {
+			if let zdc_prop = value as? ZDCSyncableProperty {
+				zdc_prop.clearChangeTracking()
+			}
+			else if let zdc_value = value as? ZDCSyncable {
 				zdc_value.clearChangeTracking()
 			}
 		}
 	}
-	
-	/// ZDCObject hook - notifies us that a property is being changed
-	///
-	override func _willChangeValue(forKey key: String) {
-		
-		if originalValues[key] == nil {
-			
-			let originalValue = self.value(forKey: key)
-			if originalValue != nil {
-				originalValues[key] = originalValue!
-			}
-			else {
-				originalValues[key] = ZDCNull.sharedInstance()
-			}
-		}
-	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: ZDCSyncable
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private func _changeset() -> Dictionary<String, Any>? {
 		
@@ -199,85 +133,48 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 			return nil
 		}
 		
-		var changeset = Dictionary<String, Any>()
-		
 		// changeset: {
 		//   refs: {
 		//     key: changeset, ...
+		//   },
+		//   values: {
+		//     key: oldValue, ...
 		//   },
 		//   ...
 		// }
 		
 		var refs = Dictionary<String, Any>()
+		var values = Dictionary<String, Any>()
 		
-		self.enumerateProperties { (key, value) in
+		self.enumerateSyncable { (key, value, _) in
 			
-			if let zdcValue = value as? ZDCSyncable {
+			if let zdc_prop = value as? ZDCSyncableProperty {
 				
-				let originalValue = originalValues[key]
-				let originalZdcValue = originalValue as? ZDCSyncable
-				
-				let obj = value as? NSObject
-				let originalObj = originalValue as? NSObject
-				
-				// Several possibilities:
-				//
-				// - If obj was added, then originalValue will be ZDCNull.
-				//   If this is the case, we should not add to refs.
-				//
-				// - If obj was swapped out, then originalValue will be some other obj.
-				//   If this is the case, we should not add to refs.
-				//
-				// - If obj was simply modified, then originalValue wll be the same as obj.
-				//   And only then should we add a changeset to refs.
-		
-				let wasAdded: Bool = originalValue is ZDCNull
-				let wasSwapped: Bool = (originalZdcValue != nil) &&
-				                       (originalObj != nil) && (obj != nil ) && (originalObj! !== obj!)
-			
-				if (!wasAdded && !wasSwapped)
-				{
-					var obj_changeset = zdcValue.peakChangeset()
-					if (obj_changeset == nil)
-					{
-						let wasModified = originalValue != nil
-						if (wasModified) {
-							obj_changeset = Dictionary()
-						}
-					}
+				if zdc_prop.hasChanges {
 					
-					if (obj_changeset != nil) {
-						refs[key] = obj_changeset!;
+					let originalValue = zdc_prop.getOriginalValue()
+					
+					if originalValue == nil {
+						values[key] = ZDCNull.sharedInstance()
+					} else {
+						values[key] = originalValue
 					}
+				}
+			}
+			else if let zdc_value = value as? ZDCSyncable {
+				
+				if let changeset = zdc_value.peakChangeset() {
+					
+					refs[key] = changeset
 				}
 			}
 		}
 		
+		var changeset = Dictionary<String, Any>()
 		if (refs.count > 0) {
 			changeset[ChangesetKeys.refs.rawValue] = refs
 		}
-		
-		if originalValues.count > 0 {
-			
-			// changeset: {
-			//   values: {
-			//     key: oldValue, ...
-			//   },
-			//   ...
-			// }
-			
-			var values = Dictionary<String, Any>()
-			
-			for (key, originalValue) in originalValues {
-				
-				if (refs[key] != nil) {
-					values[key] = ZDCRef.sharedInstance()
-				}
-				else {
-					values[key] = originalValue
-				}
-			}
-			
+		if (values.count > 0) {
 			changeset[ChangesetKeys.values.rawValue] = values
 		}
 		
@@ -337,16 +234,14 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 		
 		if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? Dictionary<String, Dictionary<String, Any>> {
 		
-			for (key, obj_changeset) in changeset_refs {
+			for (key, container_changeset) in changeset_refs {
 				
-				let obj = self.value(forKey: key) // Crash? Is your property missing required "@objc"?
-				
-				if let zdc_obj = obj as? ZDCSyncable {
-				
-					try zdc_obj.performUndo(obj_changeset)
-				}
-				else
-				{
+				if let zdc_container = syncableValue(key: key) as? ZDCSyncable {
+					
+					try zdc_container.performUndo(container_changeset)
+					
+				} else {
+					
 					throw ZDCSyncableError.mismatchedChangeset
 				}
 			}
@@ -356,11 +251,19 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 			
 			for (key, oldValue) in changeset_values {
 				
-				if (oldValue is ZDCNull) {
-					self.setValue(nil, forKey: key)
+				var success = false
+				if let zdc_prop = self.syncableValue(key: key) as? ZDCSyncableProperty {
+					
+					if (oldValue is ZDCNull) {
+						success = zdc_prop.trySetValue(nil)
+					}
+					else {
+						success = zdc_prop.trySetValue(oldValue)
+					}
 				}
-				else if !(oldValue is ZDCRef) {
-					self.setValue(oldValue, forKey: key)
+				
+				if !success {
+					throw ZDCSyncableError.mismatchedChangeset
 				}
 			}
 		}
@@ -368,9 +271,9 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 	
 	public func performUndo(_ changeset: Dictionary<String, Any>) throws {
 		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	//	if (self.isImmutable) {
+	//		ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
+	//	}
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -397,9 +300,9 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 	
 	public func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
 		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	//	if self.isImmutable {
+	//		throw ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
+	//	}
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -471,9 +374,9 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 	public func merge(cloudVersion inCloudVersion: ZDCSyncable,
 							pendingChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any>
 	{
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	//	if self.isImmutable {
+	//		ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
+	//	}
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -493,11 +396,12 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 			}
 		}
 		
+		
 		guard let cloudVersion = inCloudVersion as? ZDCRecord else {
 			throw ZDCSyncableError.incorrectObjectClass
 		}
 		
-		// Step 1 of 4:
+		// Step 1 of 3:
 		//
 		// We need to determine which keys have been changed locally, and what the original versions were.
 		// We'll need this information when comparing to the cloudVersion.
@@ -516,34 +420,39 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 				}
 			}
 		}
-		
-		// Step 2 of 4:
+	
+		// Step 2 of 3:
 		//
 		// Next, we're going to enumerate what values are in the cloud.
 		// This will tell us what was added & modified by remote devices.
 		
-		let IsEqualOrBothNil = {(_ objA: Any?, _ objB: Any?) -> Bool in
+		let IsEqualOrBothNil = {(_ a: Any?, _ b: Any?) -> Bool in
 			
-			if (objA == nil)
-			{
-				return (objB == nil)
+			guard let a = a else {
+				return (b == nil)
 			}
-			else if (objB == nil)
-			{
+			guard let b = b else {
 				return false
 			}
-			else
-			{
-				let a = objA as AnyObject
-				let b = objB as AnyObject
+			
+			if let propA = a as? ZDCSyncableProperty {
 				
-				return a.isEqual(b)
+				return propA.isValueEqual(b)
+			
+			} else {
+				
+				let objA = a as AnyObject
+				let objB = b as AnyObject
+				
+				return objA.isEqual(objB)
 			}
 		}
 		
-		cloudVersion.enumerateProperties({ (key, cloudValue) in
+		var isMalformedChangeset = false
+		
+		cloudVersion.enumerateSyncable({ (key, cloudValue, _) in
 			
-			let currentLocalValue = self.value(forKey: key)
+			let currentLocalValue = self.syncableValue(key: key)
 			var originalLocalValue = merged_originalValues[key]
 			
 			let modifiedValueLocally = (originalLocalValue != nil)
@@ -585,39 +494,21 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 			}
 			
 			if mergeRemoteValue {
-				self.setValue(cloudValue, forKey: key)
+				if let zdc_prop = currentLocalValue as? ZDCSyncableProperty {
+					if !zdc_prop.trySetValue(cloudValue) {
+						isMalformedChangeset = true
+					}
+				} else {
+					isMalformedChangeset = true
+				}
 			}
 		})
 		
-		// Step 3 of 4:
-		//
-		// Next we need to determine if any values were deleted by remote devices.
-		do {
-			
-			var baseKeys = self.monitoredProperties()
-			
-			for (key, value) in merged_originalValues {
-				
-				if value is ZDCNull {    // Null => we added this tuple.
-					baseKeys.remove(key)  // So it's not part of the set the cloud is expected to have.
-				} else {
-					baseKeys.insert(key)  // For items that we may have deleted (no longer in [self allKeys])
-				}
-			}
-			
-			for key in baseKeys {
-				
-				let remoteValue = cloudVersion.value(forKey: key)
-				if remoteValue == nil {
-					
-					// The remote key/value pair was deleted
-					
-					self.setValue(nil, forKey: key)
-				}
-			}
+		if isMalformedChangeset {
+			throw ZDCSyncableError.malformedChangeset
 		}
 		
-		// Step 4 of 4:
+		// Step 3 of 3:
 		//
 		// Merge the ZDCSyncable properties
 		
@@ -639,8 +530,8 @@ open class ZDCRecord: ZDCObject, ZDCSyncable {
 		
 		for key in refs {
 			
-			let localRef = self.value(forKey: key)
-			let cloudRef = cloudVersion.value(forKey: key)
+			let localRef = self.syncableValue(key: key)
+			let cloudRef = cloudVersion.syncableValue(key: key)
 			
 			if let localRef = localRef as? ZDCSyncable,
 			   let cloudRef = cloudRef as? ZDCSyncable
