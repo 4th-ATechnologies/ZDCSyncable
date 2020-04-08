@@ -36,7 +36,7 @@ public protocol ZDCSyncable {
 	 *
 	 * - Note:
 	 *     This method is the equivalent of calling `peakChangeset`
-	 *     followed by `[S4BaseObject clearChangeTracking]`.
+	 *     followed by `clearChangeTracking()`.
 	 *
 	 * - Note:
 	 *     If you simply want to know if an object has changes,
