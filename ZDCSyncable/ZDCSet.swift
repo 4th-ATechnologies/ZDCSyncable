@@ -225,11 +225,6 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncableCollection, Codab
 						return true
 					}
 				}
-				else if let zdc_prop = item as? ZDCSyncableProperty {
-					if zdc_prop.hasChanges {
-						return true
-					}
-				}
 				else if let zdc_collection = item as? ZDCSyncableCollection {
 					if zdc_collection.hasChanges {
 						return true
@@ -254,10 +249,6 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncableCollection, Codab
 			if let zdc_obj = item as? ZDCSyncableObject {
 				
 				zdc_obj.clearChangeTracking()
-			}
-			else if let zdc_prop = item as? ZDCSyncableProperty {
-				
-				zdc_prop.clearChangeTracking()
 			}
 			else if var zdc_collection = item as? ZDCSyncableCollection {
 				

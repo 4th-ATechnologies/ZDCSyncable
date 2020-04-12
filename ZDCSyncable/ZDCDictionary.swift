@@ -247,11 +247,6 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 						return true
 					}
 				}
-				else if let zdc_prop = value as? ZDCSyncableProperty {
-					if zdc_prop.hasChanges {
-						return true
-					}
-				}
 				else if let zdc_collection = value as? ZDCSyncableCollection {
 					if zdc_collection.hasChanges {
 						return true
@@ -273,10 +268,6 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 			if let zdc_obj = value as? ZDCSyncableObject {
 				
 				zdc_obj.clearChangeTracking()
-			}
-			else if let zdc_prop = value as? ZDCSyncableProperty {
-				
-				zdc_prop.clearChangeTracking()
 			}
 			else if var zdc_collection = value as? ZDCSyncableCollection {
 				
