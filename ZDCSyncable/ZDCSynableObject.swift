@@ -2,17 +2,16 @@
 /// https://github.com/4th-ATechnologies/ZDCSyncable
 ///
 /// Undo, redo & merge capabilities for plain objects in Swift.
-/// 
 
 import Foundation
 
 /**
- * The ZDCSyncable protocol defines the common methods for:
+ * The ZDCSyncableObject protocol defines the common methods for:
  * - tracking changes
  * - performing undo & redo
  * - merging changes from external sources
  */
-public protocol ZDCSyncable {
+public protocol ZDCSyncableObject {
 	
 	/**
 	 * Returns whether or not there are any changes to the object.
@@ -139,14 +138,14 @@ public protocol ZDCSyncable {
 	 *     On success, returns a changeset dictionary that can be used to undo the changes.
 	 *     Otherwise throws with an error explaining what went wrong.
 	 */
-	func merge(cloudVersion: ZDCSyncable, pendingChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any>
+	func merge(cloudVersion: ZDCSyncableObject, pendingChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any>
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ====================================================================================================
 // MARK:- Default Implementations
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ====================================================================================================
 
-extension ZDCSyncable {
+extension ZDCSyncableObject {
 	
 	public func changeset() -> Dictionary<String, Any>? {
 		

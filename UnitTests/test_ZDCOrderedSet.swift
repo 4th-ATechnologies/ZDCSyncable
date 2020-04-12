@@ -27,11 +27,11 @@ class test_ZDCOrderedSet: XCTestCase {
 		//
 		// - add
 		
-		let orderedSet = ZDCOrderedSet<String>()
+		var orderedSet = ZDCOrderedSet<String>()
 		
 		// Empty dictionary will be starting state
 		//
-		orderedSet_a = orderedSet.immutableCopy() as? ZDCOrderedSet<String>
+		orderedSet_a = orderedSet
 		
 		orderedSet.insert("alice")
 		orderedSet.insert("bob")
@@ -39,7 +39,7 @@ class test_ZDCOrderedSet: XCTestCase {
 		XCTAssert(orderedSet.count == 2)
 		
 		let changeset_undo = orderedSet.changeset() ?? Dictionary()
-		orderedSet_b = orderedSet.immutableCopy() as? ZDCOrderedSet<String>
+		orderedSet_b = orderedSet
 		
 		do {
 			let changeset_redo = try orderedSet.undo(changeset_undo)
@@ -62,18 +62,18 @@ class test_ZDCOrderedSet: XCTestCase {
 		//
 		// - remove
 		
-		let orderedSet = ZDCOrderedSet<String>()
+		var orderedSet = ZDCOrderedSet<String>()
 		
 		orderedSet.insert("alice")
 		orderedSet.insert("bob")
 		
 		orderedSet.clearChangeTracking()
-		orderedSet_a = orderedSet.immutableCopy() as? ZDCOrderedSet<String>
+		orderedSet_a = orderedSet
 		
 		orderedSet.remove("alice")
 		
 		let changeset_undo = orderedSet.changeset() ?? Dictionary()
-		orderedSet_b = orderedSet.immutableCopy() as? ZDCOrderedSet<String>
+		orderedSet_b = orderedSet
 		
 		do {
 			let changeset_redo = try orderedSet.undo(changeset_undo)
@@ -96,13 +96,13 @@ class test_ZDCOrderedSet: XCTestCase {
 		//
 		// - move
 		
-		let orderedSet = ZDCOrderedSet<String>()
+		var orderedSet = ZDCOrderedSet<String>()
 		
 		orderedSet.insert("alice")
 		orderedSet.insert("bob")
 		
 		orderedSet.clearChangeTracking()
-		orderedSet_a = orderedSet.immutableCopy() as? ZDCOrderedSet<String>
+		orderedSet_a = orderedSet
 		
 		orderedSet.move(fromIndex:0, toIndex:1)
 		
@@ -110,7 +110,7 @@ class test_ZDCOrderedSet: XCTestCase {
 		XCTAssert(orderedSet[1] == "alice")
 		
 		let changeset_undo = orderedSet.changeset() ?? Dictionary()
-		orderedSet_b = orderedSet.immutableCopy() as? ZDCOrderedSet<String>
+		orderedSet_b = orderedSet
 		
 		do {
 			let changeset_redo = try orderedSet.undo(changeset_undo)
@@ -137,7 +137,7 @@ class test_ZDCOrderedSet: XCTestCase {
 			var orderedSet_a: ZDCOrderedSet<String>? = nil
 			var orderedSet_b: ZDCOrderedSet<String>? = nil
 			
-			let orderedSet = ZDCOrderedSet<String>()
+			var orderedSet = ZDCOrderedSet<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -157,7 +157,7 @@ class test_ZDCOrderedSet: XCTestCase {
 			}
 			
 			orderedSet.clearChangeTracking()
-			orderedSet_a = orderedSet.immutableCopy() as? ZDCOrderedSet<String>
+			orderedSet_a = orderedSet
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -213,7 +213,7 @@ class test_ZDCOrderedSet: XCTestCase {
 			}
 			
 			let changeset_undo = orderedSet.changeset() ?? Dictionary()
-			orderedSet_b = orderedSet.immutableCopy() as? ZDCOrderedSet<String>
+			orderedSet_b = orderedSet
 			
 			do {
 				let changeset_redo = try orderedSet.undo(changeset_undo) // a <- b
@@ -248,7 +248,7 @@ class test_ZDCOrderedSet: XCTestCase {
 			var orderedSet_a: ZDCOrderedSet<String>? = nil
 			var orderedSet_b: ZDCOrderedSet<String>? = nil
 			
-			let orderedSet = ZDCOrderedSet<String>()
+			var orderedSet = ZDCOrderedSet<String>()
 			var changesets = Array<Dictionary<String, Any>>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
@@ -269,7 +269,7 @@ class test_ZDCOrderedSet: XCTestCase {
 			}
 			
 			orderedSet.clearChangeTracking()
-			orderedSet_a = orderedSet.immutableCopy() as? ZDCOrderedSet<String>
+			orderedSet_a = orderedSet
 			
 			// Make a random number of changesets: [1 - 10)
 			
@@ -342,7 +342,7 @@ class test_ZDCOrderedSet: XCTestCase {
 				}
 			}
 			
-			orderedSet_b = orderedSet.immutableCopy() as? ZDCOrderedSet<String>
+			orderedSet_b = orderedSet
 			
 			do {
 				
@@ -401,7 +401,7 @@ class test_ZDCOrderedSet: XCTestCase {
 			}
 			
 			orderedSet.clearChangeTracking()
-			var orderedSet_cloud = orderedSet.immutableCopy() as! ZDCOrderedSet<String>
+			var orderedSet_cloud = orderedSet
 			
 			if DEBUG_THIS_METHOD {
 				print("Start: \(orderedSet.rawOrder)")
@@ -478,9 +478,6 @@ class test_ZDCOrderedSet: XCTestCase {
 					print("********************")
 				}
 			}
-			
-			orderedSet.makeImmutable()          // sanity check: don't allow modification (for now)
-			orderedSet_cloud = orderedSet_cloud.copy() as! ZDCOrderedSet<String> // modification again
 	
 			do {
 				// Make a random number of changes (to dict_cloud): [1 - 30)
@@ -537,14 +534,11 @@ class test_ZDCOrderedSet: XCTestCase {
 				}
 			}
 			
-			orderedSet = orderedSet.copy() as! ZDCOrderedSet<String> // sanity check: allow modification again
-			orderedSet_cloud.makeImmutable() // sanity check: don't allow modification anymore
-			
 			if DEBUG_THIS_METHOD {
 				print("********************")
 			}
 			
-			let orderedSet_preMerge = orderedSet.immutableCopy() as! ZDCOrderedSet<String>
+			let orderedSet_preMerge = orderedSet
 			
 			do {
 				let changeset_redo = try orderedSet.merge(cloudVersion: orderedSet_cloud, pendingChangesets: changesets)
@@ -575,12 +569,12 @@ class test_ZDCOrderedSet: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let local = ZDCOrderedSet<String>()
+		var local = ZDCOrderedSet<String>()
 		local.insert("alice")
 		local.insert("bob")
 		
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCOrderedSet<String>
+		var cloud = local
 	
 		do { // local changes
 		
@@ -594,8 +588,6 @@ class test_ZDCOrderedSet: XCTestCase {
 			
 			cloud.remove("bob")   // -bob
 			cloud.insert("dave")  // +dave
-			
-			cloud.makeImmutable()
 		}
 	
 		do {
@@ -617,12 +609,12 @@ class test_ZDCOrderedSet: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let local = ZDCOrderedSet<String>()
+		var local = ZDCOrderedSet<String>()
 		local.insert("alice")
 		local.insert("bob")
 		
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCOrderedSet<String>
+		var cloud = local
 		
 		do { // local changes
 		
@@ -638,8 +630,6 @@ class test_ZDCOrderedSet: XCTestCase {
 			cloud.remove("bob")   // -bob
 			cloud.insert("dave")  // +dave
 			cloud.insert("emily") // +emily
-			
-			cloud.makeImmutable()
 		}
 		
 		do {
@@ -662,11 +652,11 @@ class test_ZDCOrderedSet: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let local = ZDCOrderedSet<String>()
+		var local = ZDCOrderedSet<String>()
 		local.insert("alice")
 		
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCOrderedSet<String>
+		var cloud = local
 		
 		do { // local changes
 		
@@ -680,8 +670,6 @@ class test_ZDCOrderedSet: XCTestCase {
 			cloud.insert("carol") // +carol
 			cloud.remove("alice") // -alice
 			cloud.insert("dave")  // +dave
-			
-			cloud.makeImmutable()
 		}
 	
 		do {
@@ -703,11 +691,11 @@ class test_ZDCOrderedSet: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let local = ZDCOrderedSet<String>()
+		var local = ZDCOrderedSet<String>()
 		local.insert("alice")
 		
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCOrderedSet<String>
+		var cloud = local
 	
 		do { // local changes
 		
@@ -720,8 +708,6 @@ class test_ZDCOrderedSet: XCTestCase {
 		
 			cloud.remove("alice")
 			cloud.insert("carol")
-			
-			cloud.makeImmutable()
 		}
 		
 		do {
@@ -742,12 +728,12 @@ class test_ZDCOrderedSet: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let local = ZDCOrderedSet<String>()
+		var local = ZDCOrderedSet<String>()
 		local.insert("alice")
 		local.insert("bob")
 		
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCOrderedSet<String>
+		var cloud = local
 	
 		do { // local changes
 		
@@ -760,8 +746,6 @@ class test_ZDCOrderedSet: XCTestCase {
 		do { // cloud changes
 		
 			cloud.remove("alice")
-			
-			cloud.makeImmutable()
 		}
 		
 		do {

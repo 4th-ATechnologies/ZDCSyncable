@@ -1,11 +1,11 @@
-/**
- * ZDCSyncable
- * https://github.com/4th-ATechnologies/ZDCSyncable
-**/
+/// ZDCSyncable
+/// https://github.com/4th-ATechnologies/ZDCSyncable
+///
+/// Undo, redo & merge capabilities for plain objects in Swift.
 
 import Foundation
 
-public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable, Codable, Collection {
+public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncableCollection, Codable, Collection, Equatable {
 	
 	enum CodingKeys: String, CodingKey {
 		case set = "set"
@@ -21,68 +21,53 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 	private var set: Set<Element>
 	private var order: Array<Element>
 	
-	lazy private var added: Set<Element> = Set()
-	lazy private var deletedIndexes: Dictionary<Element, Int> = Dictionary()
-	lazy private var originalIndexes: Dictionary<Element, Int> = Dictionary()
+	private var added: Set<Element> = Set()
+	private var deletedIndexes: Dictionary<Element, Int> = Dictionary()
+	private var originalIndexes: Dictionary<Element, Int> = Dictionary()
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Init
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Init
+	// ====================================================================================================
 
-	public required init() {
+	public init() {
 		set = Set()
 		order = Array()
-		super.init()
 	}
 	
 	public init(minimumCapacity: Int) {
 		set = Set(minimumCapacity: minimumCapacity)
 		order = Array()
-		super.init()
 	}
 	
-	public init<S>(_ sequence: S, copyValues: Bool = false) where S : Sequence, Element == S.Element {
+	public init<S>(_ sequence: S) where S : Sequence, Element == S.Element {
 		set = Set(minimumCapacity: sequence.underestimatedCount)
 		order = Array()
-		super.init()
 		
 		for item in sequence {
+		
+		//	self.insert(item) // not tracking changes during init
 			
-			var copied = false
-			if copyValues, let item = item as? NSCopying {
-				
-				if let copiedItem = item.copy(with: nil) as? Element {
-					self.insert(copiedItem)
-					copied = true
-				}
-			}
-			
-			if !copied {
-				self.insert(item)
+			let (inserted, _) = set.insert(item)
+			if inserted {
+				order.append(item)
 			}
 		}
 	}
 	
-	public required init(copy source: ZDCObject) {
+	public init(copy source: ZDCOrderedSet<Element>, retainChangeTracking: Bool) {
 		
-		if let source = source as? ZDCOrderedSet<Element> {
-			
-			self.set = source.set
-			self.order = source.order
-			super.init(copy: source)
-			
+		self.set = source.set
+		self.order = source.order
+		
+		if retainChangeTracking {
 			self.added = source.added
 			self.deletedIndexes = source.deletedIndexes
 		}
-		else {
-			
-			fatalError("init(copy:) invoked with invalid source")
-		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Properties
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Properties
+	// ====================================================================================================
 	
 	/// Returns a copy of the underlying Set being wrapped.
 	/// This is a read-only copy - changes to the returned copy will not be reflected in this instance.
@@ -140,11 +125,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@discardableResult
-	public func insert(_ item: Element) -> Bool {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func insert(_ item: Element) -> Bool {
 		
 		if set.contains(item) {
 			return false
@@ -159,11 +140,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 	}
 	
 	@discardableResult
-	public func insert(_ item: Element, at index: Int) -> Bool {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func insert(_ item: Element, at index: Int) -> Bool {
 		
 		if set.contains(item) {
 			return false
@@ -186,11 +163,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		}
 	}
 	
-	public func move(fromIndex oldIndex: Int, toIndex newIndex: Int) {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func move(fromIndex oldIndex: Int, toIndex newIndex: Int) {
 		
 		precondition(oldIndex < order.count, "Index out of range (oldIndex)")
 		
@@ -211,11 +184,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 	}
 	
 	@discardableResult
-	public func remove(_ item: Element) -> Element? {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func remove(_ item: Element) -> Element? {
 		
 		if !set.contains(item) { // set.contains() is O(1); order.firstIndex() is O(n);
 			return nil
@@ -235,11 +204,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 	}
 	
 	@discardableResult
-	public func remove(at idx: Int) -> Element? {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func remove(at idx: Int) -> Element? {
 		
 		if idx >= order.count {
 			return nil
@@ -255,11 +220,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		}
 	}
 	
-	public func removeAll() {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func removeAll() {
 		
 		while order.count > 0 {
 			
@@ -306,44 +267,19 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 // MARK: Equality
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	// Tricky pitfall:
+	// Compares only the underlying rawSet and rawOrder for equality.
+	// The changeset information isn't part of the comparison.
 	//
-	// This function won't get called because this is a subclass of NSObject.
-	// There's a good description of the technical reasons why here:
-	// https://stackoverflow.com/questions/42283715/overload-for-custom-class-is-not-always-called
-	//
-	// The solution is to override isEqual() instead.
-	//
-//	static func == (lhs: ZDCOrderedSet<Element>, rhs: ZDCOrderedSet<Element>) -> Bool {
-//
-//		return (lhs.set == rhs.set) && (lhs.order == rhs.order)
-//	}
-	
-	override public func isEqual(_ object: Any?) -> Bool {
+	public static func == (lhs: ZDCOrderedSet<Element>, rhs: ZDCOrderedSet<Element>) -> Bool {
 
-		if let another = object as? ZDCOrderedSet<Element> {
-			return isEqualToOrderedSet(another)
-		}
-		else {
-			return false
-		}
-	}
-
-	public func isEqualToOrderedSet(_ another: ZDCOrderedSet<Element>) -> Bool {
-
-		// Nope, this doesn't work:
-	//	return (self == another)
-		//           ^^ FAIL
-		// This actually calls isEqual() again, leading to an infinite loop :(
-		
-		return (self.order == another.order)
+		return (lhs.set == rhs.set) && (lhs.order == rhs.order)
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Change Tracking Internals
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Change Tracking Internals
+	// ====================================================================================================
 	
-	private func _willInsert(_ item: Element, atIndex idx: Int) {
+	private mutating func _willInsert(_ item: Element, atIndex idx: Int) {
 		
 		precondition(idx <= set.count)
 		
@@ -361,7 +297,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		deletedIndexes.removeValue(forKey: item)
 	}
 	
-	private func _willRemove(_ item: Element, atIndex idx: Int) {
+	private mutating func _willRemove(_ item: Element, atIndex idx: Int) {
 		
 		precondition(idx < set.count)
 		
@@ -489,7 +425,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		}
 	}
 	
-	private func _willMove(_ item: Element, fromIndex oldIdx: Int, toIndex newIdx: Int)	{
+	private mutating func _willMove(_ item: Element, fromIndex oldIdx: Int, toIndex newIdx: Int)	{
 		
 		precondition(oldIdx < set.count)
 		precondition(newIdx <= set.count)
@@ -544,10 +480,10 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Sanity Checks
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#if DEBUG
+	// ====================================================================================================
+	// MARK: Sanity Checks
+	// ====================================================================================================
+	#if DEBUG
 	
 	private func checkOriginalIndexes() {
 		
@@ -589,28 +525,13 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		}
 	}
 	
-#endif
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: ZDCObject
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	#endif
+	// ====================================================================================================
+	// MARK: ZDCSyncableCollection
+	// ====================================================================================================
 	
-	override public func makeImmutable() {
-		
-		super.makeImmutable()
-		
-		for item in set {
-			
-			if let zdc_item = item as? ZDCObject {
-				zdc_item.makeImmutable()
-			}
-		}
-	}
-	
-	override public var hasChanges: Bool {
+	public var hasChanges: Bool {
 		get {
-			if super.hasChanges {
-				return true
-			}
 			
 			if (added.count > 0) || (deletedIndexes.count > 0) || (originalIndexes.count > 0) {
 				return true
@@ -618,8 +539,18 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 			
 			for item in set {
 				
-				if let zdc_item = item as? ZDCObject {
-					if zdc_item.hasChanges {
+				if let zdc_obj = item as? ZDCSyncableObject {
+					if zdc_obj.hasChanges {
+						return true
+					}
+				}
+				else if let zdc_prop = item as? ZDCSyncableProperty {
+					if zdc_prop.hasChanges {
+						return true
+					}
+				}
+				else if let zdc_collection = item as? ZDCSyncableCollection {
+					if zdc_collection.hasChanges {
 						return true
 					}
 				}
@@ -629,25 +560,49 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		}
 	}
 	
-	override public func clearChangeTracking() {
-		
-		super.clearChangeTracking()
+	public mutating func clearChangeTracking() {
 		
 		added.removeAll()
 		deletedIndexes.removeAll()
 		originalIndexes.removeAll()
 		
-		for item in set {
+		var changed_idx = Array<Int>()
+		var changed_old = Array<Element>()
+		var changed_new = Array<Element>()
+		
+		for (idx, item) in order.enumerated() {
 			
-			if let zdc_item = item as? ZDCObject {
-				zdc_item.clearChangeTracking()
+			if let zdc_obj = item as? ZDCSyncableObject {
+				
+				zdc_obj.clearChangeTracking()
+			}
+			else if let zdc_prop = item as? ZDCSyncableProperty {
+				
+				zdc_prop.clearChangeTracking()
+			}
+			else if var zdc_collection = item as? ZDCSyncableCollection {
+				
+				// zdc_collection is a struct,
+				// so we need to write the modified value back to the set.
+				
+				changed_idx.append(idx)
+				changed_old.append(zdc_collection as! Element)
+				zdc_collection.clearChangeTracking()
+				changed_new.append(zdc_collection as! Element)
 			}
 		}
+		
+		for i in 0 ..< changed_idx.count {
+			
+			let idx = changed_idx[i]
+			let item_old = changed_old[i]
+			let item_new = changed_new[i]
+			
+			order[idx] = item_new
+			set.remove(item_old)
+			set.insert(item_new)
+		}
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: ZDCSyncable
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private func _changeset() -> Dictionary<String, Any>? {
 	
@@ -657,8 +612,8 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		
 		var changeset: Dictionary<String, Any> = Dictionary()
 		
-		if (added.count > 0)
-		{
+		if added.count > 0 {
+			
 			// changeset: {
 			//   added: [{
 			//     obj, ...
@@ -681,8 +636,8 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 			changeset[ChangesetKeys.added.rawValue] = changeset_added
 		}
 		
-		if (originalIndexes.count > 0)
-		{
+		if originalIndexes.count > 0 {
+			
 			// changeset: {
 			//   indexes: {
 			//     obj: oldIndex, ...
@@ -704,8 +659,8 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 			}
 		}
 		
-		if (deletedIndexes.count > 0)
-		{
+		if deletedIndexes.count > 0 {
+			
 			// changeset: {
 			//   deleted: {
 			//     obj: oldIndex, ...
@@ -773,7 +728,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		return false
 	}
 	
-	private func _undo(_ changeset: Dictionary<String, Any>) throws {
+	private mutating func _undo(_ changeset: Dictionary<String, Any>) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
@@ -945,11 +900,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		}
 	}
 	
-	public func performUndo(_ changeset: Dictionary<String, Any>) throws {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func performUndo(_ changeset: Dictionary<String, Any>) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -974,11 +925,7 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		}
 	}
 	
-	public func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -1049,7 +996,8 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 	
 	/// Calculates the original order from the changesets.
 	///
-	private static func originalOrder(from inOrder: Array<Element>, pendingChangesets: Array<Dictionary<String, Any>>)
+	private static func originalOrder(from inOrder: Array<Element>,
+	                             pendingChangesets: Array<Dictionary<String, Any>>)
 		-> Array<Element>?
 	{
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
@@ -1153,13 +1101,10 @@ public class ZDCOrderedSet<Element: Hashable & Codable>: ZDCObject, ZDCSyncable,
 		return order
 	}
 	
-	public func merge(cloudVersion inCloudVersion: ZDCSyncable,
-	                  pendingChangesets: Array<Dictionary<String, Any>>)
+	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncableCollection,
+	                                     pendingChangesets: Array<Dictionary<String, Any>>)
 		throws -> Dictionary<String, Any>
 	{
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.

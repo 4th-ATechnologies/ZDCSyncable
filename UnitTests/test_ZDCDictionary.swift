@@ -14,9 +14,9 @@ class test_ZDCDictionary: XCTestCase {
 		return String((0..<length).map{ _ in alphabet.randomElement()! })
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Basic
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK:- Basic
+	// ====================================================================================================
 	
 	func test_undo_basic_1() {
 		
@@ -27,11 +27,11 @@ class test_ZDCDictionary: XCTestCase {
 		//
 		// - add
 		
-		let dict = ZDCDictionary<String, String>()
+		var dict = ZDCDictionary<String, String>()
 		
 		// Empty dictionary will be starting state
 		//
-		dict_a = dict.immutableCopy() as? ZDCDictionary<String, String>
+		dict_a = dict
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
@@ -39,7 +39,7 @@ class test_ZDCDictionary: XCTestCase {
 		XCTAssert(dict.count == 2);
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo)
@@ -53,7 +53,7 @@ class test_ZDCDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_basic_2() {
 		
 		var dict_a: ZDCDictionary<String, String>? = nil
@@ -63,18 +63,18 @@ class test_ZDCDictionary: XCTestCase {
 		//
 		// - remove
 		
-		let dict = ZDCDictionary<String, String>()
+		var dict = ZDCDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCDictionary<String, String>
+		dict_a = dict
 		
 		dict["cow"] = nil
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo)
@@ -88,7 +88,7 @@ class test_ZDCDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_basic_3() {
 		
 		var dict_a: ZDCDictionary<String, String>? = nil
@@ -98,18 +98,18 @@ class test_ZDCDictionary: XCTestCase {
 		//
 		// - modify
 		
-		let dict = ZDCDictionary<String, String>()
+		var dict = ZDCDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCDictionary<String, String>
+		dict_a = dict
 		
 		dict["cow"] = "mooo"
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo)
@@ -124,10 +124,10 @@ class test_ZDCDictionary: XCTestCase {
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Fuzz
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK:- Fuzz
+	// ====================================================================================================
+
 	func test_undo_fuzz_everything() {
 		
 		let DEBUG_THIS_METHOD = false
@@ -137,7 +137,7 @@ class test_ZDCDictionary: XCTestCase {
 			var dict_a: ZDCDictionary<String, String>? = nil
 			var dict_b: ZDCDictionary<String, String>? = nil
 			
-			let dict = ZDCDictionary<String, String>()
+			var dict = ZDCDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -157,7 +157,7 @@ class test_ZDCDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -213,7 +213,7 @@ class test_ZDCDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -240,7 +240,7 @@ class test_ZDCDictionary: XCTestCase {
 			}
 		}}
 	}
-	
+
 	func test_import_fuzz_everything() {
 		
 		let DEBUG_THIS_METHOD = false
@@ -252,7 +252,7 @@ class test_ZDCDictionary: XCTestCase {
 			var dict_a: ZDCDictionary<String, String>? = nil
 			var dict_b: ZDCDictionary<String, String>? = nil
 			
-			let dict = ZDCDictionary<String, String>()
+			var dict = ZDCDictionary<String, String>()
 				
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -272,7 +272,7 @@ class test_ZDCDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCDictionary<String, String>
+			dict_a = dict
 			
 			// Make a random number of changesets: [1 - 10)
 			
@@ -345,7 +345,7 @@ class test_ZDCDictionary: XCTestCase {
 				}
 			}
 			
-			dict_b = dict.immutableCopy() as? ZDCDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				try dict.importChangesets(changesets)
@@ -375,21 +375,21 @@ class test_ZDCDictionary: XCTestCase {
 			}
 		}}
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Merge - Simple
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// ====================================================================================================
+	// MARK:- Merge - Simple
+	// ====================================================================================================
 	
 	func test_simpleMerge_1() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let local = ZDCDictionary<String, Int>()
+		var local = ZDCDictionary<String, Int>()
 		local["alice"] = 1
 		local["bob"] = 1
 		
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCDictionary<String, Int>
+		var cloud = local
 		
 		do { // local changes
 			
@@ -401,8 +401,6 @@ class test_ZDCDictionary: XCTestCase {
 		do { // cloud changes
 			
 			cloud["bob"] = 2
-			
-			cloud.makeImmutable()
 		}
 		
 		do {
@@ -421,12 +419,12 @@ class test_ZDCDictionary: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let local = ZDCDictionary<String, Int>()
+		var local = ZDCDictionary<String, Int>()
 		local["alice"] = 1
 		local["bob"] = 1
 		
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCDictionary<String, Int>
+		var cloud = local
 		
 		do { // local changes
 			
@@ -439,8 +437,6 @@ class test_ZDCDictionary: XCTestCase {
 			
 			cloud["alice"] = 3
 			cloud["bob"] = 2
-			
-			cloud.makeImmutable()
 		}
 		
 		do {
@@ -459,11 +455,11 @@ class test_ZDCDictionary: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let local = ZDCDictionary<String, Int>()
+		var local = ZDCDictionary<String, Int>()
 		local["bob"] = 1
 		
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCDictionary<String, Int>
+		var cloud = local
 		
 		do { // local changes
 			
@@ -476,8 +472,6 @@ class test_ZDCDictionary: XCTestCase {
 			
 			cloud["alice"] = 2
 			cloud["bob"] = 2
-			
-			cloud.makeImmutable()
 		}
 	
 		do {
@@ -496,11 +490,11 @@ class test_ZDCDictionary: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let local = ZDCDictionary<String, Int>()
+		var local = ZDCDictionary<String, Int>()
 		local["bob"] = 1
 		
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCDictionary<String, Int>
+		var cloud = local
 		
 		do { // local changes
 			
@@ -512,8 +506,6 @@ class test_ZDCDictionary: XCTestCase {
 		do { // cloud changes
 			
 			cloud["bob"] = 2
-			
-			cloud.makeImmutable()
 		}
 		
 		do {
@@ -532,12 +524,12 @@ class test_ZDCDictionary: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let local = ZDCDictionary<String, Int>()
+		var local = ZDCDictionary<String, Int>()
 		local["alice"] = 1
 		local["bob"] = 1
 		
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCDictionary<String, Int>
+		var cloud = local
 		
 		do { // local changes
 			
@@ -549,8 +541,6 @@ class test_ZDCDictionary: XCTestCase {
 		do { // cloud changes
 			
 			cloud["alice"] = nil
-			
-			cloud.makeImmutable()
 		}
 		
 		do {
@@ -565,21 +555,23 @@ class test_ZDCDictionary: XCTestCase {
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Complex
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK:- Complex
+	// ====================================================================================================
+
 	func test_complexMerge_1() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 
-		let local = ZDCDictionary<String, ZDCDictionary<String, String>>()
+		var local = ZDCDictionary<String, ZDCDictionary<String, String>>()
 		local["pets"] = ZDCDictionary<String, String>()
 		local["farm"] = ZDCDictionary<String, String>()
 		local["pets"]?["dog"] = "bark"
 
 		local.clearChangeTracking()
-		let cloud = ZDCDictionary<String, ZDCDictionary<String, String>>(zdc: local, copyValues: true)
+		XCTAssert(local.hasChanges == false)
+		
+		var cloud = local
 
 		do { // local changes
 
@@ -593,8 +585,6 @@ class test_ZDCDictionary: XCTestCase {
 
 			cloud["farm"]?["horse"] = "nay"
 			cloud["farm"]?["duck"] = "quack"
-
-			cloud.makeImmutable()
 		}
 
 		XCTAssert(local["farm"]?["horse"] == nil)
@@ -614,4 +604,5 @@ class test_ZDCDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
+
 }

@@ -1,11 +1,11 @@
-/**
- * ZDCSyncable
- * https://github.com/4th-ATechnologies/ZDCSyncable
-**/
+/// ZDCSyncable
+/// https://github.com/4th-ATechnologies/ZDCSyncable
+///
+/// Undo, redo & merge capabilities for plain objects in Swift.
 
 import Foundation
 
-public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Codable, Collection {
+public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncableCollection, Codable, Collection, Equatable {
 	
 	enum CodingKeys: String, CodingKey {
 		case array = "array"
@@ -19,66 +19,49 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 	
 	private var array: Array<Element>
 	
-	lazy private var added: IndexSet = IndexSet()                     // [{ currentIndex }]
-	lazy private var moved: Dictionary<Int, Int> = Dictionary()       // key={currentIndex}, value={previousIndex}
-	lazy private var deleted: Dictionary<Int, Element> = Dictionary() // key={previousIndex}, value={object}
+	private var added: IndexSet = IndexSet()                     // [{ currentIndex }]
+	private var moved: Dictionary<Int, Int> = Dictionary()       // key={currentIndex}, value={previousIndex}
+	private var deleted: Dictionary<Int, Element> = Dictionary() // key={previousIndex}, value={object}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Init
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Init
+	// ====================================================================================================
 	
-	public required init() {
+	public init() {
+		
 		array = Array()
-		super.init()
 	}
 	
-	public init<S>(_ sequence: S, copyValues: Bool = false) where S : Sequence, Element == S.Element {
+	public init<S>(_ sequence: S) where S : Sequence, Element == S.Element {
+		
 		array = Array()
-		super.init()
 		
 		array.reserveCapacity(sequence.underestimatedCount)
 		for item in sequence {
 			
-			var copied = false
-			if copyValues, let item = item as? NSCopying {
-				
-				if let copiedItem = item.copy(with: nil) as? Element {
-					self.append(copiedItem)
-					copied = true
-				}
-			}
-			
-			if !copied {
-				self.append(item)
-			}
+		//	self.append(item) // not tracking changes during init
+			array.append(item)
 		}
 	}
 	
-	public required init(copy source: ZDCObject) {
+	public init(copy source: ZDCArray<Element>, retainChangeTracking: Bool) {
 		
-		if let source = source as? ZDCArray<Element> {
+		self.array = source.array
 		
-			self.array = source.array
-			super.init(copy: source)
-			
+		if retainChangeTracking {
 			self.added = source.added
 			self.moved = source.moved
 			self.deleted = source.deleted
 		}
-		else {
-			
-			fatalError("init(copy:) invoked with invalid source")
-		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Properties
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Properties
+	// ====================================================================================================
 	
-	/**
-	* Returns a reference to the underlying Array being wrapped.
-	* This is a read-only copy - changes to the returned array will not be reflected in the ZDCArray instance.
-	*/
+	/// Returns a reference to the underlying Array being wrapped.
+	/// This is a read-only copy - changes to the returned array will not be reflected in the ZDCArray instance.
+	///
 	public var rawArray: Array<Element> {
 		get {
 			let copy = self.array;
@@ -104,14 +87,14 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
-	public func reserveCapacity(_ minimumCapacity: Int) {
+	public mutating func reserveCapacity(_ minimumCapacity: Int) {
 		
 		array.reserveCapacity(minimumCapacity)
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Reading
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Reading
+	// ====================================================================================================
 	
 	public var first: Element? {
 		get {
@@ -133,25 +116,17 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		return array.contains(member)
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Writing
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Writing
+	// ====================================================================================================
 
-	public func append(_ item: Element) {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func append(_ item: Element) {
 		
 		self._willInsert(at: array.count)
 		array.append(item)
 	}
 	
-	public func insert(_ item: Element, at index: Int) {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func insert(_ item: Element, at index: Int) {
 		
 		let idx = (index > array.count) ? array.count : index
 		
@@ -159,11 +134,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		array.insert(item, at: idx)
 	}
 	
-	public func move(fromIndex oldIndex: Int, toIndex newIndex: Int) {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func move(fromIndex oldIndex: Int, toIndex newIndex: Int) {
 		
 		precondition(oldIndex < array.count, "Index out of range (oldIndex)")
 		
@@ -183,18 +154,14 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		array.insert(item, at: newIdx)
 	}
 	
-	public func remove(_ item: Element) {
+	public mutating func remove(_ item: Element) {
 		
 		self.removeAll(where: {
 			$0 == item
 		})
 	}
 	
-	public func remove(at index: Int) {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func remove(at index: Int) {
 		
 		if index >= array.count {
 			return
@@ -204,11 +171,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		array.remove(at: index)
 	}
 	
-	public func removeAll(where shouldBeRemoved: (Element) throws -> Bool) rethrows {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func removeAll(where shouldBeRemoved: (Element) throws -> Bool) rethrows {
 		
 		var indexSet = IndexSet()
 		var idx = 0
@@ -226,11 +189,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
-	public func removeAll() {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func removeAll() {
 		
 		while array.count > 0 {
 			
@@ -239,9 +198,9 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Subscripts
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Subscripts
+	// ====================================================================================================
 	
 	public subscript(index: Int) -> Element {
 		get {
@@ -253,9 +212,9 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Enumeration
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Enumeration
+	// ====================================================================================================
 	
 	public var startIndex: Array<Element>.Index {
 		return array.startIndex
@@ -269,48 +228,23 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		return array.index(after: i)
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Equality
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Equality
+	// ====================================================================================================
 	
-	// Tricky pitfall:
+	// Compares only the underlying rawSet for equality.
+	// The changeset information isn't part of the comparison.
 	//
-	// This function won't get called because this is a subclass of NSObject.
-	// There's a good description of the technical reasons why here:
-	// https://stackoverflow.com/questions/42283715/overload-for-custom-class-is-not-always-called
-	//
-	// The solution is to override isEqual() instead.
-	//
-	//	static func == (lhs: ZDCArray<Element>, rhs: ZDCArray<Element>) -> Bool {
-	//
-	//		return (lhs.array == rhs.array)
-	//	}
-	
-	override public func isEqual(_ object: Any?) -> Bool {
+	public static func == (lhs: ZDCArray<Element>, rhs: ZDCArray<Element>) -> Bool {
 		
-		if let another = object as? ZDCArray<Element> {
-			return isEqualToArray(another)
-		}
-		else {
-			return false
-		}
+		return (lhs.array == rhs.array)
 	}
 	
-	public func isEqualToArray(_ another: ZDCArray<Element>) -> Bool {
-		
-		// Nope, this doesn't work:
-		//	return (self == another)
-		//           ^^ FAIL
-		// This actually calls isEqual() again, leading to an infinite loop :(
-		
-		return (self.array == another.array)
-	}
+	// ====================================================================================================
+	// MARK: Change Tracking Internals
+	// ====================================================================================================
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Change Tracking Internals
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	private func _willInsert(at insertionIdx: Int) {
+	private mutating func _willInsert(at insertionIdx: Int) {
 		
 		precondition(insertionIdx <= array.count)
 		
@@ -331,7 +265,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		self.incrementMovedCurrentIndexes(startingAt: insertionIdx)
 	}
 	
-	private func _willRemove(at deletionIdx: Int) {
+	private mutating func _willRemove(at deletionIdx: Int) {
 		
 		precondition(deletionIdx < array.count)
 		
@@ -479,7 +413,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		self.shiftAddedIndexes(startingAt: deletionIdx, by: -1)
 	}
 	
-	func _willMove(fromIndex oldIdx: Int, toIndex newIdx: Int) {
+	private mutating func _willMove(fromIndex oldIdx: Int, toIndex newIdx: Int) {
 		
 		precondition(oldIdx < array.count)
 		precondition(newIdx <= array.count)
@@ -638,10 +572,10 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Sanity Checks
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#if DEBUG
+	// ====================================================================================================
+	// MARK: Sanity Checks
+	// ====================================================================================================
+	#if DEBUG
 
 	private func checkDeleted(_ originalIdx: Int) {
 		
@@ -671,12 +605,12 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 
-#endif
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Utilities
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	#endif
+	// ====================================================================================================
+	// MARK: Utilities
+	// ====================================================================================================
 	
-	private func incrementMovedCurrentIndexes(startingAt offset: Int) {
+	private mutating func incrementMovedCurrentIndexes(startingAt offset: Int) {
 		
 		let sortedKeys = moved.keys.sorted { (num1: Int, num2: Int) -> Bool in
 			return num2 < num1 // sort in descending order
@@ -694,7 +628,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
-	private func decrementMovedCurrentIndexes(startingAt offset: Int) {
+	private mutating func decrementMovedCurrentIndexes(startingAt offset: Int) {
 		
 		let sortedKeys = moved.keys.sorted { (num1: Int, num2: Int) -> Bool in
 			return num1 < num2 // sort in ascending order
@@ -712,7 +646,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
-	private func shiftAddedIndexes(startingAt offset: Int, by shift: Int) {
+	private mutating func shiftAddedIndexes(startingAt offset: Int, by shift: Int) {
 		
 		precondition(shift == 1 || shift == -1)
 		
@@ -748,27 +682,12 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: ZDCObject
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: ZDCSyncableCollection
+	// ====================================================================================================
 	
-	override public func makeImmutable() {
-		
-		super.makeImmutable()
-		
-		for item in array {
-			
-			if let zdc_item = item as? ZDCObject {
-				zdc_item.makeImmutable()
-			}
-		}
-	}
-	
-	override public var hasChanges: Bool {
+	public var hasChanges: Bool {
 		get {
-			if super.hasChanges {
-				return true
-			}
 			
 			if (added.count > 0) || (moved.count > 0) || (deleted.count > 0) {
 				return true
@@ -776,8 +695,18 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 			
 			for item in array {
 				
-				if let zdc_item = item as? ZDCObject {
-					if zdc_item.hasChanges {
+				if let zdc_obj = item as? ZDCSyncableObject {
+					if zdc_obj.hasChanges {
+						return true
+					}
+				}
+				else if let zdc_prop = item as? ZDCSyncableProperty {
+					if zdc_prop.hasChanges {
+						return true
+					}
+				}
+				else if let zdc_collection = item as? ZDCSyncableCollection {
+					if zdc_collection.hasChanges {
 						return true
 					}
 				}
@@ -787,25 +716,44 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
-	override public func clearChangeTracking() {
-		
-		super.clearChangeTracking()
+	public mutating func clearChangeTracking() {
 		
 		added.removeAll()
 		moved.removeAll()
 		deleted.removeAll()
 		
-		for item in array {
+		var changed_idx = Array<Int>()
+		var changed_new = Array<Element>()
+		
+		for (idx, item) in array.enumerated() {
 			
-			if let zdc_item = item as? ZDCObject {
-				zdc_item.clearChangeTracking()
+			if let zdc_obj = item as? ZDCSyncableObject {
+				
+				zdc_obj.clearChangeTracking()
+			}
+			else if let zdc_prop = item as? ZDCSyncableProperty {
+				
+				zdc_prop.clearChangeTracking()
+			}
+			else if var zdc_collection = item as? ZDCSyncableCollection {
+				
+				// zdc_collection is a struct,
+				// so we need to write the modified value back to the set.
+				
+				changed_idx.append(idx)
+				zdc_collection.clearChangeTracking()
+				changed_new.append(zdc_collection as! Element)
 			}
 		}
+		
+		for i in 0 ..< changed_idx.count {
+			
+			let idx = changed_idx[i]
+			let item_new = changed_new[i]
+			
+			array[idx] = item_new
+		}
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: ZDCSyncable
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private func _changeset() -> Dictionary<String, Any>? {
 		
@@ -860,7 +808,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 			changeset[ChangesetKeys.moved.rawValue] = moved_copy
 		}
 		
-		return changeset;
+		return changeset
 	}
 	
 	public func peakChangeset() -> Dictionary<String, Any>? {
@@ -925,7 +873,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		return false
 	}
 	
-	private func _undo(_ changeset: Dictionary<String, Any>) throws {
+	private mutating func _undo(_ changeset: Dictionary<String, Any>) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
@@ -1191,11 +1139,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
-	public func performUndo(_ changeset: Dictionary<String, Any>) throws {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func performUndo(_ changeset: Dictionary<String, Any>) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -1220,11 +1164,7 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		}
 	}
 	
-	public func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -1444,14 +1384,10 @@ public class ZDCArray<Element: Codable & Equatable> : ZDCObject, ZDCSyncable, Co
 		return (originalOrder: order, added: added, deleted: deleted)
 	}
 	
-	public func merge(cloudVersion inCloudVersion: ZDCSyncable,
-	                  pendingChangesets: Array<Dictionary<String, Any>>)
+	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncableCollection,
+	                                     pendingChangesets: Array<Dictionary<String, Any>>)
 		throws -> Dictionary<String, Any>
 	{
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
-		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
 			// The code doesn't know what you want to happen.

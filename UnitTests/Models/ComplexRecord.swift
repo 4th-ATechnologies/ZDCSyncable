@@ -15,7 +15,7 @@ import ZDCSyncable
  */
 class ComplexRecord: SimpleRecord {
 	
-	let dict: ZDCDictionary<String, String> = ZDCDictionary()
+	var dict: ZDCDictionary<String, String> = ZDCDictionary()
 	
 	override init() {
 		super.init()
@@ -41,19 +41,20 @@ class ComplexRecord: SimpleRecord {
 	
 	// MARK: ZDCRecord
 	
-	override public var hasChanges: Bool {
-		get {
-			if super.hasChanges {
-				return true
+	override func setSyncableValue(_ value: Any?, for key: String) -> Bool {
+		
+		var result = false
+		switch key {
+		case "dict":
+			
+			if let value = value as? ZDCDictionary<String, String> {
+				dict = value
+				result = true
 			}
 			
-			return dict.hasChanges
+		default: break
 		}
-	}
-	
-	override public func clearChangeTracking() {
 		
-		super.clearChangeTracking()
-		dict.clearChangeTracking()
+		return result ? true : super.setSyncableValue(value, for: key)
 	}
 }

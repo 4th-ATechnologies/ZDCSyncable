@@ -1,11 +1,11 @@
-/**
- * Syncable
- * https://github.com/4th-ATechnologies/ZDCSyncable
-**/
+/// ZDCSyncable
+/// https://github.com/4th-ATechnologies/ZDCSyncable
+///
+/// Undo, redo & merge capabilities for plain objects in Swift.
 
 import Foundation
 
-public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codable, Collection {
+public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncableCollection, Codable, Collection, Equatable {
 	
 	enum CodingKeys: String, CodingKey {
 		case set = "set"
@@ -18,72 +18,52 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 	
 	private var set: Set<Element>
 	
-	lazy private var added: Set<Element> = Set()
-	lazy private var deleted: Set<Element> = Set()
+	private var added: Set<Element> = Set()
+	private var deleted: Set<Element> = Set()
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Init
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Init
+	// ====================================================================================================
 
-	public required init() {
+	public init() {
 		set = Set()
-		super.init()
 	}
 	
 	public init(minimumCapacity: Int) {
 		set = Set(minimumCapacity: minimumCapacity)
-		super.init()
 	}
 	
-	public init<S>(_ sequence: S, copyValues: Bool = false) where S : Sequence, Element == S.Element {
+	public init<S>(_ sequence: S) where S : Sequence, Element == S.Element {
 		set = Set(minimumCapacity: sequence.underestimatedCount)
-		super.init()
 		
 		for item in sequence {
 			
-			var copied = false
-			if copyValues, let item = item as? NSCopying {
-				
-				if let copiedItem = item.copy(with: nil) as? Element {
-					self.insert(copiedItem)
-					copied = true
-				}
-			}
-			
-			if !copied {
-				self.insert(item)
-			}
+		//	self.insert(item) // not tracking changes during init
+			set.insert(item)
 		}
 	}
-	
-	public required init(copy source: ZDCObject) {
+
+	public init(copy source: ZDCSet<Element>, retainChangeTracking: Bool) {
 		
-		if let source = source as? ZDCSet<Element> {
-			
-			self.set = source.set
-			super.init(copy: source)
-			
+		self.set = source.set
+		
+		if retainChangeTracking {
 			self.added = source.added
 			self.deleted = source.deleted
 		}
-		else {
-		
-			fatalError("init(copy:) invoked with invalid source")
-		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Properties
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	/**
-	 * Returns a reference to the underlying Set being wrapped.
-	 * This is a read-only copy - changes to the returned set will not be reflected in the ZDCSet instance.
-	 */
+	// ====================================================================================================
+	// MARK: Properties
+	// ====================================================================================================
+
+	/// Returns a reference to the underlying Set being wrapped.
+	/// This is a read-only copy - changes to the returned set will not be reflected in the ZDCSet instance.
+	///
 	public var rawSet: Set<Element> {
 		get {
-			let copy = self.set;
-			return copy;
+			let copy = self.set
+			return copy
 		}
 	}
 	
@@ -105,29 +85,25 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 		}
 	}
 	
-	public func reserveCapacity(_ minimumCapacity: Int) {
+	public mutating func reserveCapacity(_ minimumCapacity: Int) {
 	
 		set.reserveCapacity(minimumCapacity)
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Reading
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: Reading
+	// ====================================================================================================
+
 	public func contains(_ member: Element) -> Bool {
 		return set.contains(member)
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Writing
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
+	// ====================================================================================================
+	// MARK: Writing
+	// ====================================================================================================
+
 	@discardableResult
-	public func insert(_ item: Element) -> Bool {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func insert(_ item: Element) -> Bool {
 		
 		if set.contains(item) {
 			return false
@@ -139,13 +115,9 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 			return inserted
 		}
 	}
-	
+
 	@discardableResult
-	public func remove(_ item: Element) -> Element? {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func remove(_ item: Element) -> Element? {
 		
 		if set.contains(item) {
 			self._willRemove(item)
@@ -155,12 +127,8 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 			return nil
 		}
 	}
-	
-	public func removeAll(keepingCapacity keepCapacity: Bool = false) {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+
+	public mutating func removeAll(keepingCapacity keepCapacity: Bool = false) {
 		
 		for item in set {
 			self._willRemove(item)
@@ -168,21 +136,21 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 		
 		set.removeAll(keepingCapacity: keepCapacity)
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Subscripts
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
+	// ====================================================================================================
+	// MARK: Subscripts
+	// ====================================================================================================
+
 	public subscript(position: Set<Element>.Index) -> Set<Element>.Element {
 		get {
 			return set[position]
 		}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Enumeration
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: Enumeration
+	// ====================================================================================================
+
 	public var startIndex: Set<Element>.Index {
 		return set.startIndex
 	}
@@ -194,44 +162,24 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 	public func index(after i: Set<Element>.Index) -> Set<Element>.Index {
 		return set.index(after: i)
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Equality
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	// Tricky pitfall:
-	//
-	// This function won't get called because this is a subclass of NSObject.
-	// There's a good description of the technical reasons why here:
-	// https://stackoverflow.com/questions/42283715/overload-for-custom-class-is-not-always-called
-	//
-	// The solution is to override isEqual() instead.
-	//
-//	static func == (lhs: ZDCSet<Element>, rhs: ZDCSet<Element>) -> Bool {
-//
-//		return (lhs.set == rhs.set)
-//	}
-	
-	override public func isEqual(_ object: Any?) -> Bool {
 
-		if let another = object as? ZDCSet<Element> {
-			return isEqualToSet(another)
-		}
-		else {
-			return false
-		}
-	}
-
-	public func isEqualToSet(_ another: ZDCSet<Element>) -> Bool {
-
-		return (set == another.set)
+	// ====================================================================================================
+	// MARK: Equality
+	// ====================================================================================================
+	
+	// Compares only the underlying rawSet for equality.
+	// The changeset information isn't part of the comparison.
+	//
+	public static func == (lhs: ZDCSet<Element>, rhs: ZDCSet<Element>) -> Bool {
+		
+		return (lhs.set == rhs.set)
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Change Tracking Internals
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	private func _willInsert(_ item: Element) {
+	// ====================================================================================================
+	// MARK: Change Tracking Internals
+	// ====================================================================================================
+
+	private mutating func _willInsert(_ item: Element) {
 		
 		if deleted.contains(item) {
 			
@@ -245,7 +193,7 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 		}
 	}
 	
-	private func _willRemove(_ item: Element) {
+	private mutating func _willRemove(_ item: Element) {
 		
 		if added.contains(item) {
 			
@@ -258,28 +206,13 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 			deleted.insert(item)
 		}
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: ZDCObject
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	override public func makeImmutable() {
-		
-		super.makeImmutable()
-		
-		for item in set {
-			
-			if let zdc_item = item as? ZDCObject {
-				zdc_item.makeImmutable()
-			}
-		}
-	}
-	
-	override public var hasChanges: Bool {
+
+	// ====================================================================================================
+	// MARK: ZDCSyncableCollection
+	// ====================================================================================================
+
+	public var hasChanges: Bool {
 		get {
-			if super.hasChanges {
-				return true
-			}
 			
 			if (added.count > 0) || (deleted.count > 0) {
 				return true
@@ -287,8 +220,18 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 			
 			for item in set {
 				
-				if let zdc_item = item as? ZDCObject {
-					if zdc_item.hasChanges {
+				if let zdc_obj = item as? ZDCSyncableObject {
+					if zdc_obj.hasChanges {
+						return true
+					}
+				}
+				else if let zdc_prop = item as? ZDCSyncableProperty {
+					if zdc_prop.hasChanges {
+						return true
+					}
+				}
+				else if let zdc_collection = item as? ZDCSyncableCollection {
+					if zdc_collection.hasChanges {
 						return true
 					}
 				}
@@ -297,26 +240,46 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 			return false
 		}
 	}
-	
-	override public func clearChangeTracking() {
-		
-		super.clearChangeTracking()
+
+	public mutating func clearChangeTracking() {
 		
 		added.removeAll()
 		deleted.removeAll()
 		
+		var changes_old = Array<Element>()
+		var changes_new = Array<Element>()
+		
 		for item in set {
 			
-			if let zdc_item = item as? ZDCObject {
-				zdc_item.clearChangeTracking()
+			if let zdc_obj = item as? ZDCSyncableObject {
+				
+				zdc_obj.clearChangeTracking()
+			}
+			else if let zdc_prop = item as? ZDCSyncableProperty {
+				
+				zdc_prop.clearChangeTracking()
+			}
+			else if var zdc_collection = item as? ZDCSyncableCollection {
+				
+				// zdc_collection is a struct,
+				// so we need to write the modified value back to the set.
+				
+				changes_old.append(zdc_collection as! Element)
+				zdc_collection.clearChangeTracking()
+				changes_new.append(zdc_collection as! Element)
 			}
 		}
+		
+		for i in 0 ..< changes_old.count {
+			
+			let item_old = changes_old[i]
+			let item_new = changes_new[i]
+			
+			set.remove(item_old)
+			set.insert(item_new)
+		}
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: ZDCSyncable
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	private func _changeset() -> Dictionary<String, Any>? {
 		
 		if !self.hasChanges {
@@ -375,13 +338,13 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 	
 		return changeset
 	}
-	
+
 	public func peakChangeset() -> Dictionary<String, Any>? {
 		
 		let changeset = self._changeset()
 		return changeset
 	}
-	
+
 	private func isMalformedChangeset(_ changeset: Dictionary<String, Any>) -> Bool {
 		
 		if changeset.count == 0 {
@@ -444,8 +407,8 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 		// looks good (not malformed)
 		return false
 	}
-	
-	private func _undo(_ changeset: Dictionary<String, Any>) throws {
+
+	private mutating func _undo(_ changeset: Dictionary<String, Any>) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
@@ -471,21 +434,8 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 			}
 		}
 	}
-	
-	public func undo(_ changeset: Dictionary<String, Any>) throws -> Dictionary<String, Any> {
-		
-		try self.performUndo(changeset)
-		
-		// Undo successful - generate redo changeset
-		let reverseChangeset = self.changeset()
-		return reverseChangeset ?? Dictionary<String, Any>()
-	}
-	
-	public func performUndo(_ changeset: Dictionary<String, Any>) throws {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+
+	public mutating func performUndo(_ changeset: Dictionary<String, Any>) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -509,34 +459,8 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 			throw error
 		}
 	}
-	
-	public func rollback() {
-		
-		if let changeset = self.changeset() {
-			
-			do {
-				let _ = try self.undo(changeset)
-			
-			} catch {
-				// Ignoring errors here.
-				// There's nothing we can do at this point - we're in a bad state.
-			}
-		}
-	}
-	
-	public func mergeChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any> {
-		
-		try self.importChangesets(orderedChangesets)
-		
-		let mergedChangeset = self.changeset()
-		return mergedChangeset ?? Dictionary()
-	}
-	
-	public func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+
+	public mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -605,12 +529,10 @@ public class ZDCSet<Element: Hashable & Codable> : ZDCObject, ZDCSyncable, Codab
 		}
 	}
 	
-	public func merge(cloudVersion inCloudVersion: ZDCSyncable,
-	                  pendingChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any> {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncableCollection,
+	                                     pendingChangesets: Array<Dictionary<String, Any>>)
+		throws -> Dictionary<String, Any>
+	{
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.

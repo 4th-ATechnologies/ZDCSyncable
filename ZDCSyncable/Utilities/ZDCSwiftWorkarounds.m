@@ -38,7 +38,21 @@
 			@" You may then make changes to the copy before saving it back to the database."
 	};
 	
-	@throw [NSException exceptionWithName:@"ZDCObjectException" reason:reason userInfo:userInfo];
+	@throw [NSException exceptionWithName:@"ZDCSyncableException" reason:reason userInfo:userInfo];
+}
+
++ (void)throwRecordException:(Class)class forKey:(NSString *)key
+{
+	NSString *reason = [NSString stringWithFormat:
+		@"Call to setSyncableProperty(_:for:) failed. Class = %@, property = %@", NSStringFromClass(class), key];
+	
+	NSDictionary *userInfo = @{
+		NSLocalizedRecoverySuggestionErrorKey:
+			@"Ensure you override the function setSyncableProperty(_:for:) in your subclasses,"
+			@" and that you properly handle all syncable properties."
+	};
+	
+	@throw [NSException exceptionWithName:@"ZDCRecordException" reason:reason userInfo:userInfo];
 }
 
 @end

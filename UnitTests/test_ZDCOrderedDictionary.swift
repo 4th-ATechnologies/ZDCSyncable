@@ -14,9 +14,9 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		return String((0..<length).map{ _ in alphabet.randomElement()! })
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Subclass
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK:- Subclass
+	// ====================================================================================================
 	
 	func test_subclass() {
 		
@@ -25,7 +25,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		// If we make changes to the dict, does [dict hasChanges] reflect those changes ?
 		// i.e. make sure we didn't screw up the subclass functionality.
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
@@ -57,10 +57,10 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(2) == "cow")
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Undo: Basic
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK:- Undo: Basic
+	// ====================================================================================================
+
 	func test_undo_basic_1() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -70,11 +70,11 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Can we undo/redo basic `setObject:forKey:` functionality (for newly inserted items) ?
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		// Empty dictionary will be starting state
 		//
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
@@ -82,7 +82,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.count == 2);
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo)
@@ -96,7 +96,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_basic_2() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -106,18 +106,18 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Can we undo/redo basic `setObject:forKey:` functionality (for updated items) ?
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["cow"] = "mooooooo"
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo)
@@ -141,18 +141,18 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Can we undo/redo basic `removeObjectForKey:` functionality ?
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["cow"] = nil
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo)
@@ -176,13 +176,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Can we undo/redo basic `moveObjectAtIndex:toIndex:` functionality ?
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 0, toIndex: 1)
 		
@@ -190,7 +190,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(1) == "cow")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo)
@@ -205,10 +205,10 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Combo: add + X
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: Undo: Combo: add + X
+	// ====================================================================================================
+
 	func test_undo_add_add() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -218,13 +218,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Add + Add
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 	
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["dog"] = "bark"
 		dict["cat"] = "meow"
@@ -232,7 +232,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.count == 4)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -246,7 +246,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_add_remove() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -256,13 +256,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Add + Remove
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["dog"] = "bark"
 		dict["cow"] = nil
@@ -270,7 +270,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.count == 2);
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -284,7 +284,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_add_insert() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -294,13 +294,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Add + Insert
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["dog"] = "bark"
 		dict.insert("meow", forKey: "cat", atIndex: 0)
@@ -312,7 +312,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(3) == "dog")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -326,7 +326,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_add_move() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -336,13 +336,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Add + Move
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["dog"] = "bark"
 		dict.move(fromIndex: 0, toIndex: 1)
@@ -350,7 +350,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.count == 3);
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -365,10 +365,10 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Combo: remove + X
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: Undo: Combo: remove + X
+	// ====================================================================================================
+
 	func test_undo_remove_add() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -378,13 +378,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Remove + Add
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["cow"] = nil
 		dict["dog"] = "bark"
@@ -392,7 +392,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.count == 2)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -406,7 +406,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_remove_remove() {
 	
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -416,13 +416,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Remove + Remove
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["cow"] = nil
 		dict["duck"] = nil
@@ -430,7 +430,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.count == 0);
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -444,7 +444,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_remove_insert() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -454,13 +454,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Remove + Insert
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["cow"] = nil
 		dict.insert("bark", forKey: "dog", atIndex: 0)
@@ -470,7 +470,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(1) == "duck")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -484,7 +484,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_remove_move() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -494,14 +494,14 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Remove + Move
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		dict["dog"] = "bark"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["cow"] = nil
 		dict.move(fromIndex: 0, toIndex: 1)
@@ -511,7 +511,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(1) == "duck")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -526,10 +526,10 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Undo: Combo: insert + X
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK:- Undo: Combo: insert + X
+	// ====================================================================================================
+
 	func test_undo_insert_add() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -539,13 +539,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Insert + Add
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.insert("bark", forKey: "dog", atIndex: 1)
 		dict["cat"] = "meow"
@@ -557,7 +557,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(3) == "cat")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -571,7 +571,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_insert_remove() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -581,13 +581,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Insert + Remove
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.insert("bark", forKey: "dog", atIndex: 1)
 		dict["cow"] = nil
@@ -597,7 +597,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(1) == "duck")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -611,7 +611,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_insert_insert() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -621,13 +621,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Insert + Insert
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.insert("bark", forKey: "dog", atIndex: 1)
 		dict.insert("meow", forKey: "cat", atIndex: 1)
@@ -639,7 +639,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(3) == "duck")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -663,13 +663,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Insert + Move
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.insert("bark", forKey: "dog", atIndex: 1)
 		dict.move(fromIndex: 2, toIndex: 0)
@@ -680,7 +680,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(2) == "dog")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -704,13 +704,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Insert + Move
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.insert("bark", forKey: "dog", atIndex: 1)
 		dict.move(fromIndex: 0, toIndex: 2)
@@ -721,7 +721,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(2) == "cow")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -736,10 +736,10 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Undo: Combo: move + X
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK:- Undo: Combo: move + X
+	// ====================================================================================================
+
 	func test_undo_move_add() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
@@ -749,13 +749,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Move + Add
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 0, toIndex: 1)
 		dict["dog"] = "bark"
@@ -766,7 +766,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(2) == "dog")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo ) // a <- b
@@ -790,13 +790,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Move + Remove
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 0, toIndex: 1)
 		dict["cow"] = nil;
@@ -805,7 +805,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(0) == "duck")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo ) // a <- b
@@ -829,13 +829,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Move + Insert
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 0, toIndex: 1)
 		dict.insert("bark", forKey: "dog", atIndex: 1)
@@ -846,7 +846,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(2) == "cow")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo ) // a <- b
@@ -870,13 +870,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Move + Move
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 0, toIndex: 1)
 		dict.move(fromIndex: 0, toIndex: 1)
@@ -885,7 +885,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(1) == "duck")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo ) // a <- b
@@ -909,7 +909,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Move + Move
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
@@ -917,7 +917,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["cat"] = "meow"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 1, toIndex: 3)
 		dict.move(fromIndex: 2, toIndex: 0)
@@ -928,7 +928,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(3) == "duck")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo ) // a <- b
@@ -952,7 +952,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Move + Move
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
@@ -960,13 +960,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["cat"] = "meow"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 0, toIndex: 3)
 		dict.move(fromIndex: 2, toIndex: 1)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo ) // a <- b
@@ -990,7 +990,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		//
 		// Move + Move
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
@@ -998,7 +998,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["cat"] = "meow"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 0, toIndex: 3)
 		dict.move(fromIndex: 1, toIndex: 2)
@@ -1009,7 +1009,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		XCTAssert(dict.keyAtIndex(3) == "cow")
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo ) // a <- b
@@ -1024,29 +1024,29 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Undo: Previous Failures
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK:- Undo: Previous Failures
+	// ====================================================================================================
+
 	func test_undo_failure_1() {
 		
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["rkij"] = ""
 		dict["ihns"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["jtyi"] = ""
 		dict.move(fromIndex: 1, toIndex: 0)
 		dict.move(fromIndex: 2, toIndex: 0)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1066,7 +1066,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["tjwi"] = ""
 		dict["nwgk"] = ""
@@ -1075,7 +1075,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["lefk"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["leyp"] = ""
 		dict.move(fromIndex: 3, toIndex: 5)
@@ -1083,7 +1083,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict.move(fromIndex: 1, toIndex: 6)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1103,7 +1103,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["tnjb"] = ""
 		dict["xcyu"] = ""
@@ -1112,7 +1112,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["paxy"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 2, toIndex: 4)
 		dict["xsny"] = ""
@@ -1120,7 +1120,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict.move(fromIndex: 5, toIndex: 6)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1140,7 +1140,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["glsr"] = ""
 		dict["sefo"] = ""
@@ -1149,7 +1149,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["pggk"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["ezgd"] = ""
 		dict["muua"] = ""
@@ -1157,7 +1157,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict.move(fromIndex: 7, toIndex: 6)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1177,7 +1177,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["tvma"] = ""
 		dict["sgkp"] = ""
@@ -1186,7 +1186,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["ytfx"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["tzrx"] = ""
 		dict["ujvd"] = ""
@@ -1194,7 +1194,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict.move(fromIndex: 2, toIndex: 7)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1214,7 +1214,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["ldnw"] = ""
 		dict["llxg"] = ""
@@ -1223,14 +1223,14 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["vicl"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 2, toIndex: 4)
 		dict.remove(at: 2)
 		dict.move(fromIndex: 0, toIndex: 3)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1250,7 +1250,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["yqbe"] = ""
 		dict["wznq"] = ""
@@ -1259,7 +1259,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["qqlk"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["hqvm"] = ""
 		dict["bjqv"] = ""
@@ -1267,7 +1267,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict.move(fromIndex: 6, toIndex: 2)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1287,7 +1287,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["ihba"] = ""
 		dict["iduf"] = ""
@@ -1296,7 +1296,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["hdsv"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict.move(fromIndex: 3, toIndex: 2)
 		dict["oohq"] = ""
@@ -1304,7 +1304,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict.move(fromIndex: 4, toIndex: 0)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1324,7 +1324,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["oswt"] = ""
 		dict["bony"] = ""
@@ -1333,7 +1333,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["zejw"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["hrtm"] = ""
 		dict.remove(at: 4)
@@ -1341,7 +1341,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict.remove(at: 4)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1361,7 +1361,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		
 		dict["ydlj"] = ""
 		dict["oruh"] = ""
@@ -1370,7 +1370,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["scvk"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		dict["ggek"] = ""
 		dict.move(fromIndex: 3, toIndex: 5)
@@ -1378,7 +1378,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict.remove(at: 4)
 		
 		let changeset_undo = dict.changeset() ?? Dictionary()
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1404,7 +1404,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [0 - 10)
 			do {
@@ -1418,7 +1418,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now add a random number of object [1 - 10)
 			do {
@@ -1432,7 +1432,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1455,7 +1455,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1469,7 +1469,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now remove a random number of object [1 - 15)
 			do {
@@ -1485,7 +1485,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1508,7 +1508,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [0 - 10)
 			do {
@@ -1523,7 +1523,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now insert a random number of object [1 - 10)
 			do {
@@ -1540,7 +1540,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1563,7 +1563,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1578,7 +1578,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of moves: [1 - 30)
 			
@@ -1593,7 +1593,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1622,7 +1622,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1642,7 +1642,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -1682,7 +1682,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1717,7 +1717,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1736,7 +1736,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -1775,7 +1775,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1810,7 +1810,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1830,7 +1830,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -1869,7 +1869,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -1908,7 +1908,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1928,7 +1928,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -1969,7 +1969,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -2004,7 +2004,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2024,7 +2024,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2067,7 +2067,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -2106,7 +2106,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2125,7 +2125,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2165,7 +2165,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -2204,7 +2204,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2224,7 +2224,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2278,7 +2278,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -2313,7 +2313,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2333,7 +2333,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2389,7 +2389,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -2424,7 +2424,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2444,7 +2444,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2497,7 +2497,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -2532,7 +2532,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2552,7 +2552,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2609,7 +2609,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -2648,7 +2648,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2670,7 +2670,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2755,7 +2755,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			let changeset_undo = dict.changeset() ?? Dictionary()
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				let changeset_redo = try dict.undo(changeset_undo) // a <- b
@@ -2790,11 +2790,11 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		// Empty dictionary will be starting state
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		do { // changeset: A
 			
@@ -2811,7 +2811,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			changesets.append(dict.changeset() ?? Dictionary())
 		}
 		
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			try dict.importChangesets(changesets)
@@ -2836,7 +2836,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		dict["cow"] = "moo"
@@ -2845,7 +2845,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["cat"] = "meow"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		do { // changeset: A
 			
@@ -2861,7 +2861,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			changesets.append(dict.changeset() ?? Dictionary())
 		}
 		
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			try dict.importChangesets(changesets)
@@ -2886,13 +2886,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		dict["cow"] = "moo"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		do { // changeset: A
 			
@@ -2908,7 +2908,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			changesets.append(dict.changeset() ?? Dictionary())
 		}
 		
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			try dict.importChangesets(changesets)
@@ -2933,7 +2933,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		dict["cow"] = "moo"
@@ -2942,7 +2942,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["cat"] = "meow"
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		do { // changeset: A
 			
@@ -2958,7 +2958,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			changesets.append(dict.changeset() ?? Dictionary())
 		}
 		
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			try dict.importChangesets(changesets)
@@ -2987,7 +2987,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_a: ZDCOrderedDictionary<String, String>? = nil
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
-		let dict = ZDCOrderedDictionary<String, String>()
+		var dict = ZDCOrderedDictionary<String, String>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		dict["bmfx"] = ""
@@ -2997,7 +2997,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["xcwm"] = ""
 		
 		dict.clearChangeTracking()
-		dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_a = dict
 		
 		do { // changeset: A
 			
@@ -3012,7 +3012,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			changesets.append(dict.changeset() ?? Dictionary())
 		}
 		
-		dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		dict_b = dict
 		
 		do {
 			try dict.importChangesets(changesets)
@@ -3046,7 +3046,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
 			var changesets = Array<Dictionary<String, Any>>()
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -3066,7 +3066,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Make a random number of changesets: [1 - 10)
 			
@@ -3107,7 +3107,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 				}
 			}
 			
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				try dict.importChangesets(changesets)
@@ -3148,7 +3148,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
 			var changesets = Array<Dictionary<String, Any>>()
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -3168,7 +3168,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Make a random number of changesets: [1 - 10)
 			
@@ -3211,7 +3211,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 				}
 			}
 			
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				try dict.importChangesets(changesets)
@@ -3252,7 +3252,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
 			var changesets = Array<Dictionary<String, Any>>()
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -3272,7 +3272,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Make a random number of changesets: [1 - 10)
 			
@@ -3314,7 +3314,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 				}
 			}
 			
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				try dict.importChangesets(changesets)
@@ -3354,7 +3354,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			var changesets = Array<Dictionary<String, Any>>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
@@ -3375,7 +3375,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Make a random number of changesets: [1 - 10)
 			
@@ -3417,7 +3417,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 				}
 			}
 			
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				try dict.importChangesets(changesets)
@@ -3461,7 +3461,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			let dict = ZDCOrderedDictionary<String, String>()
+			var dict = ZDCOrderedDictionary<String, String>()
 			var changesets = Array<Dictionary<String, Any>>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
@@ -3482,7 +3482,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			dict_a = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_a = dict
 			
 			// Make a random number of changesets: [1 - 10)
 			
@@ -3563,7 +3563,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 				}
 			}
 			
-			dict_b = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+			dict_b = dict
 			
 			do {
 				try dict.importChangesets(changesets)
@@ -3610,7 +3610,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["mcfxtodx"] = "" // 4
 		
 		dict.clearChangeTracking()
-		var dict_cloud = dict.immutableCopy() as! ZDCOrderedDictionary<String, String>
+		var dict_cloud = dict
 		
 		do {
 			// - removeObjectAtIndex:4
@@ -3631,9 +3631,6 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		
 			changesets.append(dict.changeset() ?? Dictionary())
 		}
-		
-		dict.makeImmutable()
-		dict_cloud = dict_cloud.copy() as! ZDCOrderedDictionary<String, String>
 	
 		do {
 			// - moveObjectAtIndex:1 toIndex:1
@@ -3643,10 +3640,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			dict_cloud.remove(at: 1)
 		}
 		
-		dict = dict.copy() as! ZDCOrderedDictionary<String, String>
-		dict_cloud.makeImmutable()
-		
-		let dict_preMerge = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		let dict_preMerge = dict
 		
 		do {
 			let redo = try dict.merge(cloudVersion: dict_cloud, pendingChangesets: changesets)
@@ -3689,7 +3683,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		dict["emily"] = "" // 4
 		
 		dict.clearChangeTracking()
-		var dict_cloud = dict.immutableCopy() as! ZDCOrderedDictionary<String, String>
+		var dict_cloud = dict
 		
 		do {
 			// - moveObjectAtIndex: 0 toIndex: 3
@@ -3711,9 +3705,6 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			changesets.append(dict.changeset() ?? Dictionary())
 		}
 		
-		dict.makeImmutable()           // don't allow modification (for now)
-		dict_cloud = dict_cloud.copy() as! ZDCOrderedDictionary<String, String> // allow modification again
-		
 		do {
 			// - removeObjectAtIndex: 1
 			// - moveObjectAtIndex:3 toIndex:1
@@ -3722,10 +3713,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			dict_cloud.move(fromIndex: 3, toIndex: 1)
 		}
 		
-		dict = dict.copy() as! ZDCOrderedDictionary<String, String>
-		dict_cloud.makeImmutable()
-		
-		let dict_preMerge = dict.immutableCopy() as? ZDCOrderedDictionary<String, String>
+		let dict_preMerge = dict
 		
 		do {
 			let redo = try dict.merge(cloudVersion: dict_cloud, pendingChangesets: changesets)
@@ -3778,7 +3766,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			}
 			
 			dict.clearChangeTracking()
-			var dict_cloud = dict.immutableCopy() as! ZDCOrderedDictionary<String, String>
+			var dict_cloud = dict
 			
 			// Make a random number of changesets: [1 - 10)
 			
@@ -3859,9 +3847,6 @@ class test_ZDCOrderedDictionary: XCTestCase {
 				}
 			}
 			
-			dict.makeImmutable()
-			dict_cloud = dict_cloud.copy() as! ZDCOrderedDictionary<String, String>
-			
 			do {
 				
 				// Make a random number of changes (to dict_cloud): [1 - 30)
@@ -3928,10 +3913,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 				}
 			}
 			
-			dict = dict.copy() as! ZDCOrderedDictionary<String, String>
-			dict_cloud.makeImmutable()
-			
-			let dict_preMerge = dict.immutableCopy() as! ZDCOrderedDictionary<String, String>
+			let dict_preMerge = dict
 			
 			do {
 				let redo = try dict.merge(cloudVersion: dict_cloud, pendingChangesets: changesets)
@@ -3956,14 +3938,14 @@ class test_ZDCOrderedDictionary: XCTestCase {
 
 	func test_simpleMerge_1() {
 		
-		let localDict = ZDCOrderedDictionary<String, Int>()
+		var localDict = ZDCOrderedDictionary<String, Int>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		localDict["alice"] = 0
 		localDict["bob"] = 0
 		
 		localDict.clearChangeTracking()
-		let cloudDict = localDict.copy() as! ZDCOrderedDictionary<String, Int>
+		var cloudDict = localDict
 		
 		do { // local changes
 			
@@ -3973,7 +3955,6 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		do { // cloud changes
 			
 			cloudDict["bob"] = 43
-			cloudDict.makeImmutable()
 		}
 		
 		do {
@@ -3990,14 +3971,14 @@ class test_ZDCOrderedDictionary: XCTestCase {
 
 	func test_simpleMerge_2() {
 		
-		let localDict = ZDCOrderedDictionary<String, Int>()
+		var localDict = ZDCOrderedDictionary<String, Int>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		localDict["alice"] = 0
 		localDict["bob"] = 42
 		
 		localDict.clearChangeTracking()
-		let cloudDict = localDict.copy() as! ZDCOrderedDictionary<String, Int>
+		var cloudDict = localDict
 		
 		do { // local changes
 			
@@ -4008,7 +3989,6 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			
 			cloudDict["alice"] = 43
 			cloudDict["bob"] = 43
-			cloudDict.makeImmutable()
 		}
 	
 		do {
@@ -4025,13 +4005,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 
 	func test_simpleMerge_3() {
 		
-		let localDict = ZDCOrderedDictionary<String, Int>()
+		var localDict = ZDCOrderedDictionary<String, Int>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		localDict["bob"] = 42
 		
 		localDict.clearChangeTracking()
-		let cloudDict = localDict.copy() as! ZDCOrderedDictionary<String, Int>
+		var cloudDict = localDict
 		
 		do { // local changes
 			
@@ -4042,7 +4022,6 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			
 			cloudDict["alice"] = 43
 			cloudDict["bob"] = 43
-			cloudDict.makeImmutable()
 		}
 	
 		do {
@@ -4059,13 +4038,13 @@ class test_ZDCOrderedDictionary: XCTestCase {
 
 	func test_simpleMerge_4() {
 	
-		let localDict = ZDCOrderedDictionary<String, Int>()
+		var localDict = ZDCOrderedDictionary<String, Int>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		localDict["bob"] = 42
 		
 		localDict.clearChangeTracking()
-		let cloudDict = localDict.copy() as! ZDCOrderedDictionary<String, Int>
+		var cloudDict = localDict
 		
 		do { // local changes
 			
@@ -4075,7 +4054,6 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		do { // cloud changes
 			
 			cloudDict["bob"] = 43
-			cloudDict.makeImmutable()
 		}
 	
 		do {
@@ -4092,14 +4070,14 @@ class test_ZDCOrderedDictionary: XCTestCase {
 
 	func test_simpleMerge_5() {
 	
-		let localDict = ZDCOrderedDictionary<String, Int>()
+		var localDict = ZDCOrderedDictionary<String, Int>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		localDict["alice"] = 42
 		localDict["bob"] = 42
 		
 		localDict.clearChangeTracking()
-		let cloudDict = localDict.copy() as! ZDCOrderedDictionary<String, Int>
+		var cloudDict = localDict
 		
 		do { // local changes
 			
@@ -4109,7 +4087,6 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		do { // cloud changes
 			
 			cloudDict["alice"] = nil
-			cloudDict.makeImmutable()
 		}
 	
 		do {
@@ -4130,14 +4107,15 @@ class test_ZDCOrderedDictionary: XCTestCase {
 
 	func test_complexMerge_1() {
 	
-		let localDict = ZDCOrderedDictionary<String, ZDCOrderedDictionary<String, String>>()
+		var localDict = ZDCOrderedDictionary<String, ZDCOrderedDictionary<String, String>>()
 		var changesets = Array<Dictionary<String, Any>>()
 		
 		localDict["dict"] = ZDCOrderedDictionary<String, String>()
 		localDict["dict"]?["dog"] = "bark"
 		
 		localDict.clearChangeTracking()
-		let cloudDict = ZDCOrderedDictionary(zdc: localDict, copyValues: true)
+	//	var cloudDict = ZDCOrderedDictionary(zdc: localDict, copyValues: true)
+		var cloudDict = localDict
 		
 		do { // local changes
 			
@@ -4147,7 +4125,6 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		do { // cloud changes
 			
 			cloudDict["dict"]?["duck"] = "quack"
-			cloudDict.makeImmutable()
 		}
 		
 		XCTAssert(localDict["dict"]?["duck"] == nil)
@@ -4164,4 +4141,5 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
+	
 }

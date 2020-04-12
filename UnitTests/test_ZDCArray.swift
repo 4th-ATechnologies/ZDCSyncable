@@ -14,9 +14,9 @@ class test_ZDCArray: XCTestCase {
 		return String((0..<length).map{ _ in alphabet.randomElement()! })
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Undo - Basic
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK:- Undo - Basic
+	// ====================================================================================================
 	
 	func test_undo_basic_1() {
 		
@@ -27,11 +27,11 @@ class test_ZDCArray: XCTestCase {
 		//
 		// - add
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		// Empty array will be starting state
 		//
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.append("cow")
 		array.append("duck")
@@ -39,7 +39,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array.count == 2)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo)
@@ -53,7 +53,7 @@ class test_ZDCArray: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-	
+
 	func test_undo_basic_2() {
 		
 		var array_a: ZDCArray<String>? = nil
@@ -63,18 +63,18 @@ class test_ZDCArray: XCTestCase {
 		//
 		// - remove
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.remove("cow")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo)
@@ -98,18 +98,18 @@ class test_ZDCArray: XCTestCase {
 		//
 		// - replace
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array[0] = "horse"
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo)
@@ -133,13 +133,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Can we undo/redo basic `moveObjectAtIndex:toIndex:` functionality ?
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 0, toIndex: 1)
 		
@@ -147,7 +147,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[1] == "cow")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo)
@@ -162,10 +162,10 @@ class test_ZDCArray: XCTestCase {
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Combo: add + X
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: Undo: Combo: add + X
+	// ====================================================================================================
+
 	func test_undo_add_add() {
 		
 		var array_a: ZDCArray<String>? = nil
@@ -175,13 +175,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Add + Add
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.append("dog")
 		array.append("cat")
@@ -189,7 +189,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array.count == 4);
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 	
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -213,13 +213,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Add + Remove
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.append("dog")
 		array.remove("cow")
@@ -227,7 +227,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array.count == 2);
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -251,13 +251,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Add + Insert
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.append("dog")
 		array.insert("cat", at: 0)
@@ -269,7 +269,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[3] == "dog")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -293,13 +293,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Add + Move
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.append("dog")
 		array.move(fromIndex: 0, toIndex: 1)
@@ -307,7 +307,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array.count == 3)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -322,10 +322,10 @@ class test_ZDCArray: XCTestCase {
 		}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Combo: remove + X
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: Undo: Combo: remove + X
+	// ====================================================================================================
+
 	func test_undo_remove_add() {
 		
 		var array_a: ZDCArray<String>? = nil
@@ -335,13 +335,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Remove + Add
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.remove("cow")
 		array.append("dog")
@@ -349,7 +349,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array.count == 2);
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -373,13 +373,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Remove + Remove
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.remove("cow")
 		array.remove("duck")
@@ -387,7 +387,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array.count == 0);
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -411,13 +411,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Remove + Insert
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.remove("cow")
 		array.insert("dog", at: 0)
@@ -427,7 +427,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[1] == "duck")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -451,14 +451,14 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Remove + Move
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		array.append("dog")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.remove("cow")
 		array.move(fromIndex: 0, toIndex: 1)
@@ -468,7 +468,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[1] == "duck")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -483,9 +483,9 @@ class test_ZDCArray: XCTestCase {
 		}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Combo: insert + X
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Undo: Combo: insert + X
+	// ====================================================================================================
 	
 	func test_undo_insert_add() {
 		
@@ -496,13 +496,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Insert + Add
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.insert("dog", at: 1)
 		array.append("cat")
@@ -514,7 +514,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[3] == "cat")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -538,13 +538,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Insert + Remove
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.insert("dog", at: 1)
 		array.remove("cow")
@@ -554,7 +554,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[1] == "duck")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -578,13 +578,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Insert + Insert
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.insert("dog", at: 1)
 		array.insert("cat", at: 1)
@@ -596,7 +596,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[3] == "duck")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -620,13 +620,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Insert + Move
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.insert("dog", at: 1)
 		array.move(fromIndex: 2, toIndex: 0)
@@ -637,7 +637,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[2] == "dog")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -661,13 +661,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Insert + Move
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.insert("dog", at: 1)
 		array.move(fromIndex: 0, toIndex: 2)
@@ -678,7 +678,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[2] == "cow")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -693,9 +693,9 @@ class test_ZDCArray: XCTestCase {
 		}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Combo: move + X
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Undo: Combo: move + X
+	// ====================================================================================================
 	
 	func test_undo_move_add() {
 		
@@ -706,13 +706,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Move + Add
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 0, toIndex: 1)
 		array.append("dog")
@@ -723,7 +723,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[2] == "dog")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -747,13 +747,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Move + Remove
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 0, toIndex: 1)
 		array.remove("cow")
@@ -762,7 +762,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[0] == "duck")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -786,13 +786,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Move + Insert
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 0, toIndex: 1)
 		array.insert("dog", at: 1)
@@ -803,7 +803,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[2] == "cow")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -827,13 +827,13 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Move + Move
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 0, toIndex: 1)
 		array.move(fromIndex: 0, toIndex: 1)
@@ -842,7 +842,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[1] == "duck")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -866,7 +866,7 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Move + Move
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
@@ -874,7 +874,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("cat")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 1, toIndex: 3)
 		array.move(fromIndex: 2, toIndex: 0)
@@ -885,7 +885,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[3] == "duck")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -909,7 +909,7 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Move + Move
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
@@ -917,13 +917,13 @@ class test_ZDCArray: XCTestCase {
 		array.append("cat")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 0, toIndex: 3)
 		array.move(fromIndex: 2, toIndex: 1)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -947,7 +947,7 @@ class test_ZDCArray: XCTestCase {
 		//
 		// Move + Move
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("cow")
 		array.append("duck")
@@ -955,7 +955,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("cat")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 0, toIndex: 3)
 		array.move(fromIndex: 1, toIndex: 2)
@@ -966,7 +966,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[3] == "cow")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -981,10 +981,10 @@ class test_ZDCArray: XCTestCase {
 		}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Previous Failures
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: Undo: Previous Failures
+	// ====================================================================================================
+
 	func test_failure_1() {
 		
 		// UNIT TEST FAILURE:
@@ -999,7 +999,7 @@ class test_ZDCArray: XCTestCase {
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("alice")
 		array.append("bob")
@@ -1008,14 +1008,14 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.remove(at: 3)
 		array.remove(at: 1)
 		array.remove(at: 2)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1043,7 +1043,7 @@ class test_ZDCArray: XCTestCase {
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("alice")
 		array.append("bob")
@@ -1052,13 +1052,13 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 1, toIndex:3)
 		array.move(fromIndex: 1, toIndex:3)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1087,7 +1087,7 @@ class test_ZDCArray: XCTestCase {
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("alice")
 		array.append("bob")
@@ -1096,14 +1096,14 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 3, toIndex:2)
 		array.append("zion")
 		array.move(fromIndex: 5, toIndex:0)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1132,7 +1132,7 @@ class test_ZDCArray: XCTestCase {
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("alice")
 		array.append("bob")
@@ -1141,14 +1141,14 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.append("xan")
 		array.append("zion")
 		array.move(fromIndex: 3, toIndex:6)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1176,7 +1176,7 @@ class test_ZDCArray: XCTestCase {
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("alice")
 		array.append("bob")
@@ -1185,13 +1185,13 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 4, toIndex:1)
 		array.remove(at: 0)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1220,7 +1220,7 @@ class test_ZDCArray: XCTestCase {
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("alice")
 		array.append("bob")
@@ -1229,14 +1229,14 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.remove(at: 2)
 		array.move(fromIndex: 3, toIndex:0)
 		array.remove(at: 3)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1265,7 +1265,7 @@ class test_ZDCArray: XCTestCase {
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("alice")
 		array.append("bob")
@@ -1274,14 +1274,14 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.remove(at: 2)
 		array.move(fromIndex: 2, toIndex:3)
 		array.remove(at: 3)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1310,7 +1310,7 @@ class test_ZDCArray: XCTestCase {
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("alice")
 		array.append("bob")
@@ -1319,14 +1319,14 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.move(fromIndex: 2, toIndex:4)
 		array.move(fromIndex: 2, toIndex:3)
 		array.remove(at: 1)
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1353,7 +1353,7 @@ class test_ZDCArray: XCTestCase {
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
 		
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 		
 		array.append("alice")
 		array.append("bob")
@@ -1362,7 +1362,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 		
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 		
 		array.append("frank")
 		array.move(fromIndex: 2, toIndex:5)
@@ -1370,7 +1370,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("gwen")
 		
 		let changeset_undo = array.changeset() ?? Dictionary()
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 		
 		do {
 			let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1385,10 +1385,10 @@ class test_ZDCArray: XCTestCase {
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Fuzz: Basic
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: Undo: Fuzz: Basic
+	// ====================================================================================================
+
 	func test_undo_fuzz_add() {
 		
 		for _ in 0 ..< 1_000 { autoreleasepool {
@@ -1396,7 +1396,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [0 - 10)
 			do {
@@ -1410,7 +1410,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now add a random number of object [1 - 10)
 			do {
@@ -1424,7 +1424,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1449,7 +1449,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1473,7 +1473,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now remove a random number of object [1 - 15)
 			do {
@@ -1499,7 +1499,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1534,7 +1534,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [0 - 10)
 			do {
@@ -1552,7 +1552,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now insert a random number of object [1 - 10)
 			do {
@@ -1571,7 +1571,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1605,7 +1605,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1629,7 +1629,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of moves: [1 - 30)
 			
@@ -1654,7 +1654,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1680,10 +1680,10 @@ class test_ZDCArray: XCTestCase {
 		}}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Fuzz: Combo: add + x
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: Undo: Fuzz: Combo: add + x
+	// ====================================================================================================
+
 	func test_undo_fuzz_add_remove() {
 		
 		let DEBUG_THIS_METHOD = false
@@ -1693,7 +1693,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1717,7 +1717,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -1757,7 +1757,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1792,7 +1792,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1816,7 +1816,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -1855,7 +1855,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1890,7 +1890,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -1914,7 +1914,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -1955,7 +1955,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -1980,10 +1980,10 @@ class test_ZDCArray: XCTestCase {
 			}
 		}}
 	}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Fuzz: Combo: remove + x
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// ====================================================================================================
+	// MARK: Undo: Fuzz: Combo: remove + x
+	// ====================================================================================================
 	
 	func test_undo_fuzz_remove_insert() {
 		
@@ -1994,7 +1994,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2018,7 +2018,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2059,7 +2059,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -2094,7 +2094,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2118,7 +2118,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2161,7 +2161,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -2187,10 +2187,10 @@ class test_ZDCArray: XCTestCase {
 		}}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Fuzz: Combo: insert + x
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: Undo: Fuzz: Combo: insert + x
+	// ====================================================================================================
+
 	func test_undo_fuzz_insert_move() {
 		
 		let DEBUG_THIS_METHOD = false
@@ -2200,7 +2200,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2220,7 +2220,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2262,7 +2262,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -2288,9 +2288,9 @@ class test_ZDCArray: XCTestCase {
 		}}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Fuzz: Triplets
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Undo: Fuzz: Triplets
+	// ====================================================================================================
 	
 	func test_undo_fuzz_add_remove_insert() {
 		
@@ -2301,7 +2301,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2321,7 +2321,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2375,7 +2375,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -2410,7 +2410,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2434,7 +2434,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2490,7 +2490,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -2525,7 +2525,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2545,7 +2545,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2600,7 +2600,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -2635,7 +2635,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2655,7 +2655,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2712,7 +2712,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -2738,9 +2738,9 @@ class test_ZDCArray: XCTestCase {
 		}}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Undo: Fuzz: Everything
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Undo: Fuzz: Everything
+	// ====================================================================================================
 	
 	func test_undo_fuzz_everything() {
 		
@@ -2751,7 +2751,7 @@ class test_ZDCArray: XCTestCase {
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
 			
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -2771,7 +2771,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -2851,7 +2851,7 @@ class test_ZDCArray: XCTestCase {
 			}
 			
 			let changeset_undo = array.changeset() ?? Dictionary()
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 			
 			do {
 				let changeset_redo = try array.undo(changeset_undo) // a <- b
@@ -2877,9 +2877,9 @@ class test_ZDCArray: XCTestCase {
 		}}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Import: Basic
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK:- Import: Basic
+	// ====================================================================================================
 	
 	func test_import_basic_1() {
 		
@@ -2887,10 +2887,10 @@ class test_ZDCArray: XCTestCase {
 		var array_b: ZDCArray<String>? = nil
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 	
 		// Empty dictionary will be starting state
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 	
 		do { // changeset: A
 	
@@ -2907,7 +2907,7 @@ class test_ZDCArray: XCTestCase {
 			changesets.append(array.changeset() ?? Dictionary())
 		}
 	
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 	
 		do {
 			try array.importChangesets(changesets)
@@ -2933,7 +2933,7 @@ class test_ZDCArray: XCTestCase {
 		var array_b: ZDCArray<String>? = nil
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 	
 		array.append("cow")
 		array.append("duck")
@@ -2941,7 +2941,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("cat")
 	
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 	
 		do { // changeset: A
 	
@@ -2957,7 +2957,7 @@ class test_ZDCArray: XCTestCase {
 			changesets.append(array.changeset() ?? Dictionary())
 		}
 	
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 	
 		do {
 			try array.importChangesets(changesets)
@@ -2983,12 +2983,12 @@ class test_ZDCArray: XCTestCase {
 		var array_b: ZDCArray<String>? = nil
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 	
 		array.append("cow")
 	
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 	
 		do { // changeset: A
 	
@@ -3004,7 +3004,7 @@ class test_ZDCArray: XCTestCase {
 			changesets.append(array.changeset() ?? Dictionary())
 		}
 	
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 	
 		do {
 			try array.importChangesets(changesets)
@@ -3030,7 +3030,7 @@ class test_ZDCArray: XCTestCase {
 		var array_b: ZDCArray<String>? = nil
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 	
 		array.append("cow")
 		array.append("duck")
@@ -3038,7 +3038,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("cat")
 	
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 	
 		do { // changeset: A
 	
@@ -3054,7 +3054,7 @@ class test_ZDCArray: XCTestCase {
 			changesets.append(array.changeset() ?? Dictionary())
 		}
 	
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 	
 		do {
 			try array.importChangesets(changesets)
@@ -3074,9 +3074,9 @@ class test_ZDCArray: XCTestCase {
 		}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Import: Failures
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Import: Failures
+	// ====================================================================================================
 
 	func test_import_failure_1() {
 		
@@ -3084,7 +3084,7 @@ class test_ZDCArray: XCTestCase {
 		var array_b: ZDCArray<String>? = nil
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 	
 		// UNIT TEST FAILURE:
 		// -----------------
@@ -3103,7 +3103,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 	
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 	
 		do { // changeset: A
 	
@@ -3118,7 +3118,7 @@ class test_ZDCArray: XCTestCase {
 			changesets.append(array.changeset() ?? Dictionary())
 		}
 	
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 	
 		do {
 			try array.importChangesets(changesets)
@@ -3144,7 +3144,7 @@ class test_ZDCArray: XCTestCase {
 		var array_b: ZDCArray<String>? = nil
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 	
 		// UNIT TEST FAILURE:
 		// -----------------
@@ -3165,7 +3165,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 	
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 	
 		do { // changeset: A
 	
@@ -3182,7 +3182,7 @@ class test_ZDCArray: XCTestCase {
 			changesets.append(array.changeset() ?? Dictionary())
 		}
 	
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 	
 		do {
 			try array.importChangesets(changesets)
@@ -3208,7 +3208,7 @@ class test_ZDCArray: XCTestCase {
 		var array_b: ZDCArray<String>? = nil
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 	
 		// UNIT TEST FAILURE:
 		// -----------------
@@ -3229,7 +3229,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 	
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 	
 		do { // changeset: A
 	
@@ -3246,7 +3246,7 @@ class test_ZDCArray: XCTestCase {
 			changesets.append(array.changeset() ?? Dictionary())
 		}
 	
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 	
 		do {
 			try array.importChangesets(changesets)
@@ -3272,7 +3272,7 @@ class test_ZDCArray: XCTestCase {
 		var array_b: ZDCArray<String>? = nil
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let array = ZDCArray<String>()
+		var array = ZDCArray<String>()
 	
 		// UNIT TEST FAILURE:
 		// -----------------
@@ -3293,7 +3293,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("emily")
 	
 		array.clearChangeTracking()
-		array_a = array.immutableCopy() as? ZDCArray<String>
+		array_a = array
 	
 		do { // changeset: A
 	
@@ -3310,7 +3310,7 @@ class test_ZDCArray: XCTestCase {
 			changesets.append(array.changeset() ?? Dictionary())
 		}
 	
-		array_b = array.immutableCopy() as? ZDCArray<String>
+		array_b = array
 	
 		do {
 			try array.importChangesets(changesets)
@@ -3344,7 +3344,7 @@ class test_ZDCArray: XCTestCase {
 			var array_b: ZDCArray<String>? = nil
 			var changesets = Array<Dictionary<String, Any>>()
 	
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 	
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -3364,7 +3364,7 @@ class test_ZDCArray: XCTestCase {
 			}
 	
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 	
 			// Make a random number of changesets: [1 - 10)
 	
@@ -3405,7 +3405,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 	
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 	
 			do {
 				try array.importChangesets(changesets)
@@ -3446,7 +3446,7 @@ class test_ZDCArray: XCTestCase {
 			var array_b: ZDCArray<String>? = nil
 			var changesets = Array<Dictionary<String, Any>>()
 	
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 	
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -3466,7 +3466,7 @@ class test_ZDCArray: XCTestCase {
 			}
 	
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 	
 			// Make a random number of changesets: [1 - 10)
 	
@@ -3509,7 +3509,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 	
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 	
 			do {
 				try array.importChangesets(changesets)
@@ -3550,7 +3550,7 @@ class test_ZDCArray: XCTestCase {
 			var array_b: ZDCArray<String>? = nil
 			var changesets = Array<Dictionary<String, Any>>()
 	
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 	
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -3570,7 +3570,7 @@ class test_ZDCArray: XCTestCase {
 			}
 	
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 	
 			// Make a random number of changesets: [1 - 10)
 	
@@ -3612,7 +3612,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 	
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 	
 			do {
 				try array.importChangesets(changesets)
@@ -3653,7 +3653,7 @@ class test_ZDCArray: XCTestCase {
 			var array_b: ZDCArray<String>? = nil
 			var changesets = Array<Dictionary<String, Any>>()
 	
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 	
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -3677,7 +3677,7 @@ class test_ZDCArray: XCTestCase {
 			}
 	
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 	
 			// Make a random number of changesets: [1 - 10)
 	
@@ -3719,7 +3719,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 	
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 	
 			do {
 				try array.importChangesets(changesets)
@@ -3764,7 +3764,7 @@ class test_ZDCArray: XCTestCase {
 			var array_b: ZDCArray<String>? = nil
 			var changesets = Array<Dictionary<String, Any>>()
 	
-			let array = ZDCArray<String>()
+			var array = ZDCArray<String>()
 	
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -3788,7 +3788,7 @@ class test_ZDCArray: XCTestCase {
 			}
 	
 			array.clearChangeTracking()
-			array_a = array.immutableCopy() as? ZDCArray<String>
+			array_a = array
 	
 			// Make a random number of changesets: [1 - 10)
 	
@@ -3873,7 +3873,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 	
-			array_b = array.immutableCopy() as? ZDCArray<String>
+			array_b = array
 	
 			do {
 				try array.importChangesets(changesets)
@@ -3904,20 +3904,20 @@ class test_ZDCArray: XCTestCase {
 		}}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Merge - Simple
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK:- Merge - Simple
+	// ====================================================================================================
 
 	func test_simpleMerge_1() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let local = ZDCArray<String>()
+		var local = ZDCArray<String>()
 		local.append("alice")
 		local.append("bob")
 	
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCArray<String>
+		var cloud = local
 	
 		do { // local changes
 	
@@ -3929,7 +3929,6 @@ class test_ZDCArray: XCTestCase {
 	
 			cloud.remove("bob")
 			cloud.append("dave")
-			cloud.makeImmutable()
 		}
 	
 		do {
@@ -3951,12 +3950,12 @@ class test_ZDCArray: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let local = ZDCArray<String>()
+		var local = ZDCArray<String>()
 		local.append("alice")
 		local.append("bob")
 	
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCArray<String>
+		var cloud = local
 	
 		do { // local changes
 	
@@ -3970,7 +3969,6 @@ class test_ZDCArray: XCTestCase {
 			cloud.append("dave")
 			cloud.remove("bob")
 			cloud.append("emily")
-			cloud.makeImmutable()
 		}
 	
 		do {
@@ -3993,11 +3991,11 @@ class test_ZDCArray: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let local = ZDCArray<String>()
+		var local = ZDCArray<String>()
 		local.append("alice")
 	
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCArray<String>
+		var cloud = local
 	
 		do { // local changes
 	
@@ -4009,7 +4007,6 @@ class test_ZDCArray: XCTestCase {
 			cloud.append("carol")
 			cloud.remove("alice")
 			cloud.append("dave")
-			cloud.makeImmutable()
 		}
 	
 		do {
@@ -4031,11 +4028,11 @@ class test_ZDCArray: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let local = ZDCArray<String>()
+		var local = ZDCArray<String>()
 		local.append("alice")
 	
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCArray<String>
+		var cloud = local
 	
 		do { // local changes
 	
@@ -4046,7 +4043,6 @@ class test_ZDCArray: XCTestCase {
 	
 			cloud.remove("alice")
 			cloud.append("carol")
-			cloud.makeImmutable()
 		}
 	
 		do {
@@ -4067,12 +4063,12 @@ class test_ZDCArray: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let local = ZDCArray<String>()
+		var local = ZDCArray<String>()
 		local.append("alice")
 		local.append("bob")
 	
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCArray<String>
+		var cloud = local
 	
 		do { // local changes
 	
@@ -4083,7 +4079,6 @@ class test_ZDCArray: XCTestCase {
 		do { // cloud changes
 	
 			cloud.remove("alice")
-			cloud.makeImmutable()
 		}
 	
 		do {
@@ -4101,19 +4096,19 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(local.contains("carol"))
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Merge - With Duplicates
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Merge - With Duplicates
+	// ====================================================================================================
 
 	func test_mergeWithDuplicates_1() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let local = ZDCArray<String>()
+		var local = ZDCArray<String>()
 		local.append("alice")
 	
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCArray<String>
+		var cloud = local
 	
 		do { // local changes
 	
@@ -4123,7 +4118,6 @@ class test_ZDCArray: XCTestCase {
 		do { // cloud changes
 	
 			cloud.append("alice")
-			cloud.makeImmutable()
 		}
 	
 		do {
@@ -4143,12 +4137,12 @@ class test_ZDCArray: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let local = ZDCArray<String>()
+		var local = ZDCArray<String>()
 		local.append("alice")
 		local.append("alice")
 	
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCArray<String>
+		var cloud = local
 	
 		do { // local changes
 	
@@ -4159,7 +4153,6 @@ class test_ZDCArray: XCTestCase {
 	
 			cloud.remove(at: 0)
 			cloud.append("bob")
-			cloud.makeImmutable()
 		}
 	
 		do {
@@ -4179,12 +4172,12 @@ class test_ZDCArray: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let local = ZDCArray<String>()
+		var local = ZDCArray<String>()
 		local.append("alice")
 		local.append("alice")
 	
 		local.clearChangeTracking()
-		let cloud = local.copy() as! ZDCArray<String>
+		var cloud = local
 	
 		do { // local changes
 	
@@ -4195,7 +4188,6 @@ class test_ZDCArray: XCTestCase {
 		do { // cloud changes
 	
 			cloud.append("bob")
-			cloud.makeImmutable()
 		}
 		
 		do {
@@ -4210,5 +4202,5 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(local.contains("alice"))
 		XCTAssert(local.count == 2)
 	}
-
+	
 }

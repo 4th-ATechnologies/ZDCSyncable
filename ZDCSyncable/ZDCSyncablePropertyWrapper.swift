@@ -79,15 +79,23 @@ public struct Syncable<T>: ZDCSyncableProperty where T: Equatable {
 		}
 	}
 	
-	public func getCurrentValue() -> Any? {
+	/// Allows you to clear the internal change tracking information.
+	/// 
+	public func clearChangeTracking() {
+	
+		_ref.originalValue = _ref.value
+		_ref.hasChanges = false
+	}
+	
+	internal func getCurrentValue() -> Any? {
 		return self.wrappedValue
 	}
 	
-	public func getOriginalValue() -> Any? {
+	internal func getOriginalValue() -> Any? {
 		return self.originalValue
 	}
 	
-	public func trySetValue(_ value: Any?) -> Bool {
+	internal func trySetValue(_ value: Any?) -> Bool {
 		
 		if let prop = value as? ZDCSyncableProperty {
 			if let cast_value = prop.getCurrentValue() as? T {
@@ -105,13 +113,7 @@ public struct Syncable<T>: ZDCSyncableProperty where T: Equatable {
 		return false
 	}
 	
-	public func clearChangeTracking() {
-	
-		_ref.originalValue = _ref.value
-		_ref.hasChanges = false
-	}
-	
-	public func isValueEqual(_ value: Any) -> Bool {
+	internal func isValueEqual(_ value: Any) -> Bool {
 		
 		if let prop = value as? ZDCSyncableProperty {
 			if let value = prop.getCurrentValue() as? T {

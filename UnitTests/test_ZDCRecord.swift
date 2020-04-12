@@ -241,6 +241,8 @@ class test_ZDCRecord: XCTestCase {
 		localRecord.dict["dog"] = "bark"
 	
 		localRecord.clearChangeTracking()
+		XCTAssert(!localRecord.hasChanges)
+		
 		let cloudRecord = ComplexRecord(copy: localRecord)
 	
 		do { // local changes

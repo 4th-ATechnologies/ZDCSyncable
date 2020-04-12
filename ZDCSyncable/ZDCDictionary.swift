@@ -1,12 +1,20 @@
-/**
- * ZDCSyncable
- * https://github.com/4th-ATechnologies/ZDCSyncable
-**/
+/// ZDCSyncable
+/// https://github.com/4th-ATechnologies/ZDCSyncable
+///
+/// Undo, redo & merge capabilities for plain objects in Swift.
 
 import Foundation
 
-public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>: ZDCObject, ZDCSyncable, Codable, Collection {
-	
+/// ZDCDictionary provides a replacement for Swift's Dictionary.
+/// It maintains a similar API, and keeps the same value semantics (by also being a struct).
+///
+/// ZDCDictionary adds the following:
+/// - change tracking
+/// - undo/redo support
+/// - ability to merge changes from remote sources
+///
+public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>: ZDCSyncableCollection, Codable, Collection, Equatable {
+
 	enum CodingKeys: String, CodingKey {
 		case dict = "dict"
 	}
@@ -18,73 +26,51 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 	
 	private var dict: Dictionary<Key, Value>
 	
-	lazy private var originalValues: Dictionary<Key, Any> = Dictionary()
+	private var originalValues: Dictionary<Key, Any> = Dictionary()
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Init
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Init
+	// ====================================================================================================
 
-	public required init() {
+	/// Creates an empty dictionary.
+	///
+	public init() {
+		
 		dict = Dictionary()
-		super.init()
 	}
-	
+
 	public init(minimumCapacity: Int) {
+		
 		dict = Dictionary(minimumCapacity: minimumCapacity)
-		super.init()
 	}
-	
+
 	public init<S>(uniqueKeysWithValues keysAndValues: S) where S : Sequence, S.Element == (Key, Value) {
+		
 		dict = Dictionary(minimumCapacity: keysAndValues.underestimatedCount)
-		super.init()
 		
 		for (key, value) in keysAndValues {
 			
-			self[key] = value
+		//	self[key] = value // not tracking changes during init
+			dict[key] = value
 		}
 	}
-	
-	public init(zdc source: ZDCDictionary<Key, Value>, copyValues: Bool = false) {
+
+	public init(copy source: ZDCDictionary<Key, Value>, retainChangeTracking: Bool) {
 		
-		dict = Dictionary(minimumCapacity: source.count)
-		super.init()
+		dict = source.dict
 		
-		for (key, value) in source {
+		if retainChangeTracking {
 			
-			var copied = false
-			if copyValues, let value = value as? NSCopying {
-				
-				if let copiedValue = value.copy(with: nil) as? Value {
-					self[key] = copiedValue
-					copied = true
-				}
-			}
-			
-			if !copied {
-				self[key] = value
+			for (key, originalValue) in source.originalValues {
+				self.originalValues[key] = originalValue
 			}
 		}
 	}
-	
-	public required init(copy source: ZDCObject) {
-		
-		if let source = source as? ZDCDictionary<Key, Value> {
-			
-			self.dict = source.dict
-			super.init(copy: source)
-			
-			self.originalValues = source.originalValues
-		}
-		else {
-			
-			fatalError("init(copy:) invoked with invalid source")
-		}
-	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Properties
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
+	// ====================================================================================================
+	// MARK: Properties
+	// ====================================================================================================
+
 	/// Returns a copy of the underlying Array being wrapped.
 	/// This is a read-only copy - changes to the returned copy will not be reflected in this instance.
 	///
@@ -94,13 +80,13 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 			return copy
 		}
 	}
-	
+
 	public var isEmpty: Bool {
 		get {
 			return dict.isEmpty
 		}
 	}
-	
+
 	public var count: Int {
 		get {
 			return dict.count
@@ -113,20 +99,20 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Reading
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK: Reading
+	// ====================================================================================================
 	
 	public func randomElement() -> (key: Key, value: Value)? {
 		
 		return dict.randomElement()
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Writing
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	public func removeValue(forKey key: Key) -> Value? {
+	// ====================================================================================================
+	// MARK: Writing
+	// ====================================================================================================
+
+	public mutating func removeValue(forKey key: Key) -> Value? {
 		
 		let value = dict[key]
 		if (value != nil) {
@@ -136,22 +122,18 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 		
 		return value
 	}
-	
-	public func removeAll() {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+
+	public mutating func removeAll() {
 		
 		for key in dict.keys {
 			self._willRemove(forKey: key)
 			dict[key] = nil
 		}
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Subscripts
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// ====================================================================================================
+	// MARK: Subscripts
+	// ====================================================================================================
 	
 	public subscript(key: Key) -> Value? {
 		
@@ -160,20 +142,16 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 		}
 		
 		set(value) {
-			
-			if (self.isImmutable) {
-				ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-			}
-			
-			if (value == nil)
-			{
+		
+			if value == nil {
+		
 				if dict[key] != nil {
 					self._willRemove(forKey: key)
 					dict[key] = nil
 				}
-			}
-			else
-			{
+		
+			} else {
+		
 				if dict[key] == nil {
 					self._willInsert(forKey: key)
 				} else {
@@ -183,16 +161,16 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 			}
 		}
 	}
-	
+
 	public subscript(position: Dictionary<Key, Value>.Index) -> Dictionary<Key, Value>.Element {
 		get {
 			return dict[position]
 		}
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Enumeration
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// ====================================================================================================
+	// MARK: Enumeration
+	// ====================================================================================================
 	
 	public var startIndex: Dictionary<Key, Value>.Index {
 		return dict.startIndex
@@ -205,107 +183,77 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 	public func index(after i: Dictionary<Key, Value>.Index) -> Dictionary<Key, Value>.Index {
 		return dict.index(after: i)
 	}
-		
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Equality
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	// Tricky pitfall:
+
+	// ====================================================================================================
+	// MARK: Equality
+	// ====================================================================================================
+
+	// Compares only the underlying rawDictionary for equality.
+	// The changeset information isn't part of the comparison.
 	//
-	// This function won't get called because this is a subclass of NSObject.
-	// There's a good description of the technical reasons why here:
-	// https://stackoverflow.com/questions/42283715/overload-for-custom-class-is-not-always-called
-	//
-	// The solution is to override isEqual() instead.
-	//
-//	static func == (lhs: ZDCDictionary<Key, Value>, rhs: ZDCDictionary<Key, Value>) -> Bool {
-//
-//		return (lhs.dict == rhs.dict)
-//	}
-	
-	override public func isEqual(_ object: Any?) -> Bool {
-		
-		if let another = object as? ZDCDictionary<Key, Value> {
-			return isEqualToDictionary(another)
-		}
-		else {
-			return false
-		}
+	public static func == (lhs: ZDCDictionary<Key, Value>, rhs: ZDCDictionary<Key, Value>) -> Bool {
+
+		return (lhs.dict == rhs.dict)
 	}
 	
-	public func isEqualToDictionary(_ another: ZDCDictionary<Key, Value>) -> Bool {
+	// ====================================================================================================
+	// MARK: Change Tracking Internals
+	// ====================================================================================================
+
+	private mutating func _willUpdate(forKey key: Key) {
 		
-		// Nope, this doesn't work:
-		//	return (self == another)
-		//           ^^ FAIL
-		// This actually calls isEqual() again, leading to an infinite loop :(
-		
-		return (self.dict == another.dict)
-	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: Change Tracking Internals
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	private func _willUpdate(forKey key: Key) {
-		
-		if (originalValues[key] == nil) {
+		if originalValues[key] == nil {
 			originalValues[key] = dict[key]
 		}
 	}
-	
-	private func _willInsert(forKey key: Key) {
+
+	private mutating func _willInsert(forKey key: Key) {
 		
-		if (originalValues[key] == nil) {
+		if originalValues[key] == nil {
 			originalValues[key] = ZDCNull.sharedInstance()
 		}
 	}
-	
-	private func _willRemove(forKey key: Key) {
+
+	private mutating func _willRemove(forKey key: Key) {
 		
 		let originalValue = originalValues[key]
-		if (originalValue == nil)
-		{
-			originalValues[key] = dict[key];
-		}
-		else if (originalValue is ZDCNull)
-		{
+		if originalValue == nil {
+			
+			originalValues[key] = dict[key]
+		
+		} else if originalValue is ZDCNull {
+			
 			// Value was added within snapshot, and is now being removed
 			originalValues[key] = nil
 		}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: ZDCObject
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	override public func makeImmutable() {
-		
-		super.makeImmutable()
+	// ====================================================================================================
+	// MARK: ZDCSyncable
+	// ====================================================================================================
 
-		for (_, value) in dict {
-			
-			if let zdc_value = value as? ZDCObject {
-				zdc_value.makeImmutable()
-			}
-		}
-	}
-	
-	override public var hasChanges: Bool {
+	public var hasChanges: Bool {
 		
 		get {
-			if super.hasChanges {
-				return true
-			}
 			
-			if (originalValues.count  > 0) {
+			if originalValues.count  > 0 {
 				return true
 			}
 			
 			for (_, value) in dict {
 				
-				if let zdc_value = value as? ZDCObject {
-					if zdc_value.hasChanges {
+				if let zdc_obj = value as? ZDCSyncableObject {
+					if zdc_obj.hasChanges {
+						return true
+					}
+				}
+				else if let zdc_prop = value as? ZDCSyncableProperty {
+					if zdc_prop.hasChanges {
+						return true
+					}
+				}
+				else if let zdc_collection = value as? ZDCSyncableCollection {
+					if zdc_collection.hasChanges {
 						return true
 					}
 				}
@@ -314,26 +262,44 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 			return false
 		}
 	}
-	
-	override public func clearChangeTracking() {
-		
-		super.clearChangeTracking()
+
+	public mutating func clearChangeTracking() {
 		
 		originalValues.removeAll()
 		
-		for (_, value) in dict {
+		var changes: Dictionary<Key, Value>? = nil
+		for (key, value) in dict {
 			
-			if let zdc_value = value as? ZDCObject {
+			if let zdc_obj = value as? ZDCSyncableObject {
 				
-				zdc_value.clearChangeTracking()
+				zdc_obj.clearChangeTracking()
+			}
+			else if let zdc_prop = value as? ZDCSyncableProperty {
+				
+				zdc_prop.clearChangeTracking()
+			}
+			else if var zdc_collection = value as? ZDCSyncableCollection {
+				
+				zdc_collection.clearChangeTracking()
+				
+				// zdc_collection is a struct,
+				// so we need to write the modified value back to the dictionary.
+				
+				if changes == nil {
+					changes = Dictionary()
+				}
+				changes![key] = (zdc_collection as! Value)
+			}
+		}
+		
+		if let changes = changes {
+			
+			for (key, value) in changes {
+				dict[key] = value
 			}
 		}
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: ZDCSyncable
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	private func _changeset() -> Dictionary<String, Any>? {
 		
 		if !self.hasChanges {
@@ -353,33 +319,69 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 		
 		for (key, value) in dict {
 			
-			if let zdc_value = value as? ZDCSyncable {
+			// We're looking for syncable collection types:
+			//
+			// - ZDCRecord
+			// - ZDCSyncableCollection
+			
+			if let zdc_obj = value as? ZDCSyncableObject {
 				
-				let originalValue = originalValues[key]
-				
-				// Several possibilities:
+				// ZDCSyncableObject is a class type:
 				//
 				// - If value was added, then originalValue will be ZDCNull.
 				//   If this is the case, we should not add to refs.
 				//
 				// - If value was swapped out, then originalValue will be some other value.
 				//   If this is the case, we should not add to refs.
-				//
-				// - If value was simply modified, then originalValue wll be the same as value.
-				//   And only then should we add a changeset to refs.
+				
+				let originalValue = originalValues[key]
 				
 				let wasAdded = (originalValue is ZDCNull)
-				var wasSwapped = false
-				
-				if let originalValue = originalValue as? Value {
-					wasSwapped = (originalValue != value)
-				}
+				let wasSwapped = (originalValue as AnyObject?) !== (value as AnyObject)
 				
 				if !wasAdded && !wasSwapped {
 					
-					var value_changeset = zdc_value.peakChangeset()
+					var value_changeset = zdc_obj.peakChangeset()
+					if value_changeset == nil {
+						
+						// Edge case:
+						//   If the value was modified, but ultimately unchanged,
+						//   then we add an empty dictionary to refs,
+						//   in order to prevent it from going into values.
+						//
+						let wasModified = originalValue != nil
+						if wasModified {
+							
+							value_changeset = Dictionary()
+						}
+					}
+					
+					if let value_changeset = value_changeset {
+						refs[key] = value_changeset
+					}
+				}
+			}
+			else if let zdc_collection = value as? ZDCSyncableCollection {
+				
+				// ZDCSyncableCollection is a struct type:
+				//
+				// - If value was added, then originalValue will be ZDCNull.
+				//   If this is the case, we should not add to refs.
+				
+				let originalValue = originalValues[key]
+				
+				let wasAdded = (originalValue is ZDCNull)
+				
+				if !wasAdded {
+					
+					var value_changeset = zdc_collection.peakChangeset()
 					if (value_changeset == nil) {
 						
+						// Edge case:
+						//   If the value was modified, but ultimately unchanged,
+						//   then we add an empty dictionary to refs,
+						//   in order to prevent it from going into values.
+						//
 						let wasModified = originalValue != nil
 						if wasModified {
 							
@@ -398,36 +400,35 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 			changeset[ChangesetKeys.refs.rawValue] = refs
 		}
 		
-		if originalValues.count > 0 {
+		// changeset: {
+		//   values: {
+		//     key: oldValue, ...
+		//   },
+		//   ...
+		// }
+		
+		var values = Dictionary<Key, Any>()
+		
+		for (key, originalValue) in originalValues {
 			
-			// changeset: {
-			//   values: {
-			//     key: oldValue, ...
-			//   },
-			//   ...
-			// }
-			
-			var values = Dictionary<Key, Any>()
-			
-			for (key, originalValue) in originalValues {
+			if refs[key] == nil {
 				
-				if refs[key] != nil {
-					values[key] = ZDCRef.sharedInstance()
-				}
-				else if let originalValue = originalValue as? NSCopying {
+				if let originalValue = originalValue as? NSCopying {
 					values[key] = originalValue.copy()
 				}
 				else {
-					values[key] = originalValue;
+					values[key] = originalValue
 				}
 			}
-			
+		}
+		
+		if values.count > 0 {
 			changeset[ChangesetKeys.values.rawValue] = values
 		}
 		
 		return changeset
 	}
-	
+
 	public func peakChangeset() -> Dictionary<String, Any>? {
 		
 		let changeset = self._changeset()
@@ -445,7 +446,7 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 		//     <key: Key> : <changeset: Dictionary<String, Any>>, ...
 		//   },
 		//   values: {
-		//     <key: Any> : <oldValue: ZDCNull|ZDCRef|Value>, ...
+		//     <key: Any> : <oldValue: ZDCNull|Value>, ...
 		//   }
 		// }
 		
@@ -469,7 +470,7 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 	
 					for (_, value) in changeset_values {
 						
-						if (value is ZDCNull) || (value is ZDCRef) || (value is Value) {
+						if (value is ZDCNull) || (value is Value) {
 							// ok
 						} else {
 							return true // malformed !
@@ -485,8 +486,8 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 		// Looks good (not malformed)
 		return false
 	}
-	
-	private func _undo(_ changeset: Dictionary<String, Any>) throws {
+
+	private mutating func _undo(_ changeset: Dictionary<String, Any>) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
@@ -496,9 +497,18 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 				
 				let value = dict[key]
 				
-				if let zdc_value = value as? ZDCSyncable {
+				if let zdc_obj = value as? ZDCSyncableObject {
 					
-					try zdc_value.performUndo(changeset)
+					try zdc_obj.performUndo(changeset)
+				}
+				else if var zdc_collection = value as? ZDCSyncableCollection {
+					
+					try zdc_collection.performUndo(changeset)
+					
+					// zdc_collection is a struct,
+					// so we need to write the modified value back to the dictionary.
+					
+					self.dict[key] = (zdc_collection as! Value)
 				}
 				else {
 					throw ZDCSyncableError.mismatchedChangeset
@@ -520,11 +530,7 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 		}
 	}
 	
-	public func performUndo(_ changeset: Dictionary<String, Any>) throws {
-		
-		if (self.isImmutable) {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+	public mutating func performUndo(_ changeset: Dictionary<String, Any>) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -548,12 +554,8 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 			throw error
 		}
 	}
-	
-	public func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
+
+	public mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -597,7 +599,7 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 				self.rollback()
 				
 				// We still need to revert previous `_undo:` calls
-				break;
+				break
 			}
 		}
 		
@@ -613,7 +615,7 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 					result_error = error
 				}
 				
-				break;
+				break
 			}
 		}
 		
@@ -621,14 +623,11 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 			throw result_error!
 		}
 	}
-	
-	public func merge(cloudVersion inCloudVersion: ZDCSyncable,
-	                  pendingChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any> {
-		
-		if self.isImmutable {
-			ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-		}
-		
+
+	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncableCollection,
+	                                     pendingChangesets: Array<Dictionary<String, Any>>)
+		throws -> Dictionary<String, Any>
+	{
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
 			// The code doesn't know what you want to happen.
@@ -664,7 +663,7 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 				
 				for (key, oldValue) in changeset_originalValues {
 					
-					if (merged_originalValues[key] == nil) {
+					if merged_originalValues[key] == nil {
 						
 						merged_originalValues[key] = oldValue
 					}
@@ -687,9 +686,13 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 				originalLocalValue = nil
 			}
 			
-			if !modifiedValueLocally && (currentLocalValue is ZDCSyncable) && (cloudValue is ZDCSyncable) {
+			if !modifiedValueLocally {
 				
-				continue // handled by refs
+				if ((currentLocalValue is ZDCSyncableObject) && (cloudValue is ZDCSyncableObject)) ||
+				   ((currentLocalValue is ZDCSyncableCollection) && (cloudValue is ZDCSyncableCollection)) {
+					
+					continue // handled by refs
+				}
 			}
 			
 			var mergeRemoteValue = false
@@ -727,7 +730,7 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 			
 			if (mergeRemoteValue)
 			{
-				self[key] = cloudValue;
+				self[key] = cloudValue
 			}
 		}
 		
@@ -772,7 +775,7 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 				for (key, _) in changeset_refs {
 					
 					let originalValue = merged_originalValues[key]
-					if (originalValue == nil) || (originalValue is ZDCRef) {
+					if originalValue == nil {
 						
 						refs.insert(key)
 					}
@@ -782,27 +785,39 @@ public class ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>:
 		
 		for key in refs {
 			
-			let localRef = self.dict[key]
-			let cloudRef = cloudVersion.dict[key]
+			let local_value = self.dict[key]
+			let cloud_value = cloudVersion.dict[key]
 			
-			if let localRef = localRef as? ZDCSyncable,
-			   let cloudRef = cloudRef as? ZDCSyncable
-			{
-				var pendingChangesets_ref = Array<Dictionary<String, Any>>()
-				pendingChangesets_ref.reserveCapacity(pendingChangesets.count)
+			var pendingChangesets_ref = Array<Dictionary<String, Any>>()
+			pendingChangesets_ref.reserveCapacity(pendingChangesets.count)
+			
+			for changeset in pendingChangesets {
 				
-				for changeset in pendingChangesets {
-					
-					let changeset_refs = changeset[ChangesetKeys.refs.rawValue]
-					
-					if let changeset_refs = changeset_refs as? Dictionary<Key, Dictionary<String, Any>>,
-					   let changeset_ref = changeset_refs[key]
-					{
-						pendingChangesets_ref.append(changeset_ref)
-					}
+				let changeset_refs = changeset[ChangesetKeys.refs.rawValue]
+				
+				if let changeset_refs = changeset_refs as? Dictionary<Key, Dictionary<String, Any>>,
+					let changeset_ref = changeset_refs[key]
+				{
+					pendingChangesets_ref.append(changeset_ref)
 				}
+			}
+			
+			if let local_obj = local_value as? ZDCSyncableObject,
+			   let cloud_obj = cloud_value as? ZDCSyncableObject
+			{
+				let _ = try local_obj.merge(cloudVersion: cloud_obj,
+				                       pendingChangesets: pendingChangesets_ref)
+			}
+			else if var local_collection = local_value as? ZDCSyncableCollection,
+			        let cloud_collection = cloud_value as? ZDCSyncableCollection
+			{
+				let _ = try local_collection.merge(cloudVersion: cloud_collection,
+				                              pendingChangesets: pendingChangesets_ref)
 				
-				let _ = try localRef.merge(cloudVersion: cloudRef, pendingChangesets: pendingChangesets_ref)
+				// local_collection is a struct,
+				// so we need to write the modified value back to the dictionary.
+				
+				self.dict[key] = (local_collection as! Value)
 			}
 		}
 		

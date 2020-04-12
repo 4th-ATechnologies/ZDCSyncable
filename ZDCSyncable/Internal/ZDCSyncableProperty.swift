@@ -8,7 +8,13 @@ import Foundation
 
 internal protocol ZDCSyncableProperty {
 	
+	/// Returns whether or not the property has been changed.
+	///
 	var hasChanges: Bool { get }
+	
+	/// Clears the internal flags that signal changes to the wrapped value.
+	///
+	func clearChangeTracking()
 	
 	/// A type-erased version of Syncable<T>.wrappedValue.
 	///
@@ -23,9 +29,6 @@ internal protocol ZDCSyncableProperty {
 	///
 	func trySetValue(_ value: Any?) -> Bool
 	
-	/// Clears the internal flags that signal changes to the wrapped value.
-	/// 
-	func clearChangeTracking()
 	
 	func isValueEqual(_ value: Any) -> Bool
 }

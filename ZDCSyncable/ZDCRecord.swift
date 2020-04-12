@@ -2,7 +2,6 @@
 /// https://github.com/4th-ATechnologies/ZDCSyncable
 ///
 /// Undo, redo & merge capabilities for plain objects in Swift.
-/// 
 
 import Foundation
 
@@ -15,24 +14,24 @@ import Foundation
 /// - it supports undo & redo
 /// - it supports merge operations
 ///
-open class ZDCRecord: ZDCSyncable {
+open class ZDCRecord: ZDCSyncableObject {
 	
 	private enum ChangesetKeys: String {
 		case refs = "refs"
 		case values = "values"
 	}
 	
-	// --------------------------------------------------
+	// ====================================================================================================
 	// MARK: Init
-	// --------------------------------------------------
+	// ====================================================================================================
 	
 	public init() {
 		// Nothing to do here, but required by Swift compiler.
 	}
 	
-	// --------------------------------------------------
+	// ====================================================================================================
 	// MARK: Utilities
-	// --------------------------------------------------
+	// ====================================================================================================
 	
 	open func enumerateSyncable(_ block: (_ propertyName: String, _ value: Any?, _ stop: inout Bool) -> Void) {
 		
@@ -49,13 +48,17 @@ open class ZDCRecord: ZDCSyncable {
 		
 				if let label = property.label {
 					
-					if let zdc_prop = property.value as? ZDCSyncableProperty  {
+					if let zdc_obj = property.value as? ZDCSyncableObject {
+					
+						block(label, zdc_obj, &stop)
+					}
+					else if let zdc_prop = property.value as? ZDCSyncableProperty  {
 						
 						block(label, zdc_prop, &stop)
 					}
-					else if let zdc_obj = property.value as? ZDCSyncable {
-		
-						block(label, zdc_obj, &stop)
+					else if let zdc_collection = property.value as? ZDCSyncableCollection {
+						
+						block(label, zdc_collection, &stop)
 					}
 				}
 				
@@ -88,24 +91,37 @@ open class ZDCRecord: ZDCSyncable {
 		return result ?? _result
 	}
 	
-	// --------------------------------------------------
+	// ====================================================================================================
 	// MARK: ZDCSyncable
-	// --------------------------------------------------
+	// ====================================================================================================
+	
+	open func setSyncableValue(_ value: Any?, for key: String) -> Bool {
+		
+		return false
+	}
 	
 	open var hasChanges: Bool {
 		get {
 			
 			var hasChanges = false
-			enumerateSyncable { (propertyName, value, _) in
+			enumerateSyncable { (propertyName, value, stop) in
 				
-				if let zdc_prop = value as? ZDCSyncableProperty {
-					if zdc_prop.hasChanges {
+				if let zdc_obj = value as? ZDCSyncableObject {
+					if zdc_obj.hasChanges {
 						hasChanges = true
+						stop = true
 					}
 				}
-				else if let zdc_value = value as? ZDCSyncable {
-					if zdc_value.hasChanges {
+				else if let zdc_prop = value as? ZDCSyncableProperty {
+					if zdc_prop.hasChanges {
 						hasChanges = true
+						stop = true
+					}
+				}
+				else if let zdc_collection = value as? ZDCSyncableCollection {
+					if zdc_collection.hasChanges {
+						hasChanges = true
+						stop = true
 					}
 				}
 			}
@@ -118,11 +134,24 @@ open class ZDCRecord: ZDCSyncable {
 		
 		self.enumerateSyncable { (propertyName, value, _) in
 			
-			if let zdc_prop = value as? ZDCSyncableProperty {
+			if let zdc_obj = value as? ZDCSyncableObject {
+				
+				zdc_obj.clearChangeTracking()
+			}
+			else if let zdc_prop = value as? ZDCSyncableProperty {
+				
 				zdc_prop.clearChangeTracking()
 			}
-			else if let zdc_value = value as? ZDCSyncable {
-				zdc_value.clearChangeTracking()
+			else if var zdc_collection = value as? ZDCSyncableCollection {
+				
+				zdc_collection.clearChangeTracking()
+				
+				// zdc_collection is a struct,
+				// so we need to write the modified value back to self.
+				
+				if !setSyncableValue(zdc_collection, for: propertyName) {
+					ZDCSwiftWorkarounds.throwRecordException(type(of: self), forKey: propertyName)
+				}
 			}
 		}
 	}
@@ -148,7 +177,14 @@ open class ZDCRecord: ZDCSyncable {
 		
 		self.enumerateSyncable { (key, value, _) in
 			
-			if let zdc_prop = value as? ZDCSyncableProperty {
+			if let zdc_obj = value as? ZDCSyncableObject {
+				
+				if let changeset = zdc_obj.peakChangeset() {
+					
+					refs[key] = changeset
+				}
+			}
+			else if let zdc_prop = value as? ZDCSyncableProperty {
 				
 				if zdc_prop.hasChanges {
 					
@@ -161,9 +197,9 @@ open class ZDCRecord: ZDCSyncable {
 					}
 				}
 			}
-			else if let zdc_value = value as? ZDCSyncable {
+			else if let zdc_collection = value as? ZDCSyncableCollection {
 				
-				if let changeset = zdc_value.peakChangeset() {
+				if let changeset = zdc_collection.peakChangeset() {
 					
 					refs[key] = changeset
 				}
@@ -198,7 +234,7 @@ open class ZDCRecord: ZDCSyncable {
 		//     <key: Any> : <changeset: Dictionary>, ...
 		//   },
 		//   values: {
-		//     <key: NSString*> : <oldValue: ZDCNull|ZDCRef|Any>, ...
+		//     <key: NSString*> : <oldValue: ZDCNull|Any>, ...
 		//   }
 		// }
 		
@@ -236,9 +272,22 @@ open class ZDCRecord: ZDCSyncable {
 		
 			for (key, container_changeset) in changeset_refs {
 				
-				if let zdc_container = syncableValue(key: key) as? ZDCSyncable {
+				let value = syncableValue(key: key)
+				
+				if let zdc_obj = value as? ZDCSyncableObject {
 					
-					try zdc_container.performUndo(container_changeset)
+					try zdc_obj.performUndo(container_changeset)
+					
+				} else if var zdc_collection = value as? ZDCSyncableCollection {
+			
+					try zdc_collection.performUndo(container_changeset)
+					
+					// zdc_collection is a struct,
+					// so we need to write the modified value back to self.
+					
+					if !setSyncableValue(zdc_collection, for: key) {
+						ZDCSwiftWorkarounds.throwRecordException(type(of: self), forKey: key)
+					}
 					
 				} else {
 					
@@ -371,8 +420,9 @@ open class ZDCRecord: ZDCSyncable {
 		}
 	}
 	
-	public func merge(cloudVersion inCloudVersion: ZDCSyncable,
-							pendingChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any>
+	public func merge(cloudVersion inCloudVersion: ZDCSyncableObject,
+	                            pendingChangesets: Array<Dictionary<String, Any>>)
+		throws -> Dictionary<String, Any>
 	{
 	//	if self.isImmutable {
 	//		ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
@@ -460,10 +510,14 @@ open class ZDCRecord: ZDCSyncable {
 				originalLocalValue = nil
 			}
 			
-			if (!modifiedValueLocally && (currentLocalValue is ZDCSyncable) && (cloudValue is ZDCSyncable))
-			{
-				// continue - handled by refs
-				return; // from block
+			if !modifiedValueLocally {
+				
+				if ((currentLocalValue is ZDCSyncableObject) && (cloudValue is ZDCSyncableObject)) ||
+				   ((currentLocalValue is ZDCSyncableCollection) && (cloudValue is ZDCSyncableCollection)) {
+					
+					// continue - handled by refs
+					return // from block
+				}
 			}
 			
 			var mergeRemoteValue = false
@@ -530,27 +584,39 @@ open class ZDCRecord: ZDCSyncable {
 		
 		for key in refs {
 			
-			let localRef = self.syncableValue(key: key)
-			let cloudRef = cloudVersion.syncableValue(key: key)
+			let local_value = self.syncableValue(key: key)
+			let cloud_value = cloudVersion.syncableValue(key: key)
 			
-			if let localRef = localRef as? ZDCSyncable,
-			   let cloudRef = cloudRef as? ZDCSyncable
-			{
-				var pendingChangesets_ref = Array<Dictionary<String, Any>>()
-				pendingChangesets_ref.reserveCapacity(pendingChangesets.count)
+			var pendingChangesets_ref = Array<Dictionary<String, Any>>()
+			pendingChangesets_ref.reserveCapacity(pendingChangesets.count)
+			
+			for changeset in pendingChangesets {
 				
-				for changeset in pendingChangesets {
+				let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? Dictionary<String, Dictionary<String, Any>>
+				let changeset_ref = changeset_refs?[key]
+				
+				if let changeset_ref = changeset_ref {
 					
-					let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? Dictionary<String, Dictionary<String, Any>>
-					let changeset_ref = changeset_refs?[key]
-					
-					if let changeset_ref = changeset_ref {
-						
-						pendingChangesets_ref.append(changeset_ref)
-					}
+					pendingChangesets_ref.append(changeset_ref)
 				}
-				
-				let _ = try localRef.merge(cloudVersion: cloudRef, pendingChangesets: pendingChangesets_ref)
+			}
+			
+			if let local_obj = local_value as? ZDCSyncableObject,
+			   let cloud_obj = cloud_value as? ZDCSyncableObject
+			{
+				let _ = try local_obj.merge(cloudVersion: cloud_obj, pendingChangesets: pendingChangesets_ref)
+			}
+			else if var local_collection = local_value as? ZDCSyncableCollection,
+			        let cloud_collection = cloud_value as? ZDCSyncableCollection
+			{
+				let _ = try local_collection.merge(cloudVersion: cloud_collection, pendingChangesets: pendingChangesets_ref)
+				//
+				// local_collection is a struct,
+				// so we need to write the modified value back to self.
+				//
+				if !setSyncableValue(local_collection, for: key) {
+					ZDCSwiftWorkarounds.throwRecordException(type(of: self), forKey: key)
+				}
 			}
 		}
 		

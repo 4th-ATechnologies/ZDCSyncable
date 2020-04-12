@@ -27,7 +27,7 @@ class test_ZDCSet: XCTestCase {
 			var set_a: ZDCSet<String>?
 			var set_b: ZDCSet<String>?
 			
-			let set = ZDCSet<String>()
+			var set = ZDCSet<String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -47,7 +47,7 @@ class test_ZDCSet: XCTestCase {
 			}
 			
 			set.clearChangeTracking()
-			set_a = set.immutableCopy() as? ZDCSet<String>
+			set_a = set
 			
 			// Now make a random number of changes: [1 - 30)
 			
@@ -101,21 +101,21 @@ class test_ZDCSet: XCTestCase {
 			}
 			
 			let changeset_undo = set.changeset() ?? Dictionary()
-			set_b = set.immutableCopy() as? ZDCSet<String>
+			set_b = set
 			
 			do {
 				
 				let changeset_redo = try set.undo(changeset_undo) // a <- b
-				if DEBUG_THIS_METHOD && !set.isEqual(set_a) {
+				if DEBUG_THIS_METHOD && (set != set_a) {
 					print("It's going to FAIL")
 				}
-				XCTAssert(set.isEqual(set_a))
+				XCTAssert(set == set_a)
 			
 				let _ = try set.undo(changeset_redo) // a -> b
-				if DEBUG_THIS_METHOD && !set.isEqual(set_b) {
+				if DEBUG_THIS_METHOD && (set != set_b) {
 					print("It's going to FAIL");
 				}
-				XCTAssert(set.isEqual(set_b))
+				XCTAssert(set == set_b)
 				
 			} catch {
 				print("Threw error: \(error)")
@@ -127,7 +127,7 @@ class test_ZDCSet: XCTestCase {
 			}
 		}}
 	}
-	
+
 	func test_import_fuzz_everything() {
 		
 		let DEBUG_THIS_METHOD = false
@@ -137,7 +137,7 @@ class test_ZDCSet: XCTestCase {
 			var set_a: ZDCSet<String>?
 			var set_b: ZDCSet<String>?
 			
-			let set = ZDCSet<String>()
+			var set = ZDCSet<String>()
 			var changesets = Array<Dictionary<String, Any>>()
 	
 			// Start with an object that has a random number of objects [20 - 30)
@@ -158,7 +158,7 @@ class test_ZDCSet: XCTestCase {
 			}
 			
 			set.clearChangeTracking()
-			set_a = set.immutableCopy() as? ZDCSet<String>
+			set_a = set
 			
 			// Make a random number of changesets: [1 - 10)
 			
@@ -229,26 +229,26 @@ class test_ZDCSet: XCTestCase {
 				}
 			}
 			
-			set_b = set.immutableCopy() as? ZDCSet<String>
+			set_b = set
 			
 			do {
 				
 				try set.importChangesets(changesets)
-				XCTAssert(set.isEqual(set_b))
+				XCTAssert(set == set_b)
 				
 				let changeset_merged = set.changeset() ?? Dictionary()
 				
 				let changeset_redo = try set.undo(changeset_merged)
-				if DEBUG_THIS_METHOD && !set.isEqual(set_a) {
+				if DEBUG_THIS_METHOD && (set != set_a) {
 					print("It's going to FAIL")
 				}
-				XCTAssert(set.isEqual(set_a))
+				XCTAssert(set == set_a)
 				
 				let _ = try set.undo(changeset_redo)
-				if DEBUG_THIS_METHOD && !set.isEqual(set_b) {
+				if DEBUG_THIS_METHOD && (set != set_b) {
 					print("It's going to FAIL")
 				}
-				XCTAssert(set.isEqual(set_b))
+				XCTAssert(set == set_b)
 				
 				if DEBUG_THIS_METHOD {
 					print("-------------------------------------------------")
@@ -258,7 +258,7 @@ class test_ZDCSet: XCTestCase {
 			}
 		}}
 	}
-	
+
 	func test_merge_fuzz_everything() {
 		
 		let DEBUG_THIS_METHOD = false
@@ -287,7 +287,7 @@ class test_ZDCSet: XCTestCase {
 			}
 			
 			set.clearChangeTracking()
-			var set_cloud = set.immutableCopy() as! ZDCSet<String> // sanity check: don't allow modification (for now)
+			var set_cloud = set
 			
 			// Make a random number of changesets: [1 - 10)
 			
@@ -355,9 +355,6 @@ class test_ZDCSet: XCTestCase {
 					print("********************")
 				}
 			}
-			
-			set.makeImmutable()                             // sanity check: don't allow modification (for now)
-			set_cloud = set_cloud.copy() as! ZDCSet<String> // sanity check: allow modification again
 	
 			do {
 				// Make a random number of changes (to cloudSet): [1 - 30)
@@ -410,11 +407,8 @@ class test_ZDCSet: XCTestCase {
 					}
 				}
 			}
-	
-			set = set.copy() as! ZDCSet<String> // sanity check: allow modification again
-			set_cloud.makeImmutable()           // sanity check: don't allow modification anymore
 			
-			let set_preMerge = set.immutableCopy() as! ZDCSet<String>
+			let set_preMerge = set
 			
 			do {
 				let redo = try set.merge(cloudVersion: set_cloud, pendingChangesets: changesets)
@@ -424,10 +418,10 @@ class test_ZDCSet: XCTestCase {
 					print("It's going to FAIL")
 				}
 				
-				if DEBUG_THIS_METHOD && !set.isEqual(set_preMerge) {
+				if DEBUG_THIS_METHOD && (set != set_preMerge) {
 					print("It's going to FAIL")
 				}
-				XCTAssert(set.isEqual(set_preMerge))
+				XCTAssert(set == set_preMerge)
 				
 				if DEBUG_THIS_METHOD {
 					print("-------------------------------------------------")
@@ -438,20 +432,20 @@ class test_ZDCSet: XCTestCase {
 		}}
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK: - Simple
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	// ====================================================================================================
+	// MARK: - Simple
+	// ====================================================================================================
+
 	func test_simpleMerge_1() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let localSet = ZDCSet<String>()
+		var localSet = ZDCSet<String>()
 		localSet.insert("alice")
 		localSet.insert("bob")
 		
 		localSet.clearChangeTracking()
-		let cloudSet = localSet.copy() as! ZDCSet<String>
+		var cloudSet = localSet
 	
 		do { // local changes
 		
@@ -465,8 +459,6 @@ class test_ZDCSet: XCTestCase {
 			
 			cloudSet.remove("bob")
 			cloudSet.insert("dave")
-			
-			cloudSet.makeImmutable()
 		}
 		
 		do {
@@ -481,17 +473,17 @@ class test_ZDCSet: XCTestCase {
 		XCTAssert(localSet.contains("carol"))
 		XCTAssert(localSet.contains("dave"))
 	}
-	
+
 	func test_simpleMerge_2() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		let localSet = ZDCSet<String>()
+		var localSet = ZDCSet<String>()
 		localSet.insert("alice")
 		localSet.insert("bob")
 		
 		localSet.clearChangeTracking()
-		let cloudSet = localSet.copy() as! ZDCSet<String>
+		var cloudSet = localSet
 	
 		do { // local changes
 			
@@ -507,8 +499,6 @@ class test_ZDCSet: XCTestCase {
 			cloudSet.insert("dave")
 			cloudSet.remove("bob")
 			cloudSet.insert("emily")
-			
-			cloudSet.makeImmutable()
 		}
 		
 		do {
@@ -524,16 +514,16 @@ class test_ZDCSet: XCTestCase {
 		XCTAssert(localSet.contains("dave"))
 		XCTAssert(localSet.contains("emily"))
 	}
-	
+
 	func test_simpleMerge_3() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let localSet = ZDCSet<String>()
+		var localSet = ZDCSet<String>()
 		localSet.insert("alice")
 		
 		localSet.clearChangeTracking()
-		let cloudSet = localSet.copy() as! ZDCSet<String>
+		var cloudSet = localSet
 	
 		do { // local changes
 	
@@ -547,8 +537,6 @@ class test_ZDCSet: XCTestCase {
 			cloudSet.insert("carol")
 			cloudSet.remove("alice")
 			cloudSet.insert("dave")
-			
-			cloudSet.makeImmutable()
 		}
 		
 		do {
@@ -568,11 +556,11 @@ class test_ZDCSet: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let localSet = ZDCSet<String>()
+		var localSet = ZDCSet<String>()
 		localSet.insert("alice")
 		
 		localSet.clearChangeTracking()
-		let cloudSet = localSet.copy() as! ZDCSet<String>
+		var cloudSet = localSet
 	
 		do { // local changes
 	
@@ -585,8 +573,6 @@ class test_ZDCSet: XCTestCase {
 	
 			cloudSet.remove("alice")
 			cloudSet.insert("carol")
-			
-			cloudSet.makeImmutable()
 		}
 		
 		do {
@@ -600,17 +586,17 @@ class test_ZDCSet: XCTestCase {
 		XCTAssert(localSet.contains("bob"))
 		XCTAssert(localSet.contains("carol"))
 	}
-	
+
 	func test_simpleMerge_5() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 		
-		let localSet = ZDCSet<String>()
+		var localSet = ZDCSet<String>()
 		localSet.insert("alice")
 		localSet.insert("bob")
 		
 		localSet.clearChangeTracking()
-		let cloudSet = localSet.copy() as! ZDCSet<String>
+		var cloudSet = localSet
 		
 		do { // local changes
 	
@@ -623,8 +609,6 @@ class test_ZDCSet: XCTestCase {
 		do { // cloud changes
 			
 			cloudSet.remove("alice")
-			
-			cloudSet.makeImmutable()
 		}
 		
 		do {
@@ -638,4 +622,5 @@ class test_ZDCSet: XCTestCase {
 	
 		XCTAssert(localSet.contains("carol"))
 	}
+	
 }
