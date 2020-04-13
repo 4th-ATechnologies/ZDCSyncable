@@ -1,28 +1,9 @@
 /// ZDCSyncable
 /// https://github.com/4th-ATechnologies/ZDCSyncable
 ///
-/// Undo, redo & merge capabilities for plain objects in Swift.
-/// 
+/// Undo, redo & merge capabilities for structs & objects in pure Swift.
 
 import Foundation
-
-fileprivate class SyncableRef<T> where T: Equatable {
-	var value: T
-	var originalValue: T
-	var hasChanges: Bool
-	
-	init(value: T, originalValue: T, hasChanges: Bool) {
-		self.value = value
-		self.originalValue = originalValue
-		self.hasChanges = hasChanges
-	}
-	
-	init(originalValue: T) {
-		self.value = originalValue
-		self.originalValue = originalValue
-		self.hasChanges = false
-	}
-}
 
 @propertyWrapper
 public struct Syncable<T>: ZDCSyncableProperty where T: Equatable {
@@ -43,9 +24,6 @@ public struct Syncable<T>: ZDCSyncableProperty where T: Equatable {
 			// Important:
 			// We are purposefully NOT using copy-on-write here.
 			// Doing so would completely break this implementation.
-			//
-			// If you want copy-on-write, implement it within your own struct.
-			// And then use that struct as the type <T> here.
 			//
 			_ref = SyncableRef(value: newValue,
 			           originalValue: _ref.originalValue,
@@ -125,5 +103,23 @@ public struct Syncable<T>: ZDCSyncableProperty where T: Equatable {
 		}
 		
 		return false
+	}
+}
+
+fileprivate class SyncableRef<T> where T: Equatable {
+	var value: T
+	var originalValue: T
+	var hasChanges: Bool
+	
+	init(value: T, originalValue: T, hasChanges: Bool) {
+		self.value = value
+		self.originalValue = originalValue
+		self.hasChanges = hasChanges
+	}
+	
+	init(originalValue: T) {
+		self.value = originalValue
+		self.originalValue = originalValue
+		self.hasChanges = false
 	}
 }

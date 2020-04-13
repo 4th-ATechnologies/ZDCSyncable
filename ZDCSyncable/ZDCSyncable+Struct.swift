@@ -3,39 +3,14 @@
 ///
 /// Undo, redo & merge capabilities for structs & objects in pure Swift.
 
-import Foundation
+fileprivate enum ChangesetKeys: String {
+	case refs = "refs"
+	case values = "values"
+}
 
-/// ZDCRecord is a base class the implements ZDCSyncableClass, and is designed to be subclassed.
-///
-/// Note: If you want to use a struct (rather than a class), see the file ZDCStruct.swift.
-///
-/// It provides the following set of features for your subclass:
-/// - instances can be made immutable (via `ZDCRecord.makeImmutable()` function)
-/// - it implements the ZDCSyncable protocol and thus:
-/// - it tracks all changes and can provide a changeset (which encodes the changes info)
-/// - it supports undo & redo
-/// - it supports merge operations
-///
-open class ZDCRecord: ZDCSyncableClass {
+extension ZDCSyncable {
 	
-	private enum ChangesetKeys: String {
-		case refs = "refs"
-		case values = "values"
-	}
-	
-	// ====================================================================================================
-	// MARK: Init
-	// ====================================================================================================
-	
-	public init() {
-		// Nothing to do here, but required by Swift compiler.
-	}
-	
-	// ====================================================================================================
-	// MARK: Utilities
-	// ====================================================================================================
-	
-	open func enumerateSyncable(_ block: (_ propertyName: String, _ value: Any?, _ stop: inout Bool) -> Void) {
+	private func enumerateSyncable(_ block: (_ propertyName: String, _ value: Any?, _ stop: inout Bool) -> Void) {
 		
 		var stop: Bool = false
 		
@@ -73,7 +48,7 @@ open class ZDCRecord: ZDCSyncableClass {
 		}
 	}
 	
-	open func syncableValue(key: String) -> Any? {
+	private func syncableValue(key: String) -> Any? {
 		
 		var result: Any? = nil
 		var _result: Any? = nil
@@ -94,15 +69,10 @@ open class ZDCRecord: ZDCSyncableClass {
 	}
 	
 	// ====================================================================================================
-	// MARK: ZDCSyncableClass Protocol
+	// MARK: ZDCSyncable Protocol
 	// ====================================================================================================
-	
-	open func setSyncableValue(_ value: Any?, for key: String) -> Bool {
-		
-		return false
-	}
-	
-	open var hasChanges: Bool {
+
+	public var hasChanges: Bool {
 		get {
 			
 			var hasChanges = false
@@ -132,31 +102,36 @@ open class ZDCRecord: ZDCSyncableClass {
 		}
 	}
 
-	open func clearChangeTracking() {
+	public mutating func clearChangeTracking() {
 		
 		self.enumerateSyncable { (propertyName, value, _) in
-			
+	
 			if let zdc_obj = value as? ZDCSyncableClass {
-				
+	
 				zdc_obj.clearChangeTracking()
 			}
 			else if let zdc_prop = value as? ZDCSyncableProperty {
-				
+	
 				zdc_prop.clearChangeTracking()
 			}
 			else if var zdc_struct = value as? ZDCSyncableStruct {
-				
+	
 				zdc_struct.clearChangeTracking()
-				
+	
 				// struct value semantics means we need to write the modified value back to self
-				
-				if !setSyncableValue(zdc_struct, for: propertyName) {
-					ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: propertyName)
+	
+				if !self.setSyncableValue(zdc_struct, for: propertyName) {
+					
+				//	ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: propertyName)
+				//	                                           ^^^^^^^^^^^^^^
+				//                                            Causes Swift compiler to crash :(
+					
+					ZDCSwiftWorkarounds.throwSyncableException(nil, forKey: propertyName)
 				}
 			}
 		}
 	}
-	
+
 	public func peakChangeset() -> Dictionary<String, Any>? {
 		
 		if !self.hasChanges {
@@ -259,7 +234,7 @@ open class ZDCRecord: ZDCSyncableClass {
 		return false
 	}
 	
-	private func _undo(_ changeset: Dictionary<String, Any>) throws {
+	private mutating func _undo(_ changeset: Dictionary<String, Any>) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
@@ -280,7 +255,12 @@ open class ZDCRecord: ZDCSyncableClass {
 					// struct value semantics means we need to write the modified value back to self
 					
 					if !setSyncableValue(zdc_struct, for: key) {
-						ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: key)
+						
+					//	ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: key)
+					//	                                           ^^^^^^^^^^^^^^
+					//                                            Causes Swift compiler to crash :(
+						
+						ZDCSwiftWorkarounds.throwSyncableException(nil, forKey: key)
 					}
 					
 				} else {
@@ -312,11 +292,7 @@ open class ZDCRecord: ZDCSyncableClass {
 		}
 	}
 	
-	public func performUndo(_ changeset: Dictionary<String, Any>) throws {
-		
-	//	if (self.isImmutable) {
-	//		ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-	//	}
+	public mutating func performUndo(_ changeset: Dictionary<String, Any>) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -341,11 +317,7 @@ open class ZDCRecord: ZDCSyncableClass {
 		}
 	}
 	
-	public func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
-		
-	//	if self.isImmutable {
-	//		throw ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-	//	}
+	public mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -413,15 +385,11 @@ open class ZDCRecord: ZDCSyncableClass {
 			throw result_error!
 		}
 	}
-	
-	public func merge(cloudVersion inCloudVersion: ZDCSyncableClass,
-	                            pendingChangesets: Array<Dictionary<String, Any>>)
+
+	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncable,
+	                                     pendingChangesets: Array<Dictionary<String, Any>>)
 		throws -> Dictionary<String, Any>
 	{
-	//	if self.isImmutable {
-	//		ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-	//	}
-		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
 			// The code doesn't know what you want to happen.
@@ -608,11 +576,17 @@ open class ZDCRecord: ZDCSyncableClass {
 				// struct value semantics means we need to write the modified value back to self
 				
 				if !setSyncableValue(local_struct, for: key) {
-					ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: key)
+					
+				//	ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: key)
+				//	                                           ^^^^^^^^^^^^^^
+				//                                            Causes Swift compiler to crash :(
+					
+					ZDCSwiftWorkarounds.throwSyncableException(nil, forKey: key)
 				}
 			}
 		}
 		
 		return (self.changeset() ?? Dictionary())
 	}
+
 }

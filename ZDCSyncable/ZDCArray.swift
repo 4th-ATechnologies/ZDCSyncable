@@ -1,11 +1,11 @@
 /// ZDCSyncable
 /// https://github.com/4th-ATechnologies/ZDCSyncable
 ///
-/// Undo, redo & merge capabilities for plain objects in Swift.
+/// Undo, redo & merge capabilities for structs & objects in pure Swift.
 
 import Foundation
 
-public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncableCollection, Codable, Collection, Equatable {
+public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Collection, Equatable {
 	
 	enum CodingKeys: String, CodingKey {
 		case array = "array"
@@ -683,7 +683,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncableCollection, Co
 	}
 	
 	// ====================================================================================================
-	// MARK: ZDCSyncableCollection
+	// MARK: ZDCSyncable Protocol
 	// ====================================================================================================
 	
 	public var hasChanges: Bool {
@@ -695,13 +695,13 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncableCollection, Co
 			
 			for item in array {
 				
-				if let zdc_obj = item as? ZDCSyncableObject {
+				if let zdc_obj = item as? ZDCSyncableClass {
 					if zdc_obj.hasChanges {
 						return true
 					}
 				}
-				else if let zdc_collection = item as? ZDCSyncableCollection {
-					if zdc_collection.hasChanges {
+				else if let zdc_struct = item as? ZDCSyncableStruct {
+					if zdc_struct.hasChanges {
 						return true
 					}
 				}
@@ -722,18 +722,17 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncableCollection, Co
 		
 		for (idx, item) in array.enumerated() {
 			
-			if let zdc_obj = item as? ZDCSyncableObject {
+			if let zdc_obj = item as? ZDCSyncableClass {
 				
 				zdc_obj.clearChangeTracking()
 			}
-			else if var zdc_collection = item as? ZDCSyncableCollection {
+			else if var zdc_struct = item as? ZDCSyncableStruct {
 				
-				// zdc_collection is a struct,
-				// so we need to write the modified value back to the set.
+				// struct value semantics means we need to write the modified value back to the set
 				
 				changed_idx.append(idx)
-				zdc_collection.clearChangeTracking()
-				changed_new.append(zdc_collection as! Element)
+				zdc_struct.clearChangeTracking()
+				changed_new.append(zdc_struct as! Element)
 			}
 		}
 		
@@ -746,7 +745,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncableCollection, Co
 		}
 	}
 	
-	private func _changeset() -> Dictionary<String, Any>? {
+	public func peakChangeset() -> Dictionary<String, Any>? {
 		
 		if !self.hasChanges {
 			return nil
@@ -799,12 +798,6 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncableCollection, Co
 			changeset[ChangesetKeys.moved.rawValue] = moved_copy
 		}
 		
-		return changeset
-	}
-	
-	public func peakChangeset() -> Dictionary<String, Any>? {
-		
-		let changeset = self._changeset()
 		return changeset
 	}
 	
@@ -1375,7 +1368,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncableCollection, Co
 		return (originalOrder: order, added: added, deleted: deleted)
 	}
 	
-	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncableCollection,
+	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncable,
 	                                     pendingChangesets: Array<Dictionary<String, Any>>)
 		throws -> Dictionary<String, Any>
 	{

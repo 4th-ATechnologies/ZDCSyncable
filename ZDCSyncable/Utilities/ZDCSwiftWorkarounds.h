@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)throwImmutableException:(Class)class;
 + (void)throwImmutableException:(Class)class forKey:(nullable NSString *)key;
 
-+ (void)throwRecordException:(Class)class forKey:(NSString *)key;
++ (void)throwSyncableException:(nullable Class)class forKey:(NSString *)key;
 
 @end
 

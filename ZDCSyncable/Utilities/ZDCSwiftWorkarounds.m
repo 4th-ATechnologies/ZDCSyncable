@@ -41,10 +41,16 @@
 	@throw [NSException exceptionWithName:@"ZDCSyncableException" reason:reason userInfo:userInfo];
 }
 
-+ (void)throwRecordException:(Class)class forKey:(NSString *)key
++ (void)throwSyncableException:(nullable Class)class forKey:(NSString *)key
 {
-	NSString *reason = [NSString stringWithFormat:
-		@"Call to setSyncableProperty(_:for:) failed. Class = %@, property = %@", NSStringFromClass(class), key];
+	NSString *reason;
+	if (class) {
+		reason = [NSString stringWithFormat:
+			@"Call to setSyncableProperty(_:for:) failed. Class = %@, property = %@", NSStringFromClass(class), key];
+	} else {
+		reason = [NSString stringWithFormat:
+			@"Call to setSyncableProperty(_:for:) failed. property = %@", key];
+	}
 	
 	NSDictionary *userInfo = @{
 		NSLocalizedRecoverySuggestionErrorKey:

@@ -1,7 +1,7 @@
-/**
- * ZDCSyncable
- * https://github.com/4th-ATechnologies/ZDCSyncable
-**/
+/// ZDCSyncable
+/// https://github.com/4th-ATechnologies/ZDCSyncable
+///
+/// Undo, redo & merge capabilities for structs & objects in pure Swift.
 
 import Foundation
 import ZDCSyncable

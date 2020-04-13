@@ -1,11 +1,11 @@
 /// ZDCSyncable
 /// https://github.com/4th-ATechnologies/ZDCSyncable
 ///
-/// Undo, redo & merge capabilities for plain objects in Swift.
+/// Undo, redo & merge capabilities for structs & objects in pure Swift.
 
 import Foundation
 
-public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncableCollection, Codable, Collection, Equatable {
+public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collection, Equatable {
 	
 	enum CodingKeys: String, CodingKey {
 		case set = "set"
@@ -208,7 +208,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncableCollection, Codab
 	}
 
 	// ====================================================================================================
-	// MARK: ZDCSyncableCollection
+	// MARK: ZDCSyncable Protocol
 	// ====================================================================================================
 
 	public var hasChanges: Bool {
@@ -220,13 +220,13 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncableCollection, Codab
 			
 			for item in set {
 				
-				if let zdc_obj = item as? ZDCSyncableObject {
+				if let zdc_obj = item as? ZDCSyncableClass {
 					if zdc_obj.hasChanges {
 						return true
 					}
 				}
-				else if let zdc_collection = item as? ZDCSyncableCollection {
-					if zdc_collection.hasChanges {
+				else if let zdc_struct = item as? ZDCSyncableStruct {
+					if zdc_struct.hasChanges {
 						return true
 					}
 				}
@@ -246,18 +246,17 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncableCollection, Codab
 		
 		for item in set {
 			
-			if let zdc_obj = item as? ZDCSyncableObject {
+			if let zdc_obj = item as? ZDCSyncableClass {
 				
 				zdc_obj.clearChangeTracking()
 			}
-			else if var zdc_collection = item as? ZDCSyncableCollection {
+			else if var zdc_struct = item as? ZDCSyncableStruct {
 				
-				// zdc_collection is a struct,
-				// so we need to write the modified value back to the set.
+				// struct value semantics means we need to write the modified value back to the set
 				
-				changes_old.append(zdc_collection as! Element)
-				zdc_collection.clearChangeTracking()
-				changes_new.append(zdc_collection as! Element)
+				changes_old.append(zdc_struct as! Element)
+				zdc_struct.clearChangeTracking()
+				changes_new.append(zdc_struct as! Element)
 			}
 		}
 		
@@ -271,7 +270,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncableCollection, Codab
 		}
 	}
 
-	private func _changeset() -> Dictionary<String, Any>? {
+	public func peakChangeset() -> Dictionary<String, Any>? {
 		
 		if !self.hasChanges {
 			return nil
@@ -327,12 +326,6 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncableCollection, Codab
 			changeset[ChangesetKeys.deleted.rawValue] = changeset_deleted
 		}
 	
-		return changeset
-	}
-
-	public func peakChangeset() -> Dictionary<String, Any>? {
-		
-		let changeset = self._changeset()
 		return changeset
 	}
 
@@ -520,7 +513,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncableCollection, Codab
 		}
 	}
 	
-	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncableCollection,
+	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncable,
 	                                     pendingChangesets: Array<Dictionary<String, Any>>)
 		throws -> Dictionary<String, Any>
 	{

@@ -1,11 +1,11 @@
 /// ZDCSyncable
 /// https://github.com/4th-ATechnologies/ZDCSyncable
 ///
-/// Undo, redo & merge capabilities for plain objects in Swift.
+/// Undo, redo & merge capabilities for structs & objects in pure Swift.
 
 import Foundation
 
-public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncableCollection, Codable, Collection, Equatable {
+public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, Collection, Equatable {
 	
 	enum CodingKeys: String, CodingKey {
 		case set = "set"
@@ -527,7 +527,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncableCollection,
 	
 	#endif
 	// ====================================================================================================
-	// MARK: ZDCSyncableCollection
+	// MARK: ZDCSyncable Protocol
 	// ====================================================================================================
 	
 	public var hasChanges: Bool {
@@ -539,13 +539,13 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncableCollection,
 			
 			for item in set {
 				
-				if let zdc_obj = item as? ZDCSyncableObject {
+				if let zdc_obj = item as? ZDCSyncableClass {
 					if zdc_obj.hasChanges {
 						return true
 					}
 				}
-				else if let zdc_collection = item as? ZDCSyncableCollection {
-					if zdc_collection.hasChanges {
+				else if let zdc_struct = item as? ZDCSyncableStruct {
+					if zdc_struct.hasChanges {
 						return true
 					}
 				}
@@ -567,19 +567,18 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncableCollection,
 		
 		for (idx, item) in order.enumerated() {
 			
-			if let zdc_obj = item as? ZDCSyncableObject {
+			if let zdc_obj = item as? ZDCSyncableClass {
 				
 				zdc_obj.clearChangeTracking()
 			}
-			else if var zdc_collection = item as? ZDCSyncableCollection {
+			else if var zdc_struct = item as? ZDCSyncableStruct {
 				
-				// zdc_collection is a struct,
-				// so we need to write the modified value back to the set.
+				// struct value semantics means we need to write the modified value back to the set
 				
 				changed_idx.append(idx)
-				changed_old.append(zdc_collection as! Element)
-				zdc_collection.clearChangeTracking()
-				changed_new.append(zdc_collection as! Element)
+				changed_old.append(zdc_struct as! Element)
+				zdc_struct.clearChangeTracking()
+				changed_new.append(zdc_struct as! Element)
 			}
 		}
 		
@@ -595,7 +594,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncableCollection,
 		}
 	}
 	
-	private func _changeset() -> Dictionary<String, Any>? {
+	public func peakChangeset() -> Dictionary<String, Any>? {
 	
 		if !self.hasChanges {
 			return nil
@@ -664,12 +663,6 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncableCollection,
 			changeset[ChangesetKeys.deleted.rawValue] = deletedIndexes
 		}
 		
-		return changeset
-	}
-	
-	public func peakChangeset() -> Dictionary<String, Any>? {
-		
-		let changeset = self._changeset()
 		return changeset
 	}
 	
@@ -1092,7 +1085,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncableCollection,
 		return order
 	}
 	
-	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncableCollection,
+	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncable,
 	                                     pendingChangesets: Array<Dictionary<String, Any>>)
 		throws -> Dictionary<String, Any>
 	{

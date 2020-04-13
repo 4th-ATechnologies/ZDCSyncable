@@ -1,11 +1,11 @@
 /// ZDCSyncable
 /// https://github.com/4th-ATechnologies/ZDCSyncable
 ///
-/// Undo, redo & merge capabilities for plain objects in Swift.
+/// Undo, redo & merge capabilities for structs & objects in pure Swift.
 
 import Foundation
 
-public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & Codable>: ZDCSyncableCollection, Codable, Collection, Equatable {
+public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & Codable>: ZDCSyncable, Codable, Collection, Equatable {
 	
 	public typealias Element = Dictionary<Key, Value>.Element
 	
@@ -614,7 +614,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 
 	#endif
 	// ====================================================================================================
-	// MARK: ZDSyncableCollection
+	// MARK: ZDCSyncable Protocol
 	// ====================================================================================================
 
 	public var hasChanges: Bool {
@@ -630,13 +630,13 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 			
 			for (_, value) in dict {
 				
-				if let zdc_obj = value as? ZDCSyncableObject {
+				if let zdc_obj = value as? ZDCSyncableClass {
 					if zdc_obj.hasChanges {
 						return true
 					}
 				}
-				else if let zdc_collection = value as? ZDCSyncableCollection {
-					if zdc_collection.hasChanges {
+				else if let zdc_struct = value as? ZDCSyncableStruct {
+					if zdc_struct.hasChanges {
 						return true
 					}
 				}
@@ -655,21 +655,20 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		var changes: Dictionary<Key, Value>? = nil
 		for (key, value) in dict {
 			
-			if let zdc_obj = value as? ZDCSyncableObject {
+			if let zdc_obj = value as? ZDCSyncableClass {
 				
 				zdc_obj.clearChangeTracking()
 			}
-			else if var zdc_collection = value as? ZDCSyncableCollection {
+			else if var zdc_struct = value as? ZDCSyncableStruct {
 				
-				zdc_collection.clearChangeTracking()
+				zdc_struct.clearChangeTracking()
 				
-				// zdc_collection is a struct,
-				// so we need to write the modified value back to the dictionary.
+				// struct value semantics means we need to write the modified value back to the dictionary
 				
 				if changes == nil {
 					changes = Dictionary()
 				}
-				changes![key] = (zdc_collection as! Value)
+				changes![key] = (zdc_struct as! Value)
 			}
 		}
 		
@@ -681,7 +680,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		}
 	}
 
-	private func _changeset() -> Dictionary<String, Any>? {
+	public func peakChangeset() -> Dictionary<String, Any>? {
 		
 		if !self.hasChanges {
 			return nil
@@ -702,12 +701,12 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 			
 			// We're looking for syncable collection types:
 			//
-			// - ZDCRecord
-			// - ZDCSyncableCollection
+			// - ZDCSyncableClass
+			// - ZDCSyncableStruct
 			
-			if let zdc_obj = value as? ZDCSyncableObject {
+			if let zdc_obj = value as? ZDCSyncableClass {
 			
-				// ZDCSyncableObject is a class type:
+				// ZDCSyncableClass => reference semantics
 				//
 				// - If value was added, then originalValue will be ZDCNull.
 				//   If this is the case, we should not add to refs.
@@ -742,9 +741,9 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 					}
 				}
 			}
-			else if let zdc_collection = value as? ZDCSyncableCollection {
+			else if let zdc_struct = value as? ZDCSyncableStruct {
 				
-				// ZDCSyncableCollection is a struct type:
+				// ZDCSyncableStruct => value semantics
 				//
 				// - If value was added, then originalValue will be ZDCNull.
 				//   If this is the case, we should not add to refs.
@@ -755,7 +754,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 				
 				if !wasAdded {
 					
-					var value_changeset = zdc_collection.peakChangeset()
+					var value_changeset = zdc_struct.peakChangeset()
 					if (value_changeset == nil) {
 						
 						// Edge case:
@@ -843,12 +842,6 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 			changeset[ChangesetKeys.deleted.rawValue] = deletedIndexes_copy
 		}
 		
-		return changeset
-	}
-
-	public func peakChangeset() -> Dictionary<String, Any>? {
-		
-		let changeset = self._changeset()
 		return changeset
 	}
 
@@ -990,18 +983,17 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 				
 				let value = dict[key]
 				
-				if let zdc_obj = value as? ZDCSyncableObject {
+				if let zdc_obj = value as? ZDCSyncableClass {
 					
 					try zdc_obj.performUndo(changeset)
 				}
-				else if var zdc_collection = value as? ZDCSyncableCollection {
+				else if var zdc_struct = value as? ZDCSyncableStruct {
 					
-					try zdc_collection.performUndo(changeset)
+					try zdc_struct.performUndo(changeset)
 					
-					// zdc_collection is a struct,
-					// so we need to write the modified value back to the dictionary.
+					// struct value semantics means we need to write the modified value back to the dictionary
 					
-					self.dict[key] = (zdc_collection as! Value)
+					self.dict[key] = (zdc_struct as! Value)
 				}
 				else {
 					throw ZDCSyncableError.mismatchedChangeset
@@ -1364,7 +1356,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		return order
 	}
 
-	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncableCollection,
+	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncable,
 							         pendingChangesets: Array<Dictionary<String, Any>>)
 		throws -> Dictionary<String, Any>
 	{
@@ -1452,8 +1444,8 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 			
 			if !modifiedValueLocally {
 				
-				if ((currentLocalValue is ZDCSyncableObject) && (cloudValue is ZDCSyncableObject)) ||
-				   ((currentLocalValue is ZDCSyncableCollection) && (cloudValue is ZDCSyncableCollection)) {
+				if ((currentLocalValue is ZDCSyncableClass) && (cloudValue is ZDCSyncableClass)) ||
+				   ((currentLocalValue is ZDCSyncableStruct) && (cloudValue is ZDCSyncableStruct)) {
 					
 					continue // handled by refs
 				}
@@ -1561,22 +1553,21 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 				}
 			}
 			
-			if let local_obj = local_value as? ZDCSyncableObject,
-			   let cloud_obj = cloud_value as? ZDCSyncableObject
+			if let local_obj = local_value as? ZDCSyncableClass,
+			   let cloud_obj = cloud_value as? ZDCSyncableClass
 			{
 				let _ = try local_obj.merge(cloudVersion: cloud_obj,
 				                       pendingChangesets: pendingChangesets_ref)
 			}
-			else if var local_collection = local_value as? ZDCSyncableCollection,
-			        let cloud_collection = cloud_value as? ZDCSyncableCollection
+			else if var local_struct = local_value as? ZDCSyncableStruct,
+			        let cloud_struct = cloud_value as? ZDCSyncableStruct
 			{
-				let _ = try local_collection.merge(cloudVersion: cloud_collection,
-				                              pendingChangesets: pendingChangesets_ref)
+				let _ = try local_struct.merge(cloudVersion: cloud_struct,
+				                          pendingChangesets: pendingChangesets_ref)
 				
-				// local_collection is a struct,
-				// so we need to write the modified value back to the dictionary.
+				// struct value semantics means we need to write the modified value back to the dictionary
 				
-				self.dict[key] = (local_collection as! Value)
+				self.dict[key] = (local_struct as! Value)
 			}
 		}
 		

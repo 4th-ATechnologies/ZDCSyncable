@@ -1,7 +1,7 @@
-/**
- * ZDCSyncable
- * https://github.com/4th-ATechnologies/ZDCSyncable
-**/
+/// ZDCSyncable
+/// https://github.com/4th-ATechnologies/ZDCSyncable
+///
+/// Undo, redo & merge capabilities for structs & objects in pure Swift.
 
 import XCTest
 import ZDCSyncable
@@ -14,9 +14,9 @@ class test_ZDCSet: XCTestCase {
 		return String((0..<length).map{ _ in alphabet.randomElement()! })
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MARK:- Fuzz
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ====================================================================================================
+	// MARK:- Fuzz
+	// ====================================================================================================
 
 	func test_undo_fuzz_everything() {
 		

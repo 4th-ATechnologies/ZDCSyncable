@@ -11,16 +11,25 @@
 		DC3AE27F227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */; };
 		DC3AE280227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */; };
 		DC3AE282227C9ADC006FC3DC /* test_ZDCOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AE281227C9ADC006FC3DC /* test_ZDCOrderedDictionary.swift */; };
-		DC3CE111243FDE41005024B3 /* ZDCSynableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3CE110243FDE41005024B3 /* ZDCSynableCollection.swift */; };
-		DC3CE112243FDEB7005024B3 /* ZDCSynableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3CE110243FDE41005024B3 /* ZDCSynableCollection.swift */; };
-		DC3CE113243FDEB8005024B3 /* ZDCSynableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3CE110243FDE41005024B3 /* ZDCSynableCollection.swift */; };
-		DC3CE117243FEB30005024B3 /* Dictionary+PrettyPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3CE115243FEB30005024B3 /* Dictionary+PrettyPrint.swift */; };
-		DC3CE118243FEB30005024B3 /* Dictionary+PrettyPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3CE115243FEB30005024B3 /* Dictionary+PrettyPrint.swift */; };
-		DC3CE119243FEB30005024B3 /* Dictionary+PrettyPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3CE115243FEB30005024B3 /* Dictionary+PrettyPrint.swift */; };
+		DC3CE111243FDE41005024B3 /* ZDCSynable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3CE110243FDE41005024B3 /* ZDCSynable.swift */; };
+		DC3CE112243FDEB7005024B3 /* ZDCSynable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3CE110243FDE41005024B3 /* ZDCSynable.swift */; };
+		DC3CE113243FDEB8005024B3 /* ZDCSynable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3CE110243FDE41005024B3 /* ZDCSynable.swift */; };
+		DC7C2BF024437C6A00B2FB06 /* ZDCSyncable+Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BEF24437C6A00B2FB06 /* ZDCSyncable+Common.swift */; };
+		DC7C2BF124437C6A00B2FB06 /* ZDCSyncable+Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BEF24437C6A00B2FB06 /* ZDCSyncable+Common.swift */; };
+		DC7C2BF224437C6A00B2FB06 /* ZDCSyncable+Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BEF24437C6A00B2FB06 /* ZDCSyncable+Common.swift */; };
+		DC7C2BF42443843900B2FB06 /* ZDCSyncableClass+Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BF32443843900B2FB06 /* ZDCSyncableClass+Common.swift */; };
+		DC7C2BF52443843900B2FB06 /* ZDCSyncableClass+Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BF32443843900B2FB06 /* ZDCSyncableClass+Common.swift */; };
+		DC7C2BF62443843900B2FB06 /* ZDCSyncableClass+Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BF32443843900B2FB06 /* ZDCSyncableClass+Common.swift */; };
+		DC7C2BF92443851000B2FB06 /* ZDCSyncable+Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BF82443851000B2FB06 /* ZDCSyncable+Struct.swift */; };
+		DC7C2BFA2443851000B2FB06 /* ZDCSyncable+Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BF82443851000B2FB06 /* ZDCSyncable+Struct.swift */; };
+		DC7C2BFB2443851000B2FB06 /* ZDCSyncable+Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BF82443851000B2FB06 /* ZDCSyncable+Struct.swift */; };
+		DC7C2BFD2443E2D500B2FB06 /* SimpleStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BFC2443E2D500B2FB06 /* SimpleStruct.swift */; };
+		DC7C2BFE2443E2D500B2FB06 /* SimpleStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BFC2443E2D500B2FB06 /* SimpleStruct.swift */; };
+		DC7C2BFF2443E2D500B2FB06 /* SimpleStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7C2BFC2443E2D500B2FB06 /* SimpleStruct.swift */; };
 		DC9ACBCB2275DF2D0031FE3E /* ZDCOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9ACBCA2275DF2D0031FE3E /* ZDCOrderedSet.swift */; };
 		DC9ACBCC2275DF2D0031FE3E /* ZDCOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9ACBCA2275DF2D0031FE3E /* ZDCOrderedSet.swift */; };
 		DC9ACBCD2275DF2D0031FE3E /* ZDCOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9ACBCA2275DF2D0031FE3E /* ZDCOrderedSet.swift */; };
-		DCA1B50E229C975F00AD8ACF /* ZDCSynableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977C2251504900284C12 /* ZDCSynableObject.swift */; };
+		DCA1B50E229C975F00AD8ACF /* ZDCSynableClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977C2251504900284C12 /* ZDCSynableClass.swift */; };
 		DCA1B527229D67FE00AD8ACF /* ZDCSyncable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC6979F2251531C00284C12 /* ZDCSyncable.framework */; };
 		DCA1B52D229D685400AD8ACF /* SimpleRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE62641225C00D5000D19E3 /* SimpleRecord.swift */; };
 		DCA1B52E229D685800AD8ACF /* ComplexRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBC862229C61780033DE40 /* ComplexRecord.swift */; };
@@ -53,7 +62,7 @@
 		DCC697812251504900284C12 /* ZDCNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977A2251504900284C12 /* ZDCNull.swift */; };
 		DCC697822251504900284C12 /* ZDCSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977B2251504900284C12 /* ZDCSet.swift */; };
 		DCC697A32251531D00284C12 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697A12251531D00284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DCC697A72251535300284C12 /* ZDCSynableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977C2251504900284C12 /* ZDCSynableObject.swift */; };
+		DCC697A72251535300284C12 /* ZDCSynableClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977C2251504900284C12 /* ZDCSynableClass.swift */; };
 		DCC697A92251535C00284C12 /* ZDCSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977B2251504900284C12 /* ZDCSet.swift */; };
 		DCC697AB2251536700284C12 /* ZDCNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977A2251504900284C12 /* ZDCNull.swift */; };
 		DCC697AC2251536900284C12 /* ZDCSwiftWorkarounds.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697752251504900284C12 /* ZDCSwiftWorkarounds.m */; };
@@ -62,7 +71,7 @@
 		DCC697BC2251544500284C12 /* ZDCNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977A2251504900284C12 /* ZDCNull.swift */; };
 		DCC697BD2251544800284C12 /* ZDCSwiftWorkarounds.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697762251504900284C12 /* ZDCSwiftWorkarounds.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DCC697BE2251544D00284C12 /* ZDCSwiftWorkarounds.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697752251504900284C12 /* ZDCSwiftWorkarounds.m */; };
-		DCC697BF2251545100284C12 /* ZDCSynableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977C2251504900284C12 /* ZDCSynableObject.swift */; };
+		DCC697BF2251545100284C12 /* ZDCSynableClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977C2251504900284C12 /* ZDCSynableClass.swift */; };
 		DCC697C12251545700284C12 /* ZDCSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977B2251504900284C12 /* ZDCSet.swift */; };
 		DCE6260F225A8C0B000D19E3 /* ZDCSyncableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE6260E225A8C0B000D19E3 /* ZDCSyncableError.swift */; };
 		DCE62610225A8C0B000D19E3 /* ZDCSyncableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE6260E225A8C0B000D19E3 /* ZDCSyncableError.swift */; };
@@ -91,6 +100,9 @@
 		DCEC302F22997D4D00BE7A79 /* ZDCArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEC302D22997D4D00BE7A79 /* ZDCArray.swift */; };
 		DCEC303022997D4D00BE7A79 /* ZDCArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEC302D22997D4D00BE7A79 /* ZDCArray.swift */; };
 		DCEC303222999C6E00BE7A79 /* test_ZDCArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEC303122999C6E00BE7A79 /* test_ZDCArray.swift */; };
+		DCF9D4802443F287009755CA /* test_ZDCStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF9D47F2443F287009755CA /* test_ZDCStruct.swift */; };
+		DCF9D4812443F287009755CA /* test_ZDCStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF9D47F2443F287009755CA /* test_ZDCStruct.swift */; };
+		DCF9D4822443F287009755CA /* test_ZDCStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF9D47F2443F287009755CA /* test_ZDCStruct.swift */; };
 		DCFBC866229C66B30033DE40 /* ComplexRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBC862229C61780033DE40 /* ComplexRecord.swift */; };
 /* End PBXBuildFile section */
 
@@ -128,8 +140,11 @@
 /* Begin PBXFileReference section */
 		DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZDCOrderedDictionary.swift; sourceTree = "<group>"; };
 		DC3AE281227C9ADC006FC3DC /* test_ZDCOrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_ZDCOrderedDictionary.swift; sourceTree = "<group>"; };
-		DC3CE110243FDE41005024B3 /* ZDCSynableCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCSynableCollection.swift; sourceTree = "<group>"; };
-		DC3CE115243FEB30005024B3 /* Dictionary+PrettyPrint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+PrettyPrint.swift"; sourceTree = "<group>"; };
+		DC3CE110243FDE41005024B3 /* ZDCSynable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCSynable.swift; sourceTree = "<group>"; };
+		DC7C2BEF24437C6A00B2FB06 /* ZDCSyncable+Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZDCSyncable+Common.swift"; sourceTree = "<group>"; };
+		DC7C2BF32443843900B2FB06 /* ZDCSyncableClass+Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZDCSyncableClass+Common.swift"; sourceTree = "<group>"; };
+		DC7C2BF82443851000B2FB06 /* ZDCSyncable+Struct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZDCSyncable+Struct.swift"; sourceTree = "<group>"; };
+		DC7C2BFC2443E2D500B2FB06 /* SimpleStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleStruct.swift; sourceTree = "<group>"; };
 		DC9ACBCA2275DF2D0031FE3E /* ZDCOrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZDCOrderedSet.swift; sourceTree = "<group>"; };
 		DC9ACBCE22762A680031FE3E /* test_ZDCOrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_ZDCOrderedSet.swift; sourceTree = "<group>"; };
 		DCA1B522229D67FE00AD8ACF /* UnitTests_iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_iOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,7 +160,7 @@
 		DCC697762251504900284C12 /* ZDCSwiftWorkarounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCSwiftWorkarounds.h; sourceTree = "<group>"; };
 		DCC6977A2251504900284C12 /* ZDCNull.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCNull.swift; sourceTree = "<group>"; };
 		DCC6977B2251504900284C12 /* ZDCSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCSet.swift; sourceTree = "<group>"; };
-		DCC6977C2251504900284C12 /* ZDCSynableObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCSynableObject.swift; sourceTree = "<group>"; };
+		DCC6977C2251504900284C12 /* ZDCSynableClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCSynableClass.swift; sourceTree = "<group>"; };
 		DCC6979F2251531C00284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC697A12251531D00284C12 /* ZDCSyncable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZDCSyncable.h; sourceTree = "<group>"; };
 		DCC697A22251531D00284C12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -172,6 +187,7 @@
 		DCEA81AC2279F05600FBC86B /* test_ZDCDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_ZDCDictionary.swift; sourceTree = "<group>"; };
 		DCEC302D22997D4D00BE7A79 /* ZDCArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZDCArray.swift; sourceTree = "<group>"; };
 		DCEC303122999C6E00BE7A79 /* test_ZDCArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_ZDCArray.swift; sourceTree = "<group>"; };
+		DCF9D47F2443F287009755CA /* test_ZDCStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_ZDCStruct.swift; sourceTree = "<group>"; };
 		DCFBC862229C61780033DE40 /* ComplexRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexRecord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -234,25 +250,28 @@
 		DC20AC6922515A8900678A20 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				DC3CE114243FEB10005024B3 /* Debugging */,
 				DCE62640225C00B9000D19E3 /* Models */,
-				DCEA81982278946A00FBC86B /* test_ZDCOrder.swift */,
-				DC9ACBCE22762A680031FE3E /* test_ZDCOrderedSet.swift */,
-				DCE62638225A952D000D19E3 /* test_ZDCSet.swift */,
+				DCF9D47F2443F287009755CA /* test_ZDCStruct.swift */,
 				DCE6263E225BFF49000D19E3 /* test_ZDCRecord.swift */,
+				DCEA81982278946A00FBC86B /* test_ZDCOrder.swift */,
 				DCEA81AC2279F05600FBC86B /* test_ZDCDictionary.swift */,
 				DC3AE281227C9ADC006FC3DC /* test_ZDCOrderedDictionary.swift */,
+				DCE62638225A952D000D19E3 /* test_ZDCSet.swift */,
+				DC9ACBCE22762A680031FE3E /* test_ZDCOrderedSet.swift */,
 				DCEC303122999C6E00BE7A79 /* test_ZDCArray.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
 		};
-		DC3CE114243FEB10005024B3 /* Debugging */ = {
+		DC7C2BF72443844400B2FB06 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				DC3CE115243FEB30005024B3 /* Dictionary+PrettyPrint.swift */,
+				DC3CE110243FDE41005024B3 /* ZDCSynable.swift */,
+				DC7C2BEF24437C6A00B2FB06 /* ZDCSyncable+Common.swift */,
+				DCC6977C2251504900284C12 /* ZDCSynableClass.swift */,
+				DC7C2BF32443843900B2FB06 /* ZDCSyncableClass+Common.swift */,
 			);
-			path = Debugging;
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		DCA1B523229D67FE00AD8ACF /* UnitTests_iOS */ = {
@@ -313,12 +332,12 @@
 		DCC6977222514FA900284C12 /* ZDCSyncable */ = {
 			isa = PBXGroup;
 			children = (
+				DC7C2BF72443844400B2FB06 /* Protocols */,
 				DCC697782251504900284C12 /* Internal */,
 				DCC697742251504900284C12 /* Utilities */,
 				DCBF10D7243E6A2A003806C5 /* ZDCSyncablePropertyWrapper.swift */,
-				DCC6977C2251504900284C12 /* ZDCSynableObject.swift */,
-				DC3CE110243FDE41005024B3 /* ZDCSynableCollection.swift */,
 				DCE6260E225A8C0B000D19E3 /* ZDCSyncableError.swift */,
+				DC7C2BF82443851000B2FB06 /* ZDCSyncable+Struct.swift */,
 				DCE6263A225BF1F4000D19E3 /* ZDCRecord.swift */,
 				DCEA819C2279CDA700FBC86B /* ZDCDictionary.swift */,
 				DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */,
@@ -390,6 +409,7 @@
 		DCE62640225C00B9000D19E3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				DC7C2BFC2443E2D500B2FB06 /* SimpleStruct.swift */,
 				DCE62641225C00D5000D19E3 /* SimpleRecord.swift */,
 				DCFBC862229C61780033DE40 /* ComplexRecord.swift */,
 			);
@@ -680,8 +700,9 @@
 				DCA1B52D229D685400AD8ACF /* SimpleRecord.swift in Sources */,
 				DCA1B534229D685E00AD8ACF /* test_ZDCOrderedDictionary.swift in Sources */,
 				DCA1B531229D685E00AD8ACF /* test_ZDCSet.swift in Sources */,
+				DCF9D4802443F287009755CA /* test_ZDCStruct.swift in Sources */,
 				DCA1B52E229D685800AD8ACF /* ComplexRecord.swift in Sources */,
-				DC3CE117243FEB30005024B3 /* Dictionary+PrettyPrint.swift in Sources */,
+				DC7C2BFD2443E2D500B2FB06 /* SimpleStruct.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -697,8 +718,9 @@
 				DCA1B545229D68F700AD8ACF /* SimpleRecord.swift in Sources */,
 				DCA1B54C229D68FD00AD8ACF /* test_ZDCOrderedDictionary.swift in Sources */,
 				DCA1B549229D68FD00AD8ACF /* test_ZDCSet.swift in Sources */,
+				DCF9D4822443F287009755CA /* test_ZDCStruct.swift in Sources */,
 				DCA1B546229D68F700AD8ACF /* ComplexRecord.swift in Sources */,
-				DC3CE119243FEB30005024B3 /* Dictionary+PrettyPrint.swift in Sources */,
+				DC7C2BFF2443E2D500B2FB06 /* SimpleStruct.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -706,13 +728,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC3CE112243FDEB7005024B3 /* ZDCSynableCollection.swift in Sources */,
+				DC3CE112243FDEB7005024B3 /* ZDCSynable.swift in Sources */,
 				DCC697822251504900284C12 /* ZDCSet.swift in Sources */,
 				DC3AE27F227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */,
-				DCA1B50E229C975F00AD8ACF /* ZDCSynableObject.swift in Sources */,
+				DCA1B50E229C975F00AD8ACF /* ZDCSynableClass.swift in Sources */,
+				DC7C2BFA2443851000B2FB06 /* ZDCSyncable+Struct.swift in Sources */,
+				DC7C2BF52443843900B2FB06 /* ZDCSyncableClass+Common.swift in Sources */,
 				DCC697812251504900284C12 /* ZDCNull.swift in Sources */,
 				DCE6263C225BF1F4000D19E3 /* ZDCRecord.swift in Sources */,
 				DCBF10D9243E6AB8003806C5 /* ZDCSyncablePropertyWrapper.swift in Sources */,
+				DC7C2BF124437C6A00B2FB06 /* ZDCSyncable+Common.swift in Sources */,
 				DC9ACBCC2275DF2D0031FE3E /* ZDCOrderedSet.swift in Sources */,
 				DCE62610225A8C0B000D19E3 /* ZDCSyncableError.swift in Sources */,
 				DCEA81962278858300FBC86B /* ZDCOrder.swift in Sources */,
@@ -727,16 +752,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC3CE111243FDE41005024B3 /* ZDCSynableCollection.swift in Sources */,
+				DC3CE111243FDE41005024B3 /* ZDCSynable.swift in Sources */,
 				DC3AE27E227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */,
 				DCC697AC2251536900284C12 /* ZDCSwiftWorkarounds.m in Sources */,
 				DCBF10D6243E682B003806C5 /* ZDCSyncableProperty.swift in Sources */,
+				DC7C2BF92443851000B2FB06 /* ZDCSyncable+Struct.swift in Sources */,
+				DC7C2BF42443843900B2FB06 /* ZDCSyncableClass+Common.swift in Sources */,
 				DCE6263B225BF1F4000D19E3 /* ZDCRecord.swift in Sources */,
 				DC9ACBCB2275DF2D0031FE3E /* ZDCOrderedSet.swift in Sources */,
 				DCE6260F225A8C0B000D19E3 /* ZDCSyncableError.swift in Sources */,
+				DC7C2BF024437C6A00B2FB06 /* ZDCSyncable+Common.swift in Sources */,
 				DCBF10D8243E6A2A003806C5 /* ZDCSyncablePropertyWrapper.swift in Sources */,
 				DCEA81952278858300FBC86B /* ZDCOrder.swift in Sources */,
-				DCC697A72251535300284C12 /* ZDCSynableObject.swift in Sources */,
+				DCC697A72251535300284C12 /* ZDCSynableClass.swift in Sources */,
 				DCEA819D2279CDA700FBC86B /* ZDCDictionary.swift in Sources */,
 				DCEC302E22997D4D00BE7A79 /* ZDCArray.swift in Sources */,
 				DCC697AB2251536700284C12 /* ZDCNull.swift in Sources */,
@@ -748,20 +776,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC3CE113243FDEB8005024B3 /* ZDCSynableCollection.swift in Sources */,
+				DC3CE113243FDEB8005024B3 /* ZDCSynable.swift in Sources */,
 				DCC697BC2251544500284C12 /* ZDCNull.swift in Sources */,
 				DC3AE280227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */,
 				DCE6263D225BF1F4000D19E3 /* ZDCRecord.swift in Sources */,
+				DC7C2BFB2443851000B2FB06 /* ZDCSyncable+Struct.swift in Sources */,
+				DC7C2BF62443843900B2FB06 /* ZDCSyncableClass+Common.swift in Sources */,
 				DC9ACBCD2275DF2D0031FE3E /* ZDCOrderedSet.swift in Sources */,
 				DCBF10DA243E6AB9003806C5 /* ZDCSyncablePropertyWrapper.swift in Sources */,
 				DCE62611225A8C0B000D19E3 /* ZDCSyncableError.swift in Sources */,
+				DC7C2BF224437C6A00B2FB06 /* ZDCSyncable+Common.swift in Sources */,
 				DCC697C12251545700284C12 /* ZDCSet.swift in Sources */,
 				DCEA81972278858300FBC86B /* ZDCOrder.swift in Sources */,
 				DCC697BE2251544D00284C12 /* ZDCSwiftWorkarounds.m in Sources */,
 				DCEA819F2279CDA700FBC86B /* ZDCDictionary.swift in Sources */,
 				DCBF10DC243E6ABD003806C5 /* ZDCSyncableProperty.swift in Sources */,
 				DCEC303022997D4D00BE7A79 /* ZDCArray.swift in Sources */,
-				DCC697BF2251545100284C12 /* ZDCSynableObject.swift in Sources */,
+				DCC697BF2251545100284C12 /* ZDCSynableClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -786,8 +817,9 @@
 				DCEC303222999C6E00BE7A79 /* test_ZDCArray.swift in Sources */,
 				DCFBC866229C66B30033DE40 /* ComplexRecord.swift in Sources */,
 				DCEA81B02279F1E800FBC86B /* test_ZDCSet.swift in Sources */,
+				DCF9D4812443F287009755CA /* test_ZDCStruct.swift in Sources */,
 				DCEA81AD2279F05600FBC86B /* test_ZDCDictionary.swift in Sources */,
-				DC3CE118243FEB30005024B3 /* Dictionary+PrettyPrint.swift in Sources */,
+				DC7C2BFE2443E2D500B2FB06 /* SimpleStruct.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

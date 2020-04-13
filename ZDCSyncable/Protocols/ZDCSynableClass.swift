@@ -1,16 +1,17 @@
 /// ZDCSyncable
 /// https://github.com/4th-ATechnologies/ZDCSyncable
 ///
-/// Undo, redo & merge capabilities for plain objects in Swift.
+/// Undo, redo & merge capabilities for structs & objects in pure Swift.
 
 import Foundation
 
-/// The ZDCSyncableCollection protocol defines the common methods for:
-/// - tracking changes
-/// - performing undo & redo
-/// - merging changes from external sources
-/// 
-public protocol ZDCSyncableCollection {
+/**
+ * The ZDCSyncableClass protocol defines the common methods for:
+ * - tracking changes
+ * - performing undo & redo
+ * - merging changes from external sources
+ */
+public protocol ZDCSyncableClass {
 	
 	/**
 	 * Returns whether or not there are any changes to the object.
@@ -21,7 +22,7 @@ public protocol ZDCSyncableCollection {
 	 * Resets the hasChanges property to false, and clears all internal change tracking information.
 	 * Use this to wipe the slate, and restart change tracking from the current state.
 	 */
-	mutating func clearChangeTracking()
+	func clearChangeTracking()
 	
 	/**
 	 * Returns a changeset that contains information about changes that were made to the object.
@@ -44,7 +45,7 @@ public protocol ZDCSyncableCollection {
 	 * - Return:
 	 *     A changeset dictionary, or nil if there are no changes.
 	 */
-	mutating func changeset() -> Dictionary<String, Any>?
+	func changeset() -> Dictionary<String, Any>?
 	
 	/**
 	 * Returns the current changeset without clearing the changes from the object.
@@ -76,7 +77,7 @@ public protocol ZDCSyncableCollection {
 	 *     A changeset dictionary if the undo was successful (which can be used to redo the changes).
 	 *     Otherwise throws with an error explaining what went wrong.
 	 */
-	mutating func undo(_ changeset: Dictionary<String, Any>) throws -> Dictionary<String, Any>
+	func undo(_ changeset: Dictionary<String, Any>) throws -> Dictionary<String, Any>
 
 	/**
 	 * Moves the state of the object backwards in time, undoing the changes represented in the changeset.
@@ -90,13 +91,13 @@ public protocol ZDCSyncableCollection {
 	 * - Returns:
 	 *     Returns nil on success, otherwise returns an error explaining what went wrong.
 	 */
-	mutating func performUndo(_ changeset: Dictionary<String, Any>) throws
+	func performUndo(_ changeset: Dictionary<String, Any>) throws
 	
 	/**
 	 * Performs an undo for all changes that have occurred since the last time either
 	 * `changeset` or `clearChangeTracking` was called.
 	 */
-	mutating func rollback()
+	func rollback()
 	
 	/**
 	 * This method is used to merge multiple changesets.
@@ -117,7 +118,7 @@ public protocol ZDCSyncableCollection {
 	 *     consolidated version of the given list.
 	 *     Otherwise throws with an error explaining what went wrong.
 	 */
-	mutating func mergeChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any>
+	func mergeChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any>
 	
 	/**
 	 * This method is used to merge multiple changesets.
@@ -130,58 +131,12 @@ public protocol ZDCSyncableCollection {
 	 * - Parameter orderedChangesets:
 	 *     An ordered list of changesets, with oldest at index 0.
 	 */
-	mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws
+	func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws
 	
 	/**
 	 * - Returns:
 	 *     On success, returns a changeset dictionary that can be used to undo the changes.
 	 *     Otherwise throws with an error explaining what went wrong.
 	 */
-	mutating func merge(cloudVersion: ZDCSyncableCollection, pendingChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any>
-}
-
-// ====================================================================================================
-// MARK:- Default Implementations
-// ====================================================================================================
-
-extension ZDCSyncableCollection {
-	
-	public mutating func changeset() -> Dictionary<String, Any>? {
-		
-		let changeset = self.peakChangeset()
-		self.clearChangeTracking()
-		
-		return changeset
-	}
-	
-	public mutating func undo(_ changeset: Dictionary<String, Any>) throws -> Dictionary<String, Any> {
-		
-		try self.performUndo(changeset)
-		
-		// Undo successful - generate redo changeset
-		let reverseChangeset = self.changeset()
-		return reverseChangeset ?? Dictionary<String, Any>()
-	}
-	
-	public mutating func rollback() {
-		
-		if let changeset = self.changeset() {
-			
-			do {
-				let _ = try self.undo(changeset)
-				
-			} catch {
-				// Ignoring errors here.
-				// There's nothing we can do at this point - we're in a bad state.
-			}
-		}
-	}
-	
-	public mutating func mergeChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any> {
-		
-		try self.importChangesets(orderedChangesets)
-		
-		let mergedChangeset = self.changeset()
-		return mergedChangeset ?? Dictionary()
-	}
+	func merge(cloudVersion: ZDCSyncableClass, pendingChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any>
 }
