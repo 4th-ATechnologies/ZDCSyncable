@@ -442,7 +442,7 @@ open class ZDCRecord: ZDCSyncableClass {
 		
 		
 		guard let cloudVersion = inCloudVersion as? ZDCRecord else {
-			throw ZDCSyncableError.incorrectObjectClass
+			throw ZDCSyncableError.incorrectType
 		}
 		
 		// Step 1 of 3:

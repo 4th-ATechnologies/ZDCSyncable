@@ -24,7 +24,9 @@ enum ZDCSyncableError: Error {
 	case mismatchedChangeset
 	
 	/// This error will be emitted if the merge(cloudVersion:pendingChangesets:) function is invoked,
-	/// but the cloudVersion parameter doesn't match the class of the receiver.
+	/// but the cloudVersion parameter doesn't match the type of the receiver.
+	///
+	/// For example, if the receiver is a ZDCDictionary, but you invoke the merge function, and pass a ZDCArray.
 	/// 
-	case incorrectObjectClass
+	case incorrectType
 }

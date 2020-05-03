@@ -1379,7 +1379,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		}
 		
 		guard let cloudVersion = inCloudVersion as? ZDCOrderedDictionary<Key, Value> else {
-			throw ZDCSyncableError.incorrectObjectClass
+			throw ZDCSyncableError.incorrectType
 		}
 		
 		// Step 1 of 8:

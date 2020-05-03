@@ -15,7 +15,7 @@ import ZDCSyncable
  */
 class ComplexRecord: SimpleRecord {
 	
-	var dict: ZDCDictionary<String, String> = ZDCDictionary()
+	var dict = ZDCDictionary<String, String>()
 	
 	override init() {
 		super.init()

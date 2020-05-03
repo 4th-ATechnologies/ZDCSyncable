@@ -386,8 +386,8 @@ extension ZDCSyncable {
 		}
 	}
 
-	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncable,
-	                                     pendingChangesets: Array<Dictionary<String, Any>>)
+	public mutating func merge(cloudVersion: ZDCSyncable,
+	                      pendingChangesets: Array<Dictionary<String, Any>>)
 		throws -> Dictionary<String, Any>
 	{
 		if self.hasChanges {
@@ -408,9 +408,11 @@ extension ZDCSyncable {
 			}
 		}
 		
+		let local_type = type(of: self)
+		let cloud_type = type(of: cloudVersion)
 		
-		guard let cloudVersion = inCloudVersion as? ZDCRecord else {
-			throw ZDCSyncableError.incorrectObjectClass
+		if local_type != cloud_type {
+			throw ZDCSyncableError.incorrectType
 		}
 		
 		// Step 1 of 3:

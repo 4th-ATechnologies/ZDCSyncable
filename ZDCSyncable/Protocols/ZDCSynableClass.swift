@@ -11,7 +11,7 @@ import Foundation
  * - performing undo & redo
  * - merging changes from external sources
  */
-public protocol ZDCSyncableClass {
+public protocol ZDCSyncableClass: class {
 	
 	/**
 	 * Returns whether or not there are any changes to the object.

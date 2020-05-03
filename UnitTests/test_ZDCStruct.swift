@@ -43,152 +43,197 @@ class test_ZDCStruct: XCTestCase {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		var localRecord = SimpleStruct(someString: "abc123", someInteger: 42)
+		var localStruct = SimpleStruct(someString: "abc123", someInteger: 42)
 	
-		localRecord.clearChangeTracking()
-		var cloudRecord = localRecord
+		localStruct.clearChangeTracking()
+		var cloudStruct = localStruct
 	
 		do { // local changes
 	
-			localRecord.someString = "def456"
-			changesets.append(localRecord.changeset() ?? Dictionary())
+			localStruct.someString = "def456"
+			changesets.append(localStruct.changeset() ?? Dictionary())
 		}
 		do { // cloud changes
 	
-			cloudRecord.someInteger = 43
+			cloudStruct.someInteger = 43
 		}
 	
 		do {
-			let _ =  try localRecord.merge(cloudVersion: cloudRecord, pendingChangesets: changesets)
+			let _ =  try localStruct.merge(cloudVersion: cloudStruct, pendingChangesets: changesets)
 		}
 		catch {
 			XCTAssert(false, "Threw error: \(error)")
 		}
 	
-		XCTAssert(localRecord.someString == "def456")
-		XCTAssert(localRecord.someInteger == 43)
+		XCTAssert(localStruct.someString == "def456")
+		XCTAssert(localStruct.someInteger == 43)
 	}
-/*
+	
 	func test_simpleMerge_2() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		var localRecord = SimpleStruct(someString: "abc123", someInteger: 42)
+		var localStruct = SimpleStruct(someString: "abc123", someInteger: 42)
 	
-		localRecord.clearChangeTracking()
-		var cloudRecord = localRecord
+		localStruct.clearChangeTracking()
+		var cloudStruct = localStruct
 	
 		do { // local changes
 	
-			localRecord.someString = "def456"
-			changesets.append(localRecord.changeset() ?? Dictionary())
+			localStruct.someString = "def456"
+			changesets.append(localStruct.changeset() ?? Dictionary())
 		}
 		do { // cloud changes
 	
-			cloudRecord.someString = "xyz789"
-			cloudRecord.someInteger = 43
+			cloudStruct.someString = "xyz789"
+			cloudStruct.someInteger = 43
 		}
 	
 		do {
-			let _ =  try localRecord.merge(cloudVersion: cloudRecord, pendingChangesets: changesets)
+			let _ =  try localStruct.merge(cloudVersion: cloudStruct, pendingChangesets: changesets)
 		}
 		catch {
 			XCTAssert(false, "Threw error: \(error)")
 		}
 	
-		XCTAssert(localRecord.someString == "xyz789")
-		XCTAssert(localRecord.someInteger == 43)
+		XCTAssert(localStruct.someString == "xyz789")
+		XCTAssert(localStruct.someInteger == 43)
 	}
 
 	func test_simpleMerge_3() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		var localRecord = SimpleStruct(someString: "abc123", someInteger: 42)
+		var localStruct = SimpleStruct(someString: "abc123", someInteger: 42)
 	
-		localRecord.clearChangeTracking()
-		var cloudRecord = localRecord
+		localStruct.clearChangeTracking()
+		var cloudStruct = localStruct
 	
 		do { // local changes
 	
-			localRecord.someString = "def456"
-			changesets.append(localRecord.changeset() ?? Dictionary())
+			localStruct.someString = "def456"
+			changesets.append(localStruct.changeset() ?? Dictionary())
 		}
 		do { // cloud changes
 	
-			cloudRecord.someString = "xyz789"
-			cloudRecord.someInteger = 43
+			cloudStruct.someString = "xyz789"
+			cloudStruct.someInteger = 43
 		}
 	
 		do {
-			let _ =  try localRecord.merge(cloudVersion: cloudRecord, pendingChangesets: changesets)
+			let _ =  try localStruct.merge(cloudVersion: cloudStruct, pendingChangesets: changesets)
 		}
 		catch {
 			XCTAssert(false, "Threw error: \(error)")
 		}
 	
-		XCTAssert(localRecord.someString == "xyz789")
-		XCTAssert(localRecord.someInteger == 43)
+		XCTAssert(localStruct.someString == "xyz789")
+		XCTAssert(localStruct.someInteger == 43)
 	}
 
 	func test_simpleMerge_4() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		var localRecord = SimpleStruct(someString: "abc123", someInteger: 42)
+		var localStruct = SimpleStruct(someString: "abc123", someInteger: 42)
 	
-		localRecord.clearChangeTracking()
-		var cloudRecord = localRecord
+		localStruct.clearChangeTracking()
+		var cloudStruct = localStruct
 	
 		do { // local changes
 	
-			localRecord.someString = "def456"
-			changesets.append(localRecord.changeset() ?? Dictionary())
+			localStruct.someString = "def456"
+			changesets.append(localStruct.changeset() ?? Dictionary())
 		}
 		do { // cloud changes
 	
-			cloudRecord.someInteger = 43
+			cloudStruct.someInteger = 43
 		}
 		
 		do {
-			let _ =  try localRecord.merge(cloudVersion: cloudRecord, pendingChangesets: changesets)
+			let _ =  try localStruct.merge(cloudVersion: cloudStruct, pendingChangesets: changesets)
 		}
 		catch {
 			XCTAssert(false, "Threw error: \(error)")
 		}
 	
-		XCTAssert(localRecord.someString == "def456")
-		XCTAssert(localRecord.someInteger == 43)
+		XCTAssert(localStruct.someString == "def456")
+		XCTAssert(localStruct.someInteger == 43)
 	}
 
 	func test_simpleMerge_5() {
 		
 		var changesets = Array<Dictionary<String, Any>>()
 	
-		var localRecord = SimpleStruct(someString: "abc123", someInteger: 42)
+		var localStruct = SimpleStruct(someString: "abc123", someInteger: 42)
 	
-		localRecord.clearChangeTracking()
-		var cloudRecord = localRecord
+		localStruct.clearChangeTracking()
+		var cloudStruct = localStruct
 	
 		do { // local changes
 	
-			localRecord.someInteger = 43;
-			changesets.append(localRecord.changeset() ?? Dictionary())
+			localStruct.someInteger = 43;
+			changesets.append(localStruct.changeset() ?? Dictionary())
 		}
 		do { // cloud changes
 	
-			cloudRecord.someString = "xyz789"
+			cloudStruct.someString = "xyz789"
 		}
 	
 		do {
-			let _ =  try localRecord.merge(cloudVersion: cloudRecord, pendingChangesets: changesets)
+			let _ =  try localStruct.merge(cloudVersion: cloudStruct, pendingChangesets: changesets)
 		}
 		catch {
 			XCTAssert(false, "Threw error: \(error)")
 		}
 	
-		XCTAssert(localRecord.someString == "xyz789")
-		XCTAssert(localRecord.someInteger == 43)
+		XCTAssert(localStruct.someString == "xyz789")
+		XCTAssert(localStruct.someInteger == 43)
 	}
-*/
+
+	
+	// ====================================================================================================
+	// MARK: Merge: Complex
+	// ====================================================================================================
+
+	func test_complexMerge_1() {
+		
+		var changesets = Array<Dictionary<String, Any>>()
+	
+		var localStruct = ComplexStruct(someString: "abc123", someInteger: 42)
+		localStruct.dict["dog"] = "bark"
+	
+		localStruct.clearChangeTracking()
+		XCTAssert(!localStruct.hasChanges)
+		
+		var cloudStruct = localStruct
+	
+		do { // local changes
+	
+			localStruct.someString = "abc123"
+			localStruct.dict["cat"] = "meow"
+			changesets.append(localStruct.changeset() ?? Dictionary())
+		}
+		do { // cloud changes
+	
+			cloudStruct.someInteger = 43
+			cloudStruct.dict["duck"] = "quack"
+		}
+		
+		XCTAssert(localStruct.dict["duck"] == nil, "Shallow copy")
+		
+		do {
+			let _ =  try localStruct.merge(cloudVersion: cloudStruct, pendingChangesets: changesets)
+		}
+		catch {
+			XCTAssert(false, "Threw error: \(error)")
+		}
+	
+		XCTAssert(localStruct.someString == "abc123")
+		XCTAssert(localStruct.someInteger == 43)
+	
+		XCTAssert(localStruct.dict["dog"]  == "bark")
+		XCTAssert(localStruct.dict["cat"]  == "meow")
+		XCTAssert(localStruct.dict["duck"] == "quack")
+	}
 }

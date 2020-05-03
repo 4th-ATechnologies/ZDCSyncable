@@ -50,6 +50,9 @@
 		DCA1B54B229D68FD00AD8ACF /* test_ZDCDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEA81AC2279F05600FBC86B /* test_ZDCDictionary.swift */; };
 		DCA1B54C229D68FD00AD8ACF /* test_ZDCOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AE281227C9ADC006FC3DC /* test_ZDCOrderedDictionary.swift */; };
 		DCA1B54D229D68FD00AD8ACF /* test_ZDCArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEC303122999C6E00BE7A79 /* test_ZDCArray.swift */; };
+		DCAD454A245F277800286834 /* ComplexStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAD4549245F277800286834 /* ComplexStruct.swift */; };
+		DCAD454B245F277800286834 /* ComplexStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAD4549245F277800286834 /* ComplexStruct.swift */; };
+		DCAD454C245F277800286834 /* ComplexStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAD4549245F277800286834 /* ComplexStruct.swift */; };
 		DCBF10D6243E682B003806C5 /* ZDCSyncableProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBF10D5243E682A003806C5 /* ZDCSyncableProperty.swift */; };
 		DCBF10D8243E6A2A003806C5 /* ZDCSyncablePropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBF10D7243E6A2A003806C5 /* ZDCSyncablePropertyWrapper.swift */; };
 		DCBF10D9243E6AB8003806C5 /* ZDCSyncablePropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBF10D7243E6A2A003806C5 /* ZDCSyncablePropertyWrapper.swift */; };
@@ -151,6 +154,7 @@
 		DCA1B526229D67FE00AD8ACF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCA1B53A229D68D300AD8ACF /* UnitTests_tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_tvOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA1B53E229D68D300AD8ACF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCAD4549245F277800286834 /* ComplexStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexStruct.swift; sourceTree = "<group>"; };
 		DCBF10D5243E682A003806C5 /* ZDCSyncableProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCSyncableProperty.swift; sourceTree = "<group>"; };
 		DCBF10D7243E6A2A003806C5 /* ZDCSyncablePropertyWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCSyncablePropertyWrapper.swift; sourceTree = "<group>"; };
 		DCC6976A22514F9300284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -410,6 +414,7 @@
 			isa = PBXGroup;
 			children = (
 				DC7C2BFC2443E2D500B2FB06 /* SimpleStruct.swift */,
+				DCAD4549245F277800286834 /* ComplexStruct.swift */,
 				DCE62641225C00D5000D19E3 /* SimpleRecord.swift */,
 				DCFBC862229C61780033DE40 /* ComplexRecord.swift */,
 			);
@@ -703,6 +708,7 @@
 				DCF9D4802443F287009755CA /* test_ZDCStruct.swift in Sources */,
 				DCA1B52E229D685800AD8ACF /* ComplexRecord.swift in Sources */,
 				DC7C2BFD2443E2D500B2FB06 /* SimpleStruct.swift in Sources */,
+				DCAD454A245F277800286834 /* ComplexStruct.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,6 +727,7 @@
 				DCF9D4822443F287009755CA /* test_ZDCStruct.swift in Sources */,
 				DCA1B546229D68F700AD8ACF /* ComplexRecord.swift in Sources */,
 				DC7C2BFF2443E2D500B2FB06 /* SimpleStruct.swift in Sources */,
+				DCAD454C245F277800286834 /* ComplexStruct.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -820,6 +827,7 @@
 				DCF9D4812443F287009755CA /* test_ZDCStruct.swift in Sources */,
 				DCEA81AD2279F05600FBC86B /* test_ZDCDictionary.swift in Sources */,
 				DC7C2BFE2443E2D500B2FB06 /* SimpleStruct.swift in Sources */,
+				DCAD454B245F277800286834 /* ComplexStruct.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -249,7 +249,6 @@ class test_ZDCRecord: XCTestCase {
 	
 			cloudRecord.someInteger = 43
 			cloudRecord.dict["duck"] = "quack"
-		//	cloudRecord.makeImmutable()
 		}
 		
 		XCTAssert(localRecord.dict["duck"] == nil, "Shallow copy")

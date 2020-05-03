@@ -1391,7 +1391,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		}
 		
 		guard let cloudVersion = inCloudVersion as? ZDCArray<Element> else {
-			throw ZDCSyncableError.incorrectObjectClass
+			throw ZDCSyncableError.incorrectType
 		}
 		
 		// Step 1 of 6:

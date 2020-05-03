@@ -1109,7 +1109,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		}
 		
 		guard let cloudVersion = inCloudVersion as? ZDCOrderedSet<Element> else {
-			throw ZDCSyncableError.incorrectObjectClass
+			throw ZDCSyncableError.incorrectType
 		}
 		
 		// Step 1 of 7:

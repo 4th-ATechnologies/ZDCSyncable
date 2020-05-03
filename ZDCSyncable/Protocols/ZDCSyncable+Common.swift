@@ -49,6 +49,8 @@ extension ZDCSyncable {
 		return mergedChangeset ?? Dictionary()
 	}
 	
+	/// See description in ZDCSyncable.swift
+	///
 	public mutating func setSyncableValue(_ value: Any?, for key: String) -> Bool {
 		//
 		// Do NOT change this code !

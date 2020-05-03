@@ -38,28 +38,25 @@
                   Identifier = "test_ZDCOrderedSet">
                </Test>
                <Test
-                  Identifier = "test_ZDCRecord/test_enumeration()">
-               </Test>
-               <Test
-                  Identifier = "test_ZDCRecord/test_simpleMerge_1()">
-               </Test>
-               <Test
-                  Identifier = "test_ZDCRecord/test_simpleMerge_2()">
-               </Test>
-               <Test
-                  Identifier = "test_ZDCRecord/test_simpleMerge_3()">
-               </Test>
-               <Test
-                  Identifier = "test_ZDCRecord/test_simpleMerge_4()">
-               </Test>
-               <Test
-                  Identifier = "test_ZDCRecord/test_simpleMerge_5()">
-               </Test>
-               <Test
-                  Identifier = "test_ZDCRecord/test_undo()">
+                  Identifier = "test_ZDCRecord">
                </Test>
                <Test
                   Identifier = "test_ZDCSet">
+               </Test>
+               <Test
+                  Identifier = "test_ZDCStruct/test_simpleMerge_1()">
+               </Test>
+               <Test
+                  Identifier = "test_ZDCStruct/test_simpleMerge_2()">
+               </Test>
+               <Test
+                  Identifier = "test_ZDCStruct/test_simpleMerge_3()">
+               </Test>
+               <Test
+                  Identifier = "test_ZDCStruct/test_simpleMerge_4()">
+               </Test>
+               <Test
+                  Identifier = "test_ZDCStruct/test_undo()">
                </Test>
             </SkippedTests>
          </TestableReference>
