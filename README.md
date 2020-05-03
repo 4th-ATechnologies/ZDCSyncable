@@ -186,7 +186,7 @@ import ZDCSyncable
 
 ## Motivation
 
-**Merge conflicts happen**. If you've ever used git before, you know it well. And solving a merge conflict requires knowing what was changed. The same is true within your data model.
+**Merge conflicts happen**. If you've ever used git before, you know it well. And solving a merge conflict requires knowing what was changed. The same is true with your data model.
 
 
 
@@ -233,11 +233,11 @@ ZDCSyncable helps you solve merge conflicts by providing the missing information
   },
   "local changeset": {
     "size": {
-      type: "changed",
-      previous: "30"
+      "type": "changed",
+      "previous": "30"
     },
     "widescreen": {
-      type: "added"
+      "type": "added"
     }
   }
 }
