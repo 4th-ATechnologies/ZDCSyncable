@@ -9,20 +9,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZDCSwiftWorkarounds : NSObject
 
-+ (void *)addressOf:(id)value;
-
 /**
- * Swift wants to be overly explicit about when and where exceptions can be thrown.
- * This doesn't really work for us, because we need to throw exceptions from overriden functions.
+ * We need the ability to throw an exception due to a protocol contract violation.
+ * Swift wants us to explicitly mark every function that can throw.
  *
- * For example, we need the ability to throw an exception if you try to mutate an immutable object.
- * This is a simple concept, but Swift gets all Swifty about it, and screws it up.
+ * But this isn't really what we want. It's not a development error,
+ * something one finds while implementing the ZDCSyncable protocol for the first time.
  *
- * So we have to drop into objective-c to get the job done.
+ * So we drop into objective-c as a workaround.
  */
-+ (void)throwImmutableException:(Class)class;
-+ (void)throwImmutableException:(Class)class forKey:(nullable NSString *)key;
-
 + (void)throwSyncableException:(nullable Class)class forKey:(NSString *)key;
 
 @end

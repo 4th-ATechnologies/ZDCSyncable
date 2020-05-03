@@ -314,10 +314,6 @@ open class ZDCRecord: ZDCSyncableClass {
 	
 	public func performUndo(_ changeset: ZDCChangeset) throws {
 		
-	//	if (self.isImmutable) {
-	//		ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-	//	}
-		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
 			// The code doesn't know what you want to happen.
@@ -342,10 +338,6 @@ open class ZDCRecord: ZDCSyncableClass {
 	}
 	
 	public func importChangesets(_ orderedChangesets: [ZDCChangeset]) throws {
-		
-	//	if self.isImmutable {
-	//		throw ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-	//	}
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -418,10 +410,6 @@ open class ZDCRecord: ZDCSyncableClass {
 	                            pendingChangesets: [ZDCChangeset])
 		throws -> ZDCChangeset
 	{
-	//	if self.isImmutable {
-	//		ZDCSwiftWorkarounds.throwImmutableException(type(of: self))
-	//	}
-		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
 			// The code doesn't know what you want to happen.

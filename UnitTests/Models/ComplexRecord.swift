@@ -41,6 +41,13 @@ class ComplexRecord: SimpleRecord {
 	
 	// MARK: ZDCRecord
 	
+	/// You must implement this function IFF you have ZDCSyncable properties such as:
+	/// - ZDCDictionary
+	/// - ZDCOrderedDictionary
+	/// - ZDCSet
+	/// - ZDCOrderedSet
+	/// - ZDCArray
+	///
 	override func setSyncableValue(_ value: Any?, for key: String) -> Bool {
 		
 		var result = false

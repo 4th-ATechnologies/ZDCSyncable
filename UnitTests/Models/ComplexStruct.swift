@@ -23,6 +23,13 @@ struct ComplexStruct: ZDCSyncable, Equatable {
 	
 	// MARK: ZDCRecord
 	
+	/// You must implement this function IFF you have ZDCSyncable properties such as:
+	/// - ZDCDictionary
+	/// - ZDCOrderedDictionary
+	/// - ZDCSet
+	/// - ZDCOrderedSet
+	/// - ZDCArray
+	///
 	mutating func setSyncableValue(_ value: Any?, for key: String) -> Bool {
 		
 		var result = false
