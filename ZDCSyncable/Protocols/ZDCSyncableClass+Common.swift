@@ -9,7 +9,7 @@ import Foundation
 ///
 extension ZDCSyncableClass {
 	
-	public func changeset() -> Dictionary<String, Any>? {
+	public func changeset() -> ZDCChangeset? {
 		
 		let changeset = self.peakChangeset()
 		self.clearChangeTracking()
@@ -17,14 +17,13 @@ extension ZDCSyncableClass {
 		return changeset
 	}
 	
-	public func undo(_ changeset: Dictionary<String, Any>)
-		throws -> Dictionary<String, Any>
-	{
+	public func undo(_ changeset: ZDCChangeset) throws -> ZDCChangeset {
+		
 		try self.performUndo(changeset)
 		
 		// Undo successful - generate redo changeset
 		let reverseChangeset = self.changeset()
-		return reverseChangeset ?? Dictionary<String, Any>()
+		return reverseChangeset ?? [:]
 	}
 	
 	public func rollback() {
@@ -41,8 +40,7 @@ extension ZDCSyncableClass {
 		}
 	}
 	
-	public func mergeChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>)
-		throws -> Dictionary<String, Any>
+	public func mergeChangesets(_ orderedChangesets: [ZDCChangeset]) throws -> ZDCChangeset
 	{
 		try self.importChangesets(orderedChangesets)
 		

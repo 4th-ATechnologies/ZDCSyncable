@@ -138,7 +138,7 @@ class test_ZDCSet: XCTestCase {
 			var set_b: ZDCSet<String>?
 			
 			var set = ZDCSet<String>()
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 	
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -265,7 +265,7 @@ class test_ZDCSet: XCTestCase {
 		
 		for _ in 0 ..< 1_000 { autoreleasepool {
 			
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 			
 			var set = ZDCSet<String>()
 			
@@ -438,7 +438,7 @@ class test_ZDCSet: XCTestCase {
 
 	func test_simpleMerge_1() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		var localSet = ZDCSet<String>()
 		localSet.insert("alice")
@@ -476,7 +476,7 @@ class test_ZDCSet: XCTestCase {
 
 	func test_simpleMerge_2() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var localSet = ZDCSet<String>()
 		localSet.insert("alice")
@@ -517,7 +517,7 @@ class test_ZDCSet: XCTestCase {
 
 	func test_simpleMerge_3() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		var localSet = ZDCSet<String>()
 		localSet.insert("alice")
@@ -554,7 +554,7 @@ class test_ZDCSet: XCTestCase {
 	
 	func test_simpleMerge_4() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		var localSet = ZDCSet<String>()
 		localSet.insert("alice")
@@ -589,7 +589,7 @@ class test_ZDCSet: XCTestCase {
 
 	func test_simpleMerge_5() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		var localSet = ZDCSet<String>()
 		localSet.insert("alice")

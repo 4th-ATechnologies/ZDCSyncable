@@ -270,13 +270,13 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		}
 	}
 
-	public func peakChangeset() -> Dictionary<String, Any>? {
+	public func peakChangeset() -> ZDCChangeset? {
 		
 		if !self.hasChanges {
 			return nil
 		}
 		
-		var changeset = Dictionary<String, Any>(minimumCapacity: 2)
+		var changeset: ZDCChangeset = Dictionary(minimumCapacity: 2)
 		
 		if added.count > 0 {
 			
@@ -329,7 +329,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		return changeset
 	}
 
-	private func isMalformedChangeset(_ changeset: Dictionary<String, Any>) -> Bool {
+	private func isMalformedChangeset(_ changeset: ZDCChangeset) -> Bool {
 		
 		if changeset.count == 0 {
 			return false
@@ -392,7 +392,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		return false
 	}
 
-	private mutating func _undo(_ changeset: Dictionary<String, Any>) throws {
+	private mutating func _undo(_ changeset: ZDCChangeset) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
@@ -419,7 +419,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		}
 	}
 
-	public mutating func performUndo(_ changeset: Dictionary<String, Any>) throws {
+	public mutating func performUndo(_ changeset: ZDCChangeset) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -444,7 +444,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		}
 	}
 
-	public mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
+	public mutating func importChangesets(_ orderedChangesets: [ZDCChangeset]) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -469,7 +469,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		}
 		
 		var result_error: Error?
-		var changesets_redo = Array<Dictionary<String, Any>>()
+		var changesets_redo: [ZDCChangeset] = []
 		
 		for changeset in orderedChangesets.reversed() {
 			
@@ -514,8 +514,8 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 	}
 	
 	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncable,
-	                                     pendingChangesets: Array<Dictionary<String, Any>>)
-		throws -> Dictionary<String, Any>
+	                                     pendingChangesets: [ZDCChangeset])
+		throws -> ZDCChangeset
 	{
 		
 		if self.hasChanges {

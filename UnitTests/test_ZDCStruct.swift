@@ -41,7 +41,7 @@ class test_ZDCStruct: XCTestCase {
 
 	func test_simpleMerge_1() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var localStruct = SimpleStruct(someString: "abc123", someInteger: 42)
 	
@@ -71,7 +71,7 @@ class test_ZDCStruct: XCTestCase {
 	
 	func test_simpleMerge_2() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var localStruct = SimpleStruct(someString: "abc123", someInteger: 42)
 	
@@ -102,7 +102,7 @@ class test_ZDCStruct: XCTestCase {
 
 	func test_simpleMerge_3() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var localStruct = SimpleStruct(someString: "abc123", someInteger: 42)
 	
@@ -133,7 +133,7 @@ class test_ZDCStruct: XCTestCase {
 
 	func test_simpleMerge_4() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var localStruct = SimpleStruct(someString: "abc123", someInteger: 42)
 	
@@ -163,7 +163,7 @@ class test_ZDCStruct: XCTestCase {
 
 	func test_simpleMerge_5() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var localStruct = SimpleStruct(someString: "abc123", someInteger: 42)
 	
@@ -198,7 +198,7 @@ class test_ZDCStruct: XCTestCase {
 
 	func test_complexMerge_1() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var localStruct = ComplexStruct(someString: "abc123", someInteger: 42)
 		localStruct.dict["dog"] = "bark"

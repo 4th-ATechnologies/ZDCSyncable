@@ -745,13 +745,13 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		}
 	}
 	
-	public func peakChangeset() -> Dictionary<String, Any>? {
+	public func peakChangeset() -> ZDCChangeset? {
 		
 		if !self.hasChanges {
 			return nil
 		}
 		
-		var changeset = Dictionary<String, Any>(minimumCapacity: 3)
+		var changeset: ZDCChangeset = Dictionary(minimumCapacity: 3)
 		
 		// Reminder: ivars look like this:
 		//
@@ -801,7 +801,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		return changeset
 	}
 	
-	private func isMalformedChangeset(_ changeset: Dictionary<String, Any>) -> Bool {
+	private func isMalformedChangeset(_ changeset: ZDCChangeset) -> Bool {
 		
 		if changeset.count == 0 {
 			return false
@@ -857,7 +857,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		return false
 	}
 	
-	private mutating func _undo(_ changeset: Dictionary<String, Any>) throws {
+	private mutating func _undo(_ changeset: ZDCChangeset) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
@@ -1123,7 +1123,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		}
 	}
 	
-	public mutating func performUndo(_ changeset: Dictionary<String, Any>) throws {
+	public mutating func performUndo(_ changeset: ZDCChangeset) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -1148,7 +1148,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		}
 	}
 	
-	public mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
+	public mutating func importChangesets(_ orderedChangesets: [ZDCChangeset]) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -1173,7 +1173,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		}
 		
 		var result_error: Error?
-		var changesets_redo = Array<Dictionary<String, Any>>()
+		var changesets_redo: [ZDCChangeset] = []
 		
 		for changeset in orderedChangesets.reversed() {
 			
@@ -1219,7 +1219,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 	
 	/// Calculates the original order from the changesets.
 	///
-	private static func originalOrder(from inOrder: Array<Element>, pendingChangesets: Array<Dictionary<String, Any>>)
+	private static func originalOrder(from inOrder: Array<Element>, pendingChangesets: [ZDCChangeset])
 		-> (originalOrder: Array<Element>, added: Array<Element>, deleted: Array<Element>)?
 	{
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
@@ -1369,8 +1369,8 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 	}
 	
 	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncable,
-	                                     pendingChangesets: Array<Dictionary<String, Any>>)
-		throws -> Dictionary<String, Any>
+	                                     pendingChangesets: [ZDCChangeset])
+		throws -> ZDCChangeset
 	{
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.

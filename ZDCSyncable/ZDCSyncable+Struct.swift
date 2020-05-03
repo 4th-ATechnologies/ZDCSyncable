@@ -132,7 +132,7 @@ extension ZDCSyncable {
 		}
 	}
 
-	public func peakChangeset() -> Dictionary<String, Any>? {
+	public func peakChangeset() -> ZDCChangeset? {
 		
 		if !self.hasChanges {
 			return nil
@@ -148,8 +148,8 @@ extension ZDCSyncable {
 		//   ...
 		// }
 		
-		var refs = Dictionary<String, Any>()
-		var values = Dictionary<String, Any>()
+		var refs: ZDCChangeset = [:]
+		var values: ZDCChangeset = [:]
 		
 		self.enumerateSyncable { (key, value, _) in
 			
@@ -182,7 +182,7 @@ extension ZDCSyncable {
 			}
 		}
 		
-		var changeset = Dictionary<String, Any>()
+		var changeset: ZDCChangeset = [:]
 		if (refs.count > 0) {
 			changeset[ChangesetKeys.refs.rawValue] = refs
 		}
@@ -193,7 +193,7 @@ extension ZDCSyncable {
 		return changeset
 	}
 	
-	private func isMalformedChangeset(_ changeset: Dictionary<String, Any>) -> Bool {
+	private func isMalformedChangeset(_ changeset: ZDCChangeset) -> Bool {
 		
 		if changeset.count == 0 {
 			return false
@@ -213,7 +213,7 @@ extension ZDCSyncable {
 			let changeset_refs = changeset[ChangesetKeys.refs.rawValue]
 			if (changeset_refs != nil) {
 				
-				guard changeset_refs is Dictionary<String, Dictionary<String, Any>> else {
+				guard changeset_refs is Dictionary<String, ZDCChangeset> else {
 					return true // malformed
 				}
 			}
@@ -224,7 +224,7 @@ extension ZDCSyncable {
 			let changeset_values = changeset[ChangesetKeys.values.rawValue]
 			if (changeset_values != nil) {
 				
-				guard changeset_values is Dictionary<String, Any> else {
+				guard changeset_values is ZDCChangeset else {
 					return true // malformed
 				}
 			}
@@ -234,11 +234,11 @@ extension ZDCSyncable {
 		return false
 	}
 	
-	private mutating func _undo(_ changeset: Dictionary<String, Any>) throws {
+	private mutating func _undo(_ changeset: ZDCChangeset) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
-		if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? Dictionary<String, Dictionary<String, Any>> {
+		if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? Dictionary<String, ZDCChangeset> {
 		
 			for (key, container_changeset) in changeset_refs {
 				
@@ -270,7 +270,7 @@ extension ZDCSyncable {
 			}
 		}
 		
-		if let changeset_values = changeset[ChangesetKeys.values.rawValue] as? Dictionary<String, Any> {
+		if let changeset_values = changeset[ChangesetKeys.values.rawValue] as? ZDCChangeset {
 			
 			for (key, oldValue) in changeset_values {
 				
@@ -292,7 +292,7 @@ extension ZDCSyncable {
 		}
 	}
 	
-	public mutating func performUndo(_ changeset: Dictionary<String, Any>) throws {
+	public mutating func performUndo(_ changeset: ZDCChangeset) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -317,7 +317,7 @@ extension ZDCSyncable {
 		}
 	}
 	
-	public mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
+	public mutating func importChangesets(_ orderedChangesets: [ZDCChangeset]) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -342,7 +342,7 @@ extension ZDCSyncable {
 		}
 		
 		var result_error: Error?
-		var changesets_redo = Array<Dictionary<String, Any>>()
+		var changesets_redo: [ZDCChangeset] = []
 		
 		for changeset in orderedChangesets.reversed() {
 			
@@ -387,8 +387,8 @@ extension ZDCSyncable {
 	}
 
 	public mutating func merge(cloudVersion: ZDCSyncable,
-	                      pendingChangesets: Array<Dictionary<String, Any>>)
-		throws -> Dictionary<String, Any>
+	                      pendingChangesets: [ZDCChangeset])
+		throws -> ZDCChangeset
 	{
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -420,11 +420,11 @@ extension ZDCSyncable {
 		// We need to determine which keys have been changed locally, and what the original versions were.
 		// We'll need this information when comparing to the cloudVersion.
 		
-		var merged_originalValues = Dictionary<String, Any>()
+		var merged_originalValues: ZDCChangeset = [:]
 		
 		for changeset in pendingChangesets {
 			
-			if let changeset_originalValues = changeset[ChangesetKeys.values.rawValue] as? Dictionary<String, Any> {
+			if let changeset_originalValues = changeset[ChangesetKeys.values.rawValue] as? ZDCChangeset {
 			
 				for (key, oldValue) in changeset_originalValues {
 					
@@ -534,7 +534,7 @@ extension ZDCSyncable {
 		
 		for changeset in pendingChangesets {
 			
-			if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? Dictionary<String, Dictionary<String, Any>> {
+			if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? [String: ZDCChangeset] {
 				
 				for (key, _) in changeset_refs {
 					
@@ -551,12 +551,12 @@ extension ZDCSyncable {
 			let local_value = self.syncableValue(key: key)
 			let cloud_value = cloudVersion.syncableValue(key: key)
 			
-			var pendingChangesets_ref = Array<Dictionary<String, Any>>()
+			var pendingChangesets_ref: [ZDCChangeset] = []
 			pendingChangesets_ref.reserveCapacity(pendingChangesets.count)
 			
 			for changeset in pendingChangesets {
 				
-				let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? Dictionary<String, Dictionary<String, Any>>
+				let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? [String: ZDCChangeset]
 				let changeset_ref = changeset_refs?[key]
 				
 				if let changeset_ref = changeset_ref {

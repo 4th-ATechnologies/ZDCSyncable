@@ -5,9 +5,18 @@
 
 import Foundation
 
-/// The typealias is used internally to explicitly differentiate between structs vs class instances.
+/// There are 2 protocols: ZDCSyncable & ZDCSyncableClass
 ///
-typealias ZDCSyncableStruct = ZDCSyncable
+/// - ZDCSyncable can only be used by structs.
+/// - ZDCSyncableClass can only be used by classes.
+///
+/// You may prefer the name ZDCSyncableStruct to make the difference more explicit.
+///
+public typealias ZDCSyncableStruct = ZDCSyncable
+
+/// A changeset is really just a dictionary.
+///
+public typealias ZDCChangeset = [String: Any]
 
 /// The ZDCSyncable protocol defines the common methods for:
 /// - tracking changes
@@ -48,7 +57,7 @@ public protocol ZDCSyncable {
 	 * - Return:
 	 *     A changeset dictionary, or nil if there are no changes.
 	 */
-	mutating func changeset() -> Dictionary<String, Any>?
+	mutating func changeset() -> ZDCChangeset?
 	
 	/**
 	 * Returns the current changeset without clearing the changes from the object.
@@ -61,7 +70,7 @@ public protocol ZDCSyncable {
 	 * - Returns:
 	 *     A changeset dictionary, or nil if there are no changes.
 	 */
-	func peakChangeset() -> Dictionary<String, Any>?
+	func peakChangeset() -> ZDCChangeset?
 	
 	/**
 	 * Moves the state of the object backwards in time, undoing the changes represented in the changeset.
@@ -77,10 +86,9 @@ public protocol ZDCSyncable {
 	 *     A valid changeset previously returned via the `changeset` function.
 	 *
 	 * - Returns:
-	 *     A changeset dictionary if the undo was successful (which can be used to redo the changes).
-	 *     Otherwise throws with an error explaining what went wrong.
+	 *     A changeset, which can be used to redo the changes.
 	 */
-	mutating func undo(_ changeset: Dictionary<String, Any>) throws -> Dictionary<String, Any>
+	mutating func undo(_ changeset: ZDCChangeset) throws -> ZDCChangeset
 
 	/**
 	 * Moves the state of the object backwards in time, undoing the changes represented in the changeset.
@@ -94,7 +102,7 @@ public protocol ZDCSyncable {
 	 * - Returns:
 	 *     Returns nil on success, otherwise returns an error explaining what went wrong.
 	 */
-	mutating func performUndo(_ changeset: Dictionary<String, Any>) throws
+	mutating func performUndo(_ changeset: ZDCChangeset) throws
 	
 	/**
 	 * Performs an undo for all changes that have occurred since the last time either
@@ -121,8 +129,8 @@ public protocol ZDCSyncable {
 	 *     consolidated version of the given list.
 	 *     Otherwise throws with an error explaining what went wrong.
 	 */
-	mutating func mergeChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>)
-		throws -> Dictionary<String, Any>
+	mutating func mergeChangesets(_ orderedChangesets: [ZDCChangeset])
+		throws -> ZDCChangeset
 	
 	/**
 	 * This method is used to merge multiple changesets.
@@ -135,7 +143,7 @@ public protocol ZDCSyncable {
 	 * - Parameter orderedChangesets:
 	 *     An ordered list of changesets, with oldest at index 0.
 	 */
-	mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws
+	mutating func importChangesets(_ orderedChangesets: [ZDCChangeset]) throws
 	
 	/**
 	 * - Returns:
@@ -143,8 +151,8 @@ public protocol ZDCSyncable {
 	 *     Otherwise throws with an error explaining what went wrong.
 	 */
 	mutating func merge(cloudVersion: ZDCSyncable,
-	               pendingChangesets: Array<Dictionary<String, Any>>)
-		throws -> Dictionary<String, Any>
+	               pendingChangesets: [ZDCChangeset])
+		throws -> ZDCChangeset
 	
 	
 	/// The process of undo/redo may require updating collections (which are structs, with value semantics).

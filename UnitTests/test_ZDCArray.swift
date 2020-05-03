@@ -2885,7 +2885,7 @@ class test_ZDCArray: XCTestCase {
 		
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var array = ZDCArray<String>()
 	
@@ -2931,7 +2931,7 @@ class test_ZDCArray: XCTestCase {
 		
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var array = ZDCArray<String>()
 	
@@ -2981,7 +2981,7 @@ class test_ZDCArray: XCTestCase {
 		
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var array = ZDCArray<String>()
 	
@@ -3028,7 +3028,7 @@ class test_ZDCArray: XCTestCase {
 		
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var array = ZDCArray<String>()
 	
@@ -3082,7 +3082,7 @@ class test_ZDCArray: XCTestCase {
 		
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var array = ZDCArray<String>()
 	
@@ -3142,7 +3142,7 @@ class test_ZDCArray: XCTestCase {
 		
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var array = ZDCArray<String>()
 	
@@ -3206,7 +3206,7 @@ class test_ZDCArray: XCTestCase {
 		
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var array = ZDCArray<String>()
 	
@@ -3270,7 +3270,7 @@ class test_ZDCArray: XCTestCase {
 		
 		var array_a: ZDCArray<String>? = nil
 		var array_b: ZDCArray<String>? = nil
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var array = ZDCArray<String>()
 	
@@ -3342,7 +3342,7 @@ class test_ZDCArray: XCTestCase {
 			
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 	
 			var array = ZDCArray<String>()
 	
@@ -3444,7 +3444,7 @@ class test_ZDCArray: XCTestCase {
 			
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 	
 			var array = ZDCArray<String>()
 	
@@ -3548,7 +3548,7 @@ class test_ZDCArray: XCTestCase {
 			
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 	
 			var array = ZDCArray<String>()
 	
@@ -3651,7 +3651,7 @@ class test_ZDCArray: XCTestCase {
 			
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 	
 			var array = ZDCArray<String>()
 	
@@ -3762,7 +3762,7 @@ class test_ZDCArray: XCTestCase {
 			
 			var array_a: ZDCArray<String>? = nil
 			var array_b: ZDCArray<String>? = nil
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 	
 			var array = ZDCArray<String>()
 	
@@ -3910,7 +3910,7 @@ class test_ZDCArray: XCTestCase {
 
 	func test_simpleMerge_1() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var local = ZDCArray<String>()
 		local.append("alice")
@@ -3948,7 +3948,7 @@ class test_ZDCArray: XCTestCase {
 
 	func test_simpleMerge_2() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var local = ZDCArray<String>()
 		local.append("alice")
@@ -3989,7 +3989,7 @@ class test_ZDCArray: XCTestCase {
 
 	func test_simpleMerge_3() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var local = ZDCArray<String>()
 		local.append("alice")
@@ -4026,7 +4026,7 @@ class test_ZDCArray: XCTestCase {
 
 	func test_simpleMerge_4() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var local = ZDCArray<String>()
 		local.append("alice")
@@ -4061,7 +4061,7 @@ class test_ZDCArray: XCTestCase {
 
 	func test_simpleMerge_5() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var local = ZDCArray<String>()
 		local.append("alice")
@@ -4102,7 +4102,7 @@ class test_ZDCArray: XCTestCase {
 
 	func test_mergeWithDuplicates_1() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var local = ZDCArray<String>()
 		local.append("alice")
@@ -4135,7 +4135,7 @@ class test_ZDCArray: XCTestCase {
 
 	func test_mergeWithDuplicates_2() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var local = ZDCArray<String>()
 		local.append("alice")
@@ -4170,7 +4170,7 @@ class test_ZDCArray: XCTestCase {
 
 	func test_mergeWithDuplicates_3() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		var local = ZDCArray<String>()
 		local.append("alice")

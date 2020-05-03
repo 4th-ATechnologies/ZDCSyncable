@@ -2791,7 +2791,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
 		var dict = ZDCOrderedDictionary<String, String>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		// Empty dictionary will be starting state
 		dict_a = dict
@@ -2837,7 +2837,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
 		var dict = ZDCOrderedDictionary<String, String>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
@@ -2887,7 +2887,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
 		var dict = ZDCOrderedDictionary<String, String>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		dict["cow"] = "moo"
 		
@@ -2934,7 +2934,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
 		var dict = ZDCOrderedDictionary<String, String>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
@@ -2988,7 +2988,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		var dict_b: ZDCOrderedDictionary<String, String>? = nil
 		
 		var dict = ZDCOrderedDictionary<String, String>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		dict["bmfx"] = ""
 		dict["pwtg"] = ""
@@ -3045,7 +3045,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
@@ -3147,7 +3147,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
@@ -3251,7 +3251,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_a: ZDCOrderedDictionary<String, String>? = nil
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 			var dict = ZDCOrderedDictionary<String, String>()
 			
 			// Start with an object that has a random number of objects [20 - 30)
@@ -3355,7 +3355,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
 			var dict = ZDCOrderedDictionary<String, String>()
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -3462,7 +3462,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 			var dict_b: ZDCOrderedDictionary<String, String>? = nil
 			
 			var dict = ZDCOrderedDictionary<String, String>()
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
@@ -3601,7 +3601,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 	func test_merge_failure_1() {
 		
 		var dict = ZDCOrderedDictionary<String, String>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		dict["qszzujxl"] = "" // 0
 		dict["krytwlyk"] = "" // 1
@@ -3657,7 +3657,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 	func test_merge_failure_2() {
 		
 		var dict = ZDCOrderedDictionary<String, String>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		/*
 		addObject:withKey: suisclsz (idx=0)
@@ -3737,7 +3737,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		
 		for _ in 0 ..< 1_000 { autoreleasepool {
 			
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 			
 			var dict = ZDCOrderedDictionary<String, String>()
 			
@@ -3939,7 +3939,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 	func test_simpleMerge_1() {
 		
 		var localDict = ZDCOrderedDictionary<String, Int>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		localDict["alice"] = 0
 		localDict["bob"] = 0
@@ -3972,7 +3972,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 	func test_simpleMerge_2() {
 		
 		var localDict = ZDCOrderedDictionary<String, Int>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		localDict["alice"] = 0
 		localDict["bob"] = 42
@@ -4006,7 +4006,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 	func test_simpleMerge_3() {
 		
 		var localDict = ZDCOrderedDictionary<String, Int>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		localDict["bob"] = 42
 		
@@ -4039,7 +4039,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 	func test_simpleMerge_4() {
 	
 		var localDict = ZDCOrderedDictionary<String, Int>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		localDict["bob"] = 42
 		
@@ -4071,7 +4071,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 	func test_simpleMerge_5() {
 	
 		var localDict = ZDCOrderedDictionary<String, Int>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		localDict["alice"] = 42
 		localDict["bob"] = 42
@@ -4108,7 +4108,7 @@ class test_ZDCOrderedDictionary: XCTestCase {
 	func test_complexMerge_1() {
 	
 		var localDict = ZDCOrderedDictionary<String, ZDCOrderedDictionary<String, String>>()
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		localDict["dict"] = ZDCOrderedDictionary<String, String>()
 		localDict["dict"]?["dog"] = "bark"

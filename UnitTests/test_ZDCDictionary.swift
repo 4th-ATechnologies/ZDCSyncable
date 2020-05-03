@@ -247,7 +247,7 @@ class test_ZDCDictionary: XCTestCase {
 		
 		for _ in 0 ..< 1_000 { autoreleasepool {
 			
-			var changesets = Array<Dictionary<String, Any>>()
+			var changesets: [ZDCChangeset] = []
 			
 			var dict_a: ZDCDictionary<String, String>? = nil
 			var dict_b: ZDCDictionary<String, String>? = nil
@@ -382,7 +382,7 @@ class test_ZDCDictionary: XCTestCase {
 	
 	func test_simpleMerge_1() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		var local = ZDCDictionary<String, Int>()
 		local["alice"] = 1
@@ -417,7 +417,7 @@ class test_ZDCDictionary: XCTestCase {
 	
 	func test_simpleMerge_2() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		var local = ZDCDictionary<String, Int>()
 		local["alice"] = 1
@@ -453,7 +453,7 @@ class test_ZDCDictionary: XCTestCase {
 	
 	func test_simpleMerge_3() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		var local = ZDCDictionary<String, Int>()
 		local["bob"] = 1
@@ -488,7 +488,7 @@ class test_ZDCDictionary: XCTestCase {
 	
 	func test_simpleMerge_4() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		var local = ZDCDictionary<String, Int>()
 		local["bob"] = 1
@@ -522,7 +522,7 @@ class test_ZDCDictionary: XCTestCase {
 	
 	func test_simpleMerge_5() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 		
 		var local = ZDCDictionary<String, Int>()
 		local["alice"] = 1
@@ -561,7 +561,7 @@ class test_ZDCDictionary: XCTestCase {
 
 	func test_complexMerge_1() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 
 		var local = ZDCDictionary<String, ZDCDictionary<String, String>>()
 		local["pets"] = ZDCDictionary<String, String>()

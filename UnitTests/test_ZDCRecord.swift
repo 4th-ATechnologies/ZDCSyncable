@@ -44,7 +44,7 @@ class test_ZDCRecord: XCTestCase {
 
 	func test_simpleMerge_1() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		let localRecord = SimpleRecord()
 		localRecord.someString = "abc123"
@@ -77,7 +77,7 @@ class test_ZDCRecord: XCTestCase {
 
 	func test_simpleMerge_2() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		let localRecord = SimpleRecord()
 		localRecord.someString = "abc123"
@@ -111,7 +111,7 @@ class test_ZDCRecord: XCTestCase {
 
 	func test_simpleMerge_3() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		let localRecord = SimpleRecord()
 		localRecord.someString = nil
@@ -145,7 +145,7 @@ class test_ZDCRecord: XCTestCase {
 
 	func test_simpleMerge_4() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		let localRecord = SimpleRecord()
 		localRecord.someString = nil
@@ -178,7 +178,7 @@ class test_ZDCRecord: XCTestCase {
 
 	func test_simpleMerge_5() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		let localRecord = SimpleRecord()
 		localRecord.someString = "abc123"
@@ -229,7 +229,7 @@ class test_ZDCRecord: XCTestCase {
 
 	func test_complexMerge_1() {
 		
-		var changesets = Array<Dictionary<String, Any>>()
+		var changesets: [ZDCChangeset] = []
 	
 		let localRecord = ComplexRecord()
 		localRecord.dict["dog"] = "bark"

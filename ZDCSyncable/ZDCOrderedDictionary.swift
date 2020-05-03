@@ -680,13 +680,13 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		}
 	}
 
-	public func peakChangeset() -> Dictionary<String, Any>? {
+	public func peakChangeset() -> ZDCChangeset? {
 		
 		if !self.hasChanges {
 			return nil
 		}
 		
-		var changeset = Dictionary<String, Any>()
+		var changeset: ZDCChangeset = [:]
 		
 		// changeset: {
 		//   refs: {
@@ -695,7 +695,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		//   ...
 		// }
 		
-		var refs = Dictionary<Key, Dictionary<String, Any>>()
+		var refs: [Key: ZDCChangeset] = [:]
 		
 		for (key, value) in dict {
 			
@@ -845,7 +845,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		return changeset
 	}
 
-	private func isMalformedChangeset(_ changeset: Dictionary<String, Any>) -> Bool {
+	private func isMalformedChangeset(_ changeset: ZDCChangeset) -> Bool {
 		
 		if changeset.count == 0 {
 			return false
@@ -871,7 +871,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		//
 		if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] {
 		
-			if let _ = changeset_refs as? Dictionary<Key, Dictionary<String, Any>> {
+			if let _ = changeset_refs as? [Key: ZDCChangeset] {
 				// ok
 			} else {
 				return true // malformed !
@@ -927,7 +927,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		return false
 	}
 
-	private mutating func _undo(_ changeset: Dictionary<String, Any>) throws {
+	private mutating func _undo(_ changeset: ZDCChangeset) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
@@ -977,7 +977,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		//
 		// Undo changes to objects that conform to ZDCSyncable protocol
 		
-		if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? Dictionary<Key, Dictionary<String, Any>> {
+		if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? [Key: ZDCChangeset] {
 			
 			for (key, changeset) in changeset_refs {
 				
@@ -1150,7 +1150,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		}
 	}
 
-	public mutating func performUndo(_ changeset: Dictionary<String, Any>) throws {
+	public mutating func performUndo(_ changeset: ZDCChangeset) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -1175,7 +1175,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		}
 	}
 
-	public mutating func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws {
+	public mutating func importChangesets(_ orderedChangesets: [ZDCChangeset]) throws {
 		
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -1200,7 +1200,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		}
 		
 		var result_error: Error?
-		var changesets_redo = Array<Dictionary<String, Any>>()
+		var changesets_redo: [ZDCChangeset] = []
 		
 		for changeset in orderedChangesets.reversed() {
 			
@@ -1246,7 +1246,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 
 	/// Calculates the original order from the given changesets.
 	///
-	private static func originalOrder(from inOrder: Array<Key>, pendingChangesets: Array<Dictionary<String, Any>>)
+	private static func originalOrder(from inOrder: Array<Key>, pendingChangesets: [ZDCChangeset])
 		-> Array<Key>?
 	{
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
@@ -1357,8 +1357,8 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 	}
 
 	public mutating func merge(cloudVersion inCloudVersion: ZDCSyncable,
-							         pendingChangesets: Array<Dictionary<String, Any>>)
-		throws -> Dictionary<String, Any>
+	                                     pendingChangesets: [ZDCChangeset])
+		throws -> ZDCChangeset
 	{
 		if self.hasChanges {
 			// You cannot invoke this method if the object currently has changes.
@@ -1522,7 +1522,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		
 		for changeset in pendingChangesets {
 			
-			if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? Dictionary<Key, Dictionary<String, Any>> {
+			if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? [Key: ZDCChangeset] {
 				
 				for (key, _) in changeset_refs {
 					
@@ -1539,14 +1539,14 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 			let local_value = self.dict[key]
 			let cloud_value = cloudVersion.dict[key]
 			
-			var pendingChangesets_ref = Array<Dictionary<String, Any>>()
+			var pendingChangesets_ref: [ZDCChangeset] = []
 			pendingChangesets_ref.reserveCapacity(pendingChangesets.count)
 			
 			for changeset in pendingChangesets {
 				
 				let changeset_refs = changeset[ChangesetKeys.refs.rawValue]
 				
-				if let changeset_refs = changeset_refs as? Dictionary<Key, Dictionary<String, Any>>,
+				if let changeset_refs = changeset_refs as? [Key: ZDCChangeset],
 					let changeset_ref = changeset_refs[key]
 				{
 					pendingChangesets_ref.append(changeset_ref)

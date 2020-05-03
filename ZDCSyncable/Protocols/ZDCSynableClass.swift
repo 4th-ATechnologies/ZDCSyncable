@@ -45,7 +45,7 @@ public protocol ZDCSyncableClass: class {
 	 * - Return:
 	 *     A changeset dictionary, or nil if there are no changes.
 	 */
-	func changeset() -> Dictionary<String, Any>?
+	func changeset() -> ZDCChangeset?
 	
 	/**
 	 * Returns the current changeset without clearing the changes from the object.
@@ -58,7 +58,7 @@ public protocol ZDCSyncableClass: class {
 	 * - Returns:
 	 *     A changeset dictionary, or nil if there are no changes.
 	 */
-	func peakChangeset() -> Dictionary<String, Any>?
+	func peakChangeset() -> ZDCChangeset?
 	
 	/**
 	 * Moves the state of the object backwards in time, undoing the changes represented in the changeset.
@@ -77,7 +77,7 @@ public protocol ZDCSyncableClass: class {
 	 *     A changeset dictionary if the undo was successful (which can be used to redo the changes).
 	 *     Otherwise throws with an error explaining what went wrong.
 	 */
-	func undo(_ changeset: Dictionary<String, Any>) throws -> Dictionary<String, Any>
+	func undo(_ changeset: ZDCChangeset) throws -> ZDCChangeset
 
 	/**
 	 * Moves the state of the object backwards in time, undoing the changes represented in the changeset.
@@ -91,7 +91,7 @@ public protocol ZDCSyncableClass: class {
 	 * - Returns:
 	 *     Returns nil on success, otherwise returns an error explaining what went wrong.
 	 */
-	func performUndo(_ changeset: Dictionary<String, Any>) throws
+	func performUndo(_ changeset: ZDCChangeset) throws
 	
 	/**
 	 * Performs an undo for all changes that have occurred since the last time either
@@ -118,7 +118,7 @@ public protocol ZDCSyncableClass: class {
 	 *     consolidated version of the given list.
 	 *     Otherwise throws with an error explaining what went wrong.
 	 */
-	func mergeChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any>
+	func mergeChangesets(_ orderedChangesets: [ZDCChangeset]) throws -> ZDCChangeset
 	
 	/**
 	 * This method is used to merge multiple changesets.
@@ -131,12 +131,12 @@ public protocol ZDCSyncableClass: class {
 	 * - Parameter orderedChangesets:
 	 *     An ordered list of changesets, with oldest at index 0.
 	 */
-	func importChangesets(_ orderedChangesets: Array<Dictionary<String, Any>>) throws
+	func importChangesets(_ orderedChangesets: [ZDCChangeset]) throws
 	
 	/**
 	 * - Returns:
 	 *     On success, returns a changeset dictionary that can be used to undo the changes.
 	 *     Otherwise throws with an error explaining what went wrong.
 	 */
-	func merge(cloudVersion: ZDCSyncableClass, pendingChangesets: Array<Dictionary<String, Any>>) throws -> Dictionary<String, Any>
+	func merge(cloudVersion: ZDCSyncableClass, pendingChangesets: [ZDCChangeset]) throws -> ZDCChangeset
 }
