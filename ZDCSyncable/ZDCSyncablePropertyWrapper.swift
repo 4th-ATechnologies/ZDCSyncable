@@ -6,12 +6,21 @@
 import Foundation
 
 @propertyWrapper
-public struct Syncable<T>: ZDCSyncableProperty where T: Equatable {
+public struct Syncable<T: Equatable & Codable>: ZDCSyncableProperty, Codable {
 	
 	private var _ref: SyncableRef<T>
 	
 	public init(wrappedValue: T) {
 		_ref = SyncableRef<T>(originalValue: wrappedValue)
+	}
+	
+	public init(from decoder: Decoder) throws {
+		let value = try T.init(from: decoder)
+		_ref = SyncableRef<T>(originalValue: value)
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		try self.wrappedValue.encode(to: encoder)
 	}
 	
 	/// The @propertyWrapper protocol for getter/setter.
@@ -106,7 +115,7 @@ public struct Syncable<T>: ZDCSyncableProperty where T: Equatable {
 	}
 }
 
-fileprivate class SyncableRef<T> where T: Equatable {
+fileprivate class SyncableRef<T: Equatable & Codable> {
 	var value: T
 	var originalValue: T
 	var hasChanges: Bool
