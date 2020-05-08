@@ -6,7 +6,7 @@
 import Cocoa
 import ZDCSyncable
 
-struct Person: ZDCSyncable, Codable, Equatable, CustomStringConvertible {
+struct Person: ZDCSyncable, Codable, Hashable, CustomStringConvertible {
 	
 	@Syncable var firstName: String
 	@Syncable var lastName: String? = nil
@@ -25,7 +25,7 @@ struct Person: ZDCSyncable, Codable, Equatable, CustomStringConvertible {
 	}
 }
 
-struct Television: ZDCSyncable, Codable, CustomStringConvertible {
+struct Television: ZDCSyncable, Codable, Hashable, CustomStringConvertible {
 	
 	@Syncable var brand: String
 	

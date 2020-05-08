@@ -72,7 +72,8 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 	// MARK: Properties
 	// ====================================================================================================
 
-	/// Returns a copy of the underlying Dictionary being wrapped.
+	/// Returns a copy of the underlying dictionary being wrapped.
+	/// Changes to the returned copy will not be reflected in this instance.
 	///
 	public var rawDictionary: Dictionary<Key, Value> {
 		get {
@@ -81,7 +82,8 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		}
 	}
 
-	/// Returns a copy of the underlying Array being wrapped.
+	/// Returns a copy of the underlying array being wrapped.
+	/// Changes to the returned copy will not be reflected in this instance.
 	///
 	public var rawOrder: Array<Key> {
 		get {
@@ -1733,4 +1735,12 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		return self.changeset() ?? Dictionary()
 	}
 
+}
+
+extension ZDCOrderedDictionary: Hashable where Key: Hashable, Value: Hashable {
+	
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(self.rawDictionary)
+		hasher.combine(self.rawOrder)
+	}
 }

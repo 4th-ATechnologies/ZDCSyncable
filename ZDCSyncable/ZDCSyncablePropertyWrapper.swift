@@ -6,13 +6,15 @@
 import Foundation
 
 @propertyWrapper
-public struct Syncable<T: Equatable & Codable>: ZDCSyncableProperty, Codable {
+public struct Syncable<T: Equatable & Codable>: ZDCSyncableProperty, Equatable, Codable {
 	
 	private var _ref: SyncableRef<T>
 	
 	public init(wrappedValue: T) {
 		_ref = SyncableRef<T>(originalValue: wrappedValue)
 	}
+	
+	// MARK: Protocol: Codable
 	
 	public init(from decoder: Decoder) throws {
 		let value = try T.init(from: decoder)
@@ -22,6 +24,8 @@ public struct Syncable<T: Equatable & Codable>: ZDCSyncableProperty, Codable {
 	public func encode(to encoder: Encoder) throws {
 		try self.wrappedValue.encode(to: encoder)
 	}
+	
+	// MARK: Protocol: PropertyWrapper
 	
 	/// The @propertyWrapper protocol for getter/setter.
 	///
@@ -39,6 +43,18 @@ public struct Syncable<T: Equatable & Codable>: ZDCSyncableProperty, Codable {
 			              hasChanges: true)
 		}
 	}
+	
+	// MARK: Protocol: Equatable
+	
+	public static func == (lhs: Syncable<T>, rhs: Syncable<T>) -> Bool {
+		
+		// Equality, in this context, only compares the wrapped values.
+		// This makes the most sense in the context of the consumer of the property wrapper.
+		
+		return (lhs._ref.value == rhs._ref.value)
+	}
+	
+	// MARK: Protocol: ZDCSyncableProperty
 	
 	/// Returns true if the value has been changed,
 	/// and the currentValue != originalValue.
@@ -112,6 +128,13 @@ public struct Syncable<T: Equatable & Codable>: ZDCSyncableProperty, Codable {
 		}
 		
 		return false
+	}
+}
+
+extension Syncable: Hashable where T: Hashable {
+	
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(self.wrappedValue)
 	}
 }
 

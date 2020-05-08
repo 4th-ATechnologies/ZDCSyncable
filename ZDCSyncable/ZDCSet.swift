@@ -58,7 +58,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 	// ====================================================================================================
 
 	/// Returns a reference to the underlying Set being wrapped.
-	/// This is a read-only copy - changes to the returned set will not be reflected in the ZDCSet instance.
+	/// Changes to the returned copy will not be reflected in this instance.
 	///
 	public var rawSet: Set<Element> {
 		get {
@@ -624,5 +624,12 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		}
 		
 		return self.changeset() ?? Dictionary()
+	}
+}
+
+extension ZDCSet: Hashable where Element: Hashable {
+	
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(self.rawSet)
 	}
 }

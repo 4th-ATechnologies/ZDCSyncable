@@ -71,8 +71,8 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 	// MARK: Properties
 	// ====================================================================================================
 
-	/// Returns a copy of the underlying Array being wrapped.
-	/// This is a read-only copy - changes to the returned copy will not be reflected in this instance.
+	/// Returns a copy of the underlying value being wrapped.
+	/// Changes to the returned copy will not be reflected in this instance.
 	///
 	public var rawDictionary: Dictionary<Key, Value> {
 		get {
@@ -804,5 +804,12 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		}
 		
 		return self.changeset() ?? Dictionary()
+	}
+}
+
+extension ZDCDictionary: Hashable where Key: Hashable, Value: Hashable {
+	
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(self.rawDictionary)
 	}
 }

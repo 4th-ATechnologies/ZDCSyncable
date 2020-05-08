@@ -1691,3 +1691,10 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		return self.changeset() ?? Dictionary()
 	}
 }
+
+extension ZDCArray: Hashable where Element: Hashable {
+	
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(self.rawArray)
+	}
+}

@@ -4,6 +4,7 @@
 /// Undo, redo & merge capabilities for structs & classes in pure Swift.
 
 import XCTest
+import ZDCSyncable
 
 class test_ZDCRecord: XCTestCase {
 	

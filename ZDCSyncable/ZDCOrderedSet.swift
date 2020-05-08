@@ -1375,3 +1375,11 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		return self.changeset() ?? Dictionary()
 	}
 }
+
+extension ZDCOrderedSet: Hashable where Element: Hashable {
+	
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(self.rawSet)
+		hasher.combine(self.rawOrder)
+	}
+}
