@@ -7,11 +7,6 @@ import Foundation
 
 public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, Collection, Equatable {
 	
-	enum CodingKeys: String, CodingKey {
-		case set = "set"
-		case order = "order"
-	}
-	
 	enum ChangesetKeys: String {
 		case added = "added"
 		case deleted = "deleted"
@@ -63,6 +58,42 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 			self.added = source.added
 			self.deletedIndexes = source.deletedIndexes
 		}
+	}
+	
+	// ====================================================================================================
+	// MARK: Codable
+	// ====================================================================================================
+	
+	// We encode using the same format as a normal array.
+	// This makes it easier to use as a drop-in replacement.
+	//
+	// Changesets are different, and should be stored separately.
+	
+	public init(from decoder: Decoder) throws {
+		
+		// When we decode, we need to maintain order & uniqueness.
+		
+		order = try Array(from: decoder)
+		set = Set(minimumCapacity: order.count)
+		
+		var i = 0
+		while i < order.count {
+			
+			let (inserted, _) = set.insert(order[i])
+			if inserted {
+				i += 1
+			} else {
+				order.remove(at: i)
+			}
+		}
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		
+		// When we encode, we need to ensure we maintain the correct order.
+		// So we encode using the order array.
+		//
+		try order.encode(to: encoder)
 	}
 	
 	// ====================================================================================================

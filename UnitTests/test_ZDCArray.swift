@@ -4203,4 +4203,81 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(local.count == 2)
 	}
 	
+	// ====================================================================================================
+	// MARK:- Codable
+	// ====================================================================================================
+
+	func test_codable_1() {
+		
+		let type = ZDCArray<String>.self
+		
+		var array = type.init()
+		array.append("goats")
+		array.append("sheep")
+		
+		do {
+			let encoder = JSONEncoder()
+			let encoded = try encoder.encode(array)
+			
+			let decoder = JSONDecoder()
+			let decoded = try decoder.decode(type, from: encoded)
+			
+			XCTAssert(array == decoded)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_codable_2() {
+		
+		let type = ZDCArray<ZDCArray<String>>.self
+		
+		var array = type.init()
+		array.append(ZDCArray())
+		array.append(ZDCArray())
+		
+		array[0].append("goats")
+		array[0].append("sheep")
+		
+		array[1].append("soap")
+		array[1].append("wool")
+		
+		do {
+			let encoder = JSONEncoder()
+			let encoded = try encoder.encode(array)
+			
+			let decoder = JSONDecoder()
+			let decoded = try decoder.decode(type, from: encoded)
+			
+			XCTAssert(array == decoded)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_codable_3() {
+		
+		// A ZDCArray should be decodable from a standard JSON array.
+		
+		let json_str = """
+		[
+		  "apple",
+		  "banana"
+		]
+		"""
+		let json_data = json_str.data(using: .utf8)!
+		
+		do {
+			let decoder = JSONDecoder()
+			let _ = try decoder.decode(ZDCSet<String>.self, from: json_data)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
 }

@@ -98,8 +98,11 @@ open class ZDCRecord: ZDCSyncableClass {
 	// ====================================================================================================
 	
 	open func setSyncableValue(_ value: Any?, for key: String) -> Bool {
-		
+		//
+		// Do NOT change this code !
 		return false
+		//
+		// You MUST property implement this method within your own class !
 	}
 	
 	open var hasChanges: Bool {

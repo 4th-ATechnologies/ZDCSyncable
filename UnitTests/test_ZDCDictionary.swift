@@ -604,5 +604,82 @@ class test_ZDCDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
+	
+	// ====================================================================================================
+	// MARK:- Codable
+	// ====================================================================================================
 
+	func test_codable_1() {
+		
+		let type = ZDCDictionary<String, Int>.self
+		
+		var dict = type.init()
+		dict["goats"] = 22
+		dict["sheep"] = 7
+		
+		do {
+			let encoder = JSONEncoder()
+			let encoded = try encoder.encode(dict)
+			
+			let decoder = JSONDecoder()
+			let decoded = try decoder.decode(type, from: encoded)
+			
+			XCTAssert(dict == decoded)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_codable_2() {
+		
+		let type = ZDCDictionary<String, ZDCDictionary<String, Int>>.self
+		
+		var dict = type.init()
+		dict["bend"] = ZDCDictionary()
+		dict["redmond"] = ZDCDictionary()
+		
+		dict["bend"]?["goats"] = 22
+		dict["bend"]?["sheep"] = 7
+		
+		dict["redmond"]?["goats"] = 14
+		dict["redmond"]?["sheep"] = 0
+		
+		do {
+			let encoder = JSONEncoder()
+			let encoded = try encoder.encode(dict)
+			
+			let decoder = JSONDecoder()
+			let decoded = try decoder.decode(type, from: encoded)
+			
+			XCTAssert(dict == decoded)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_codable_3() {
+		
+		// A ZDCDictionary should be decodable from a standard JSON dictionary.
+		
+		let json_str = """
+		{
+		  "a": "apple",
+		  "b": "banana"
+		}
+		"""
+		let json_data = json_str.data(using: .utf8)!
+		
+		do {
+			let decoder = JSONDecoder()
+			let _ = try decoder.decode(ZDCDictionary<String, String>.self, from: json_data)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
 }

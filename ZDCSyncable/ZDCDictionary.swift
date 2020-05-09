@@ -14,10 +14,6 @@ import Foundation
 /// - ability to merge changes from remote sources
 ///
 public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>: ZDCSyncable, Codable, Collection, Equatable {
-
-	enum CodingKeys: String, CodingKey {
-		case dict = "dict"
-	}
 	
 	enum ChangesetKeys: String {
 		case refs = "refs"
@@ -35,24 +31,15 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 	/// Creates an empty dictionary.
 	///
 	public init() {
-		
 		dict = Dictionary()
 	}
 
 	public init(minimumCapacity: Int) {
-		
 		dict = Dictionary(minimumCapacity: minimumCapacity)
 	}
 
 	public init<S>(uniqueKeysWithValues keysAndValues: S) where S : Sequence, S.Element == (Key, Value) {
-		
-		dict = Dictionary(minimumCapacity: keysAndValues.underestimatedCount)
-		
-		for (key, value) in keysAndValues {
-			
-		//	self[key] = value // not tracking changes during init
-			dict[key] = value
-		}
+		dict = Dictionary(uniqueKeysWithValues: keysAndValues)
 	}
 
 	public init(copy source: ZDCDictionary<Key, Value>, retainChangeTracking: Bool) {
@@ -65,6 +52,25 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 				self.originalValues[key] = originalValue
 			}
 		}
+	}
+	
+	// ====================================================================================================
+	// MARK: Codable
+	// ====================================================================================================
+	
+	// We encode using the same format as a normal dictionary.
+	// This makes it easier to use as a drop-in replacement.
+	//
+	// Changesets are different, and should be stored separately.
+	
+	public init(from decoder: Decoder) throws {
+		
+		dict = try Dictionary(from: decoder)
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		
+		try dict.encode(to: encoder)
 	}
 
 	// ====================================================================================================

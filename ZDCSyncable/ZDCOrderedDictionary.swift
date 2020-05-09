@@ -9,16 +9,26 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 	
 	public typealias Element = Dictionary<Key, Value>.Element
 	
-	enum CodingKeys: String, CodingKey {
-		case dict = "dict"
-		case order = "order"
-	}
-	
 	enum ChangesetKeys: String {
 		case refs = "refs"
 		case values = "values"
 		case indexes = "indexes"
 		case deleted = "deleted"
+	}
+	
+	struct DictionaryCodingKey: CodingKey {
+		let intValue: Int?
+		let stringValue: String
+		
+		init(intValue: Int) {
+			self.intValue = intValue
+			self.stringValue = "\(intValue)"
+		}
+		
+		init(stringValue: String) {
+			self.stringValue = stringValue
+			self.intValue = Int(stringValue) // in case encoder ignored our intValue
+		}
 	}
 	
 	private var dict: Dictionary<Key, Value>
@@ -46,13 +56,15 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 
 	public init<S>(uniqueKeysWithValues keysAndValues: S) where S : Sequence, S.Element == (Key, Value) {
 		
-		dict = Dictionary(minimumCapacity: keysAndValues.underestimatedCount)
+		// From Apple's docs for Dictionary.init(uniqueKeysWithValues:)
+		//
+		// > "Passing a sequence with duplicate keys to this initializer results in a runtime error."
+		//
+		dict = Dictionary(uniqueKeysWithValues: keysAndValues)
 		order = Array()
 		
-		for (key, value) in keysAndValues {
-			
-		//	self[key] = value // not tracking changes during init
-			dict[key] = value
+		for (key, _) in keysAndValues {
+			order.append(key)
 		}
 	}
 	
@@ -65,6 +77,204 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 			self.originalValues = source.originalValues
 			self.originalIndexes = source.originalIndexes
 			self.deletedIndexes = source.deletedIndexes
+		}
+	}
+	
+	// ====================================================================================================
+	// MARK: Codable
+	// ====================================================================================================
+	
+	// In an ideal world, we would simply encode the data as a dictionary.
+	//
+	// For example:
+	// {"_": "peaches","a": "apple", "b": "banana"}
+	//
+	// But alas!
+	// Swift BREAKS this for us since it REFUSES to give us access to the ordered keys in this container.
+	//
+	// For example, if we asked for container.allKeys, they might give us:
+	// ["a", "b", "_"]
+	//
+	// But this is NOT the order in which the items were encoded !!!
+	// So we're forced to use an alternate approach.
+
+	
+/* This approach doesn't work because `container.allKeys` doesn't give us keys
+	in the actual order in which they are encoded.
+
+	public init(from decoder: Decoder) throws {
+		
+		// Implementation is inspired by Swift's own Dictionary.init(from:) implementation:
+		// https://github.com/apple/swift/blob/master/stdlib/public/core/Codable.swift
+		
+		self.init()
+		
+		if Key.self == String.self {
+			
+			let container = try decoder.container(keyedBy: DictionaryCodingKey.self)
+			for key in container.allKeys { // <== BUG: `container.allKeys` doesn't retain order of keys !!!!!!!!!!
+				
+				let value = try container.decode(Value.self, forKey: key)
+				self[key.stringValue as! Key] = value
+			}
+			
+		} else if Key.self == Int.self {
+			
+			let container = try decoder.container(keyedBy: DictionaryCodingKey.self)
+			for key in container.allKeys { // <== BUG: `container.allKeys` doesn't retain order of keys !!!!!!!!!!
+				
+				guard let keyAsIntValue = key.intValue else {
+					// DictionaryCodingKey.init(intValue) was not used.
+					// DictionaryCodingKey.init(strinvValue) was used,
+					// and we could not parse the string as an int.
+					
+					var codingPath = decoder.codingPath
+					codingPath.append(key)
+					
+					let context = DecodingError.Context(
+					  codingPath: codingPath,
+					  debugDescription: "Expected Int key but found String key instead."
+					)
+					
+					throw DecodingError.typeMismatch(Int.self, context)
+				}
+				
+				let value = try container.decode(Value.self, forKey: key)
+				self[keyAsIntValue as! Key] = value
+			}
+		
+		} else {
+			
+			var container = try decoder.unkeyedContainer()
+
+			if let count = container.count {
+				
+				guard count % 2 == 0 else {
+					
+					let context = DecodingError.Context(
+						codingPath: decoder.codingPath,
+						debugDescription: "Expected collection of key-value pairs; encountered odd-length array instead."
+					)
+					
+					throw DecodingError.dataCorrupted(context)
+				}
+			}
+			
+			while !container.isAtEnd {
+				
+				let key = try container.decode(Key.self)
+				
+				guard !container.isAtEnd else {
+					
+					let context = DecodingError.Context(
+						codingPath: decoder.codingPath,
+						debugDescription: "Unkeyed container reached end before value in key-value pair."
+					)
+					
+					throw DecodingError.dataCorrupted(context)
+				}
+				
+				let value = try container.decode(Value.self)
+				self[key] = value
+			}
+		}
+		
+		self.clearChangeTracking()
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		
+		// From Apple's docs on Dictionary.encode(to:)
+		//
+		// > If the dictionary uses `String` or `Int` keys, the contents are encoded
+		// > in a keyed container. Otherwise, the contents are encoded as alternating
+		// > key-value pairs in an unkeyed container.
+		//
+		// Implementation is inspired by Swift's own Dictionary.encode(to:) implementation:
+		// https://github.com/apple/swift/blob/master/stdlib/public/core/Codable.swift
+		
+		if Key.self == String.self {
+			
+			var container = encoder.container(keyedBy: DictionaryCodingKey.self)
+		  	for key in order {
+				let value = dict[key]
+				let codingKey = DictionaryCodingKey(stringValue: key as! String)
+				try container.encode(value, forKey: codingKey)
+			}
+		
+		} else if Key.self == Int.self {
+			
+			var container = encoder.container(keyedBy: DictionaryCodingKey.self)
+			for key in order {
+				let value = dict[key]
+				let codingKey = DictionaryCodingKey(intValue: key as! Int)
+				try container.encode(value, forKey: codingKey)
+			}
+		
+		} else {
+			
+			var container = encoder.unkeyedContainer()
+			for key in order {
+				let value = dict[key]
+				try container.encode(key)
+				try container.encode(value)
+			}
+		}
+	}
+*/
+	public init(from decoder: Decoder) throws {
+		
+		// We're currently forced to do it this way until Swift bug is fixed.
+		// See discussion above.
+		
+		self.init()
+		
+		var container = try decoder.unkeyedContainer()
+
+		if let count = container.count {
+			
+			guard count % 2 == 0 else {
+				
+				let context = DecodingError.Context(
+					codingPath: decoder.codingPath,
+					debugDescription: "Expected collection of key-value pairs; encountered odd-length array instead."
+				)
+				
+				throw DecodingError.dataCorrupted(context)
+			}
+		}
+		
+		while !container.isAtEnd {
+			
+			let key = try container.decode(Key.self)
+			
+			guard !container.isAtEnd else {
+				
+				let context = DecodingError.Context(
+					codingPath: decoder.codingPath,
+					debugDescription: "Unkeyed container reached end before value in key-value pair."
+				)
+				
+				throw DecodingError.dataCorrupted(context)
+			}
+			
+			let value = try container.decode(Value.self)
+			self[key] = value
+		}
+		
+		self.clearChangeTracking()
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		
+		// We're currently forced to do it this way until Swift bug is fixed.
+		// See discussion above.
+		
+		var container = encoder.unkeyedContainer()
+		for key in order {
+			let value = dict[key]
+			try container.encode(key)
+			try container.encode(value)
 		}
 	}
 	

@@ -4142,4 +4142,85 @@ class test_ZDCOrderedDictionary: XCTestCase {
 		}
 	}
 	
+	// ====================================================================================================
+	// MARK:- Codable
+	// ====================================================================================================
+
+	func test_codable_1() {
+		
+		let type = ZDCOrderedDictionary<String, Int>.self
+		
+		var dict = type.init()
+		dict["goats"] = 22
+		dict["sheep"] = 7
+		
+		do {
+			let encoder = JSONEncoder()
+			let encoded = try encoder.encode(dict)
+			
+			let decoder = JSONDecoder()
+			let decoded = try decoder.decode(type, from: encoded)
+			
+			XCTAssert(dict == decoded)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_codable_2() {
+		
+		let type = ZDCOrderedDictionary<String, String>.self
+		
+		var dict = type.init()
+		dict["a"] = "apple"
+		dict["b"] = "banana"
+		
+		dict.insert("peaches in a can", forKey: "_", atIndex: 0)
+		
+		do {
+			let encoder = JSONEncoder()
+			let encoded = try encoder.encode(dict)
+			
+			let decoder = JSONDecoder()
+			let decoded = try decoder.decode(type, from: encoded)
+			
+			XCTAssert(dict == decoded)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_codable_3() {
+		
+		let type = ZDCOrderedDictionary<String, ZDCOrderedDictionary<String, Int>>.self
+		
+		var dict = type.init()
+		dict["bend"] = ZDCOrderedDictionary()
+		dict["redmond"] = ZDCOrderedDictionary()
+		
+		dict["bend"]?["goats"] = 22
+		dict["bend"]?["sheep"] = 7
+		
+		dict["redmond"]?["goats"] = 14
+		dict["redmond"]?["sheep"] = 0
+		
+		do {
+			let encoder = JSONEncoder()
+			let encoded = try encoder.encode(dict)
+			
+			let decoder = JSONDecoder()
+			let decoded = try decoder.decode(type, from: encoded)
+			
+			XCTAssert(dict == decoded)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
 }

@@ -761,4 +761,53 @@ class test_ZDCOrderedSet: XCTestCase {
 			XCTAssert(false)
 		}
 	}
+	
+	// ====================================================================================================
+	// MARK:- Codable
+	// ====================================================================================================
+
+	func test_codable_1() {
+		
+		let type = ZDCOrderedSet<String>.self
+		
+		var set = type.init()
+		set.insert("goats")
+		set.insert("sheep")
+		
+		do {
+			let encoder = JSONEncoder()
+			let encoded = try encoder.encode(set)
+			
+			let decoder = JSONDecoder()
+			let decoded = try decoder.decode(type, from: encoded)
+			
+			XCTAssert(set == decoded)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_codable_2() {
+		
+		// A ZDCOrderedSet should be decodable from a standard JSON array.
+		
+		let json_str = """
+		[
+		  "apple",
+		  "banana"
+		]
+		"""
+		let json_data = json_str.data(using: .utf8)!
+		
+		do {
+			let decoder = JSONDecoder()
+			let _ = try decoder.decode(ZDCOrderedSet<String>.self, from: json_data)
+			
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
 }

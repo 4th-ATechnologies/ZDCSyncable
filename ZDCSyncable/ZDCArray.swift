@@ -7,10 +7,6 @@ import Foundation
 
 public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Collection, Equatable {
 	
-	enum CodingKeys: String, CodingKey {
-		case array = "array"
-	}
-	
 	enum ChangesetKeys: String {
 		case added = "added"
 		case moved = "moved"
@@ -28,20 +24,11 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 	// ====================================================================================================
 	
 	public init() {
-		
 		array = Array()
 	}
 	
 	public init<S>(_ sequence: S) where S : Sequence, Element == S.Element {
-		
-		array = Array()
-		
-		array.reserveCapacity(sequence.underestimatedCount)
-		for item in sequence {
-			
-		//	self.append(item) // not tracking changes during init
-			array.append(item)
-		}
+		array = Array(sequence)
 	}
 	
 	public init(copy source: ZDCArray<Element>, retainChangeTracking: Bool) {
@@ -53,6 +40,25 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 			self.moved = source.moved
 			self.deleted = source.deleted
 		}
+	}
+	
+	// ====================================================================================================
+	// MARK: Codable
+	// ====================================================================================================
+	
+	// We encode using the same format as a normal array.
+	// This makes it easier to use as a drop-in replacement.
+	//
+	// Changesets are different, and should be stored separately.
+	
+	public init(from decoder: Decoder) throws {
+		
+		array = try Array(from: decoder)
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		
+		try array.encode(to: encoder)
 	}
 	
 	// ====================================================================================================

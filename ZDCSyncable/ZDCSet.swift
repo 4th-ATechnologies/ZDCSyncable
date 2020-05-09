@@ -7,10 +7,6 @@ import Foundation
 
 public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collection, Equatable {
 	
-	enum CodingKeys: String, CodingKey {
-		case set = "set"
-	}
-	
 	enum ChangesetKeys: String {
 		case added = "added"
 		case deleted = "deleted"
@@ -34,13 +30,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 	}
 	
 	public init<S>(_ sequence: S) where S : Sequence, Element == S.Element {
-		set = Set(minimumCapacity: sequence.underestimatedCount)
-		
-		for item in sequence {
-			
-		//	self.insert(item) // not tracking changes during init
-			set.insert(item)
-		}
+		set = Set(sequence)
 	}
 
 	public init(copy source: ZDCSet<Element>, retainChangeTracking: Bool) {
@@ -51,6 +41,25 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 			self.added = source.added
 			self.deleted = source.deleted
 		}
+	}
+	
+	// ====================================================================================================
+	// MARK: Codable
+	// ====================================================================================================
+	
+	// We encode using the same format as a normal set.
+	// This makes it easier to use as a drop-in replacement.
+	//
+	// Changesets are different, and should be stored separately.
+	
+	public init(from decoder: Decoder) throws {
+		
+		set = try Set(from: decoder)
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		
+		try set.encode(to: encoder)
 	}
 	
 	// ====================================================================================================
