@@ -268,4 +268,5 @@ class test_ZDCRecord: XCTestCase {
 		XCTAssert(localRecord.dict["cat"]  == "meow")
 		XCTAssert(localRecord.dict["duck"] == "quack")
 	}
+
 }

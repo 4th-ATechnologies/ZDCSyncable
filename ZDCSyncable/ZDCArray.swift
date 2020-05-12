@@ -13,6 +13,12 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		case deleted = "deleted"
 	}
 	
+	struct ZDCChangeset_Array {
+		let added: IndexSet
+		let moved: [Int: Int]
+		let deleted: [Int: Element]
+	}
+	
 	private var array: Array<Element>
 	
 	private var added: IndexSet = IndexSet()                     // [{ currentIndex }]
@@ -757,6 +763,18 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 			return nil
 		}
 		
+		// changeset: {
+		//   added: RegisteredCodable([
+		//     RegisteredCodable(Int)
+		//   ]),
+		//   moved: RegisteredCodable([
+		//     <key: Int>: <value: RegisteredCodable(Int)>, ...
+		//   ]),
+		//   deleted: RegisteredCodable([
+		//     <key: Int>: <value: RegisteredCodable(Element)>, ...
+		//   ])
+		// }
+		
 		var changeset: ZDCChangeset = Dictionary(minimumCapacity: 3)
 		
 		// Reminder: ivars look like this:
@@ -767,103 +785,114 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		
 		if added.count > 0 {
 			
-			// changeset: {
-			//   added: [
-			//     idx, ...
-			//   ],
-			//   ...
-			// }
+			var changeset_added: [RegisteredCodable] = []
 			
-			let added_copy = added
-			changeset[ChangesetKeys.added.rawValue] = added_copy
-		}
-		
-		if deleted.count > 0 {
+			for idx in added {
+				changeset_added.append(RegisteredCodable(idx))
+			}
 			
-			// changeset: {
-			//   deleted: {
-			//     idx: obj, ...
-			//   },
-			//   ...
-			// }
-			
-			let deleted_copy = deleted
-			changeset[ChangesetKeys.deleted.rawValue] = deleted_copy
+			changeset[ChangesetKeys.added.rawValue] = RegisteredCodable(changeset_added)
 		}
 		
 		if moved.count > 0 {
 			
-			// changeset: {
-			//   moved: {
-			//     idx: idx, ...
-			//   },
-			//   ...
-			// }
+			var changeset_moved: [Int: RegisteredCodable] = [:]
 			
-			let moved_copy = moved
-			changeset[ChangesetKeys.moved.rawValue] = moved_copy
+			for (key, value) in moved {
+				changeset_moved[key] = RegisteredCodable(value)
+			}
+			
+			changeset[ChangesetKeys.moved.rawValue] = RegisteredCodable(changeset_moved)
+		}
+		
+		if deleted.count > 0 {
+			
+			var changeset_deleted: [Int: RegisteredCodable] = [:]
+			
+			for (key, value) in deleted {
+				changeset_deleted[key] = RegisteredCodable(value)
+			}
+			
+			changeset[ChangesetKeys.deleted.rawValue] = RegisteredCodable(changeset_deleted)
 		}
 		
 		return changeset
 	}
 	
-	private func isMalformedChangeset(_ changeset: ZDCChangeset) -> Bool {
-		
-		if changeset.count == 0 {
-			return false
-		}
+	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Array? {
 		
 		// changeset: {
-		//   added: IndexSet,
-		//   ...
+		//   added: RegisteredCodable([
+		//     RegisteredCodable(Int)
+		//   ]),
+		//   moved: RegisteredCodable([
+		//     <key: Int>: <value: RegisteredCodable(Int)>, ...
+		//   ]),
+		//   deleted: RegisteredCodable([
+		//     <key: Int>: <value: RegisteredCodable(Element)>, ...
+		//   ])
 		// }
 		
-		if let changeset_added = changeset[ChangesetKeys.added.rawValue] {
+		var added = IndexSet()
+		var moved: [Int: Int] = [:]
+		var deleted: [Int: Element] = [:]
+		
+		// added
+		if let registeredCodable = changeset[ChangesetKeys.added.rawValue] {
 			
-			if let _ = changeset_added as? IndexSet {
-				// ok
-			} else {
-				return true // malformed !
+			guard let wrapped_added = registeredCodable.value as? [RegisteredCodable] else {
+				return nil // malformed
+			}
+			
+			for registeredCodable in wrapped_added {
+				
+				if let value = registeredCodable.value as? Int {
+					added.insert(value)
+				} else {
+					return nil // malformed
+				}
 			}
 		}
 		
-		// changeset: {
-		//   deleted: {
-		//     idx: obj, ...
-		//   },
-		//   ...
-		// }
-		
-		if let changeset_deleted = changeset[ChangesetKeys.deleted.rawValue] {
+		// moved
+		if let registeredCodable = changeset[ChangesetKeys.moved.rawValue] {
 			
-			if let _ = changeset_deleted as? Dictionary<Int, Element> {
-				// ok
-			} else {
-				return true // malformed !
+			guard let wrapped_moved = registeredCodable.value as? [Int: RegisteredCodable] else {
+				return nil // malformed
+			}
+			
+			for (key, registeredCodable) in wrapped_moved {
+				
+				if let value = registeredCodable.value as? Int {
+					moved[key] = value
+				} else {
+					return nil // malformed
+				}
 			}
 		}
 		
-		// changeset: {
-		//   moved: {
-		//     idx: idx, ...
-		//   },
-		//   ...
-		// }
-		
-		if let changeset_moved = changeset[ChangesetKeys.moved.rawValue] {
+		// deleted
+		if let registeredCodable = changeset[ChangesetKeys.deleted.rawValue] {
 			
-			if let _ = changeset_moved as? Dictionary<Int, Int> {
-				// ok
-			} else {
-				return true // malformed !
+			guard let wrapped_deleted = registeredCodable.value as? [Int: RegisteredCodable] else {
+				return nil // malformed
+			}
+			
+			for (key, registeredCodable) in wrapped_deleted {
+				
+				if let value = registeredCodable.value as? Element {
+					deleted[key] = value
+				} else {
+					return nil // malformed
+				}
 			}
 		}
 		
 		// Looks good (not malformed)
-		return false
+		return ZDCChangeset_Array(added: added, moved: moved, deleted: deleted)
 	}
 	
-	private mutating func _undo(_ changeset: ZDCChangeset) throws {
+	private mutating func _undo(_ changeset: ZDCChangeset_Array) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
@@ -905,20 +934,18 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		//
 		// Undo added objects.
 		
-		let changeset_added = changeset[ChangesetKeys.added.rawValue] as? IndexSet
-		if let changeset_added = changeset_added {
+		for idx in changeset.added.reversed() {
 			
-			for idx in changeset_added.reversed() {
-			
-				self.remove(at: idx)
-			}
+			self.remove(at: idx)
 		}
 		
 		// Step 2 of 3:
 		//
 		// Undo move operations
 		
-		if var changeset_moved = changeset[ChangesetKeys.moved.rawValue] as? Dictionary<Int, Int> {
+		do {
+			
+			var changeset_moved = changeset.moved
 			
 			// We need to fix the `changeset_moved` dictionary.
 			//
@@ -939,14 +966,14 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 			// It only requires this fixup operation here,
 			// to update the currentIndex to match the current state (since we just undid add operations).
 			
-			if let changeset_added = changeset_added {
+			if changeset.added.count > 0 {
 				
-				var fixup = Dictionary<Int, Int>(minimumCapacity: changeset_moved.count)
+				var fixup = Dictionary<Int, Int>(minimumCapacity: changeset.moved.count)
 				
-				for (currentIndex, previousIndex) in changeset_moved {
+				for (currentIndex, previousIndex) in changeset.moved {
 					
 					var currentIdx = currentIndex
-					for addedIdx in changeset_added.reversed() {
+					for addedIdx in changeset.added.reversed() {
 						
 						if (currentIdx > addedIdx) {
 							currentIdx -= 1
@@ -1115,9 +1142,9 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		//
 		// Undo deleted objects.
 		
-		if let changeset_deleted = changeset[ChangesetKeys.deleted.rawValue] as? Dictionary<Int, Element> {
+		do {
 			
-			let sorted = changeset_deleted.sorted(by: {
+			let sorted = changeset.deleted.sorted(by: {
 				
 				$0.key < $1.key
 			})
@@ -1139,12 +1166,12 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 			throw ZDCSyncableError.hasChanges
 		}
 		
-		if self.isMalformedChangeset(changeset) {
+		guard let parsedChangeset = parseChangeset(changeset) else {
 			throw ZDCSyncableError.malformedChangeset
 		}
 		
 		do {
-			try self._undo(changeset)
+			try self._undo(parsedChangeset)
 			
 		} catch {
 			
@@ -1166,25 +1193,29 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		
 		// Check for malformed changesets.
 		// It's better to detect this early on, before we start modifying the object.
-		//
+		
+		var orderedParsedChangesets: [ZDCChangeset_Array] = []
+		
 		for changeset in orderedChangesets {
 			
-			if self.isMalformedChangeset(changeset) {
+			if let parsedChangeset = parseChangeset(changeset) {
+				orderedParsedChangesets.append(parsedChangeset)
+			} else {
 				throw ZDCSyncableError.malformedChangeset
 			}
 		}
 		
-		if orderedChangesets.count == 0 {
+		if orderedParsedChangesets.count == 0 {
 			return
 		}
 		
 		var result_error: Error?
 		var changesets_redo: [ZDCChangeset] = []
 		
-		for changeset in orderedChangesets.reversed() {
+		for parsedChangeset in orderedParsedChangesets.reversed() {
 			
 			do {
-				try self._undo(changeset)
+				try self._undo(parsedChangeset)
 				
 				if let redo = self.changeset() {
 					changesets_redo.append(redo)
@@ -1205,7 +1236,9 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		for redo in changesets_redo.reversed()	{
 			
 			do {
-				try self._undo(redo)
+				if let parsedRedo = parseChangeset(redo) {
+					try self._undo(parsedRedo)
+				}
 				
 			} catch {
 				
@@ -1225,11 +1258,9 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 	
 	/// Calculates the original order from the changesets.
 	///
-	private static func originalOrder(from inOrder: Array<Element>, pendingChangesets: [ZDCChangeset])
-		-> (originalOrder: Array<Element>, added: Array<Element>, deleted: Array<Element>)?
+	private static func originalOrder(from inOrder: [Element], pendingChangesets: [ZDCChangeset_Array])
+		-> (originalOrder: [Element], added: [Element], deleted: [Element])?
 	{
-		// Important: `isMalformedChangeset:` must be called before invoking this method.
-	
 		var order = inOrder
 		var added = Array<Element>()
 		var deleted = Array<Element>()
@@ -1248,45 +1279,43 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 			//
 			// Undo added objects.
 			
-			let changeset_added = changeset[ChangesetKeys.added.rawValue] as? IndexSet
-			if let changeset_added = changeset_added {
-				
-				for idx in changeset_added {
-					
-					if (idx >= order.count) {
-						return nil
-					}
-					
-					let item = order[idx]
-					if let matchingIdx = deleted.firstIndex(of: item) {
-						
-						// This item is deleted in a later changeset.
-						// So the two actions cancel each other out.
-						deleted.remove(at: matchingIdx)
-					}
-					else {
-						
-						added.append(item)
-					}
-					
-					order.remove(at: idx)
+			for idx in changeset.added {
+			
+				if (idx >= order.count) {
+					return nil
 				}
+				
+				let item = order[idx]
+				if let matchingIdx = deleted.firstIndex(of: item) {
+					
+					// This item is deleted in a later changeset.
+					// So the two actions cancel each other out.
+					deleted.remove(at: matchingIdx)
+				}
+				else {
+					
+					added.append(item)
+				}
+				
+				order.remove(at: idx)
 			}
 			
 			// Step 2 of 3:
 			//
 			// Undo move operations
 			
-			if var changeset_moved = changeset[ChangesetKeys.moved.rawValue] as? Dictionary<Int, Int> {
+			if changeset.moved.count > 0 {
 				
-				if let changeset_added = changeset_added {
+				var changeset_moved = changeset.moved
+				
+				if changeset.added.count > 0 {
 					
 					var fixup = Dictionary<Int, Int>(minimumCapacity: changeset_moved.count)
 					
 					for (currentIndex, previousIdx) in changeset_moved {
 						
 						var currentIdx = currentIndex
-						for addedIdx in changeset_added.reversed() {
+						for addedIdx in changeset.added.reversed() {
 							
 							if (currentIdx > addedIdx) {
 								currentIdx -= 1
@@ -1340,9 +1369,9 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 			//
 			// Undo deleted objects.
 			
-			if let changeset_deleted = changeset[ChangesetKeys.deleted.rawValue] as? Dictionary<Int, Element> {
+			if changeset.deleted.count > 0 {
 			
-				let sorted_keys = changeset_deleted.keys.sorted(by: {
+				let sorted_keys = changeset.deleted.keys.sorted(by: {
 					
 					$0 < $1
 				})
@@ -1353,7 +1382,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 						return nil // mismatchedChangeset
 					}
 					
-					let item = changeset_deleted[idx]!
+					let item = changeset.deleted[idx]!
 					
 					if let matchingIdx = added.firstIndex(of: item) {
 						
@@ -1388,10 +1417,14 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		
 		// Check for malformed changesets.
 		// It's better to detect this early on, before we start modifying the object.
-		//
+		
+		var parsedChangesets: [ZDCChangeset_Array] = []
+		
 		for changeset in pendingChangesets {
 			
-			if self.isMalformedChangeset(changeset) {
+			if let parsedChangeset = parseChangeset(changeset) {
+				parsedChangesets.append(parsedChangeset)
+			} else {
 				throw ZDCSyncableError.malformedChangeset
 			}
 		}
@@ -1414,9 +1447,9 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		var local_added   = Array<Element>()
 		var local_deleted = Array<Element>()
 		
-		if pendingChangesets.count > 0 {
+		if parsedChangesets.count > 0 {
 			
-			if let results = type(of: self).originalOrder(from: array, pendingChangesets: pendingChangesets) {
+			if let results = type(of: self).originalOrder(from: array, pendingChangesets: parsedChangesets) {
 				
 				originalOrder = results.originalOrder
 				local_added = results.added

@@ -237,4 +237,5 @@ class test_ZDCStruct: XCTestCase {
 		XCTAssert(localStruct.dict["cat"]  == "meow")
 		XCTAssert(localStruct.dict["duck"] == "quack")
 	}
+
 }

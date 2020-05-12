@@ -13,8 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
  * We need the ability to throw an exception due to a protocol contract violation.
  * Swift wants us to explicitly mark every function that can throw.
  *
- * But this isn't really what we want. It's not a development error,
- * something one finds while implementing the ZDCSyncable protocol for the first time.
+ * But this isn't really what we want.
+ * It's not a general error, it's a developer error.
+ * Something one finds while implementing the ZDCSyncable protocol for the first time.
  *
  * So we drop into objective-c as a workaround.
  */

@@ -8,6 +8,11 @@ fileprivate enum ChangesetKeys: String {
 	case values = "values"
 }
 
+fileprivate struct ZDCChangeset_Struct {
+	let refs: [String: ZDCChangeset]
+	let values: [String: Any]
+}
+
 extension ZDCSyncable {
 	
 	private func enumerateSyncable(_ block: (_ propertyName: String, _ value: Any?, _ stop: inout Bool) -> Void) {
@@ -16,10 +21,6 @@ extension ZDCSyncable {
 		
 		var _mirror: Mirror? = Mirror(reflecting: self)
 		outerLoop: while let mirror = _mirror {
-		
-			if mirror.subjectType == ZDCRecord.self {
-				break
-			}
 			
 			for property in mirror.children {
 		
@@ -157,7 +158,7 @@ extension ZDCSyncable {
 				
 				if let changeset = zdc_obj.peakChangeset() {
 					
-					refs[key] = changeset
+					refs[key] = RegisteredCodable(changeset)
 				}
 			}
 			else if let zdc_prop = value as? ZDCSyncableProperty {
@@ -167,9 +168,9 @@ extension ZDCSyncable {
 					let originalValue = zdc_prop.getOriginalValue()
 					
 					if originalValue == nil {
-						values[key] = ZDCNull.sharedInstance()
+						values[key] = RegisteredCodable(ZDCNull())
 					} else {
-						values[key] = originalValue
+						values[key] = originalValue // is of type RegisteredCodable
 					}
 				}
 			}
@@ -177,117 +178,115 @@ extension ZDCSyncable {
 				
 				if let changeset = zdc_struct.peakChangeset() {
 					
-					refs[key] = changeset
+					refs[key] = RegisteredCodable(changeset)
 				}
 			}
 		}
 		
 		var changeset: ZDCChangeset = [:]
 		if (refs.count > 0) {
-			changeset[ChangesetKeys.refs.rawValue] = refs
+			changeset[ChangesetKeys.refs.rawValue] = RegisteredCodable(refs)
 		}
 		if (values.count > 0) {
-			changeset[ChangesetKeys.values.rawValue] = values
+			changeset[ChangesetKeys.values.rawValue] = RegisteredCodable(values)
 		}
 		
 		return changeset
 	}
 	
-	private func isMalformedChangeset(_ changeset: ZDCChangeset) -> Bool {
-		
-		if changeset.count == 0 {
-			return false
-		}
+	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Struct? {
 		
 		// changeset: {
-		//   refs: {
-		//     <key: Any> : <changeset: Dictionary>, ...
-		//   },
-		//   values: {
-		//     <key: NSString*> : <oldValue: ZDCNull|Any>, ...
-		//   }
+		//   refs: RegisteredCodable({
+		//     <key: String> : <changeset: RegisteredCodable(ZDCChangeset)>, ...
+		//   }),
+		//   values: RegisteredCodable({
+		//     <key: String> : <oldValue: RegisteredCodable(ZDCNull|Any)>, ...
+		//   })
 		// }
 		
-		do { // refs
+		var refs: [String: ZDCChangeset] = [:]
+		var values: [String: Any] = [:]
+		
+		// refs
+		if let registeredCodable = changeset[ChangesetKeys.refs.rawValue] {
 			
-			let changeset_refs = changeset[ChangesetKeys.refs.rawValue]
-			if (changeset_refs != nil) {
+			guard let wrapped_refs = registeredCodable.value as? [String: RegisteredCodable] else {
+				return nil // malformed
+			}
+			
+			for (key, registeredCodable) in wrapped_refs {
 				
-				guard changeset_refs is Dictionary<String, ZDCChangeset> else {
-					return true // malformed
+				if let refChangeset = registeredCodable.value as? ZDCChangeset {
+					refs[key] = refChangeset
+				} else {
+					return nil // malformed
 				}
 			}
 		}
 		
-		do { // values
-				
-			let changeset_values = changeset[ChangesetKeys.values.rawValue]
-			if (changeset_values != nil) {
-				
-				guard changeset_values is ZDCChangeset else {
-					return true // malformed
-				}
+		// values
+		if let registeredCodable = changeset[ChangesetKeys.values.rawValue] {
+			
+			guard let wrapped_values = registeredCodable.value as? [String: RegisteredCodable] else {
+				return nil // malformed
+			}
+			
+			for (key, registeredCodable) in wrapped_values {
+				values[key] = registeredCodable.value
 			}
 		}
 		
 		// looks good (not malformed)
-		return false
+		return ZDCChangeset_Struct(refs: refs, values: values)
 	}
 	
-	private mutating func _undo(_ changeset: ZDCChangeset) throws {
+	private mutating func _undo(_ changeset: ZDCChangeset_Struct) throws {
 		
-		// Important: `isMalformedChangeset:` must be called before invoking this method.
-		
-		if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? Dictionary<String, ZDCChangeset> {
-		
-			for (key, container_changeset) in changeset_refs {
-				
-				let value = syncableValue(key: key)
-				
-				if let zdc_obj = value as? ZDCSyncableClass {
-					
-					try zdc_obj.performUndo(container_changeset)
-					
-				} else if var zdc_struct = value as? ZDCSyncableStruct {
+		for (key, container_changeset) in changeset.refs {
 			
-					try zdc_struct.performUndo(container_changeset)
+			let value = syncableValue(key: key)
+			
+			if let zdc_obj = value as? ZDCSyncableClass {
+				
+				try zdc_obj.performUndo(container_changeset)
+				
+			} else if var zdc_struct = value as? ZDCSyncableStruct {
+		
+				try zdc_struct.performUndo(container_changeset)
+				
+				// struct value semantics means we need to write the modified value back to self
+				
+				if !setSyncableValue(zdc_struct, for: key) {
 					
-					// struct value semantics means we need to write the modified value back to self
+				//	ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: key)
+				//	                                           ^^^^^^^^^^^^^^
+				//                                            Causes Swift compiler to crash :(
 					
-					if !setSyncableValue(zdc_struct, for: key) {
-						
-					//	ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: key)
-					//	                                           ^^^^^^^^^^^^^^
-					//                                            Causes Swift compiler to crash :(
-						
-						ZDCSwiftWorkarounds.throwSyncableException(nil, forKey: key)
-					}
-					
-				} else {
-					
-					throw ZDCSyncableError.mismatchedChangeset
+					ZDCSwiftWorkarounds.throwSyncableException(nil, forKey: key)
 				}
+				
+			} else {
+				
+				throw ZDCSyncableError.mismatchedChangeset
 			}
 		}
 		
-		if let changeset_values = changeset[ChangesetKeys.values.rawValue] as? ZDCChangeset {
+		for (key, oldValue) in changeset.values {
 			
-			for (key, oldValue) in changeset_values {
+			var success = false
+			if let zdc_prop = self.syncableValue(key: key) as? ZDCSyncableProperty {
 				
-				var success = false
-				if let zdc_prop = self.syncableValue(key: key) as? ZDCSyncableProperty {
-					
-					if (oldValue is ZDCNull) {
-						success = zdc_prop.trySetValue(nil)
-					}
-					else {
-						success = zdc_prop.trySetValue(oldValue)
-					}
+				if (oldValue is ZDCNull) {
+					success = zdc_prop.trySetValue(nil)
 				}
-				
-				if !success {
-					throw ZDCSyncableError.mismatchedChangeset
+				else {
+					success = zdc_prop.trySetValue(oldValue)
 				}
+			}
+			
+			if !success {
+				throw ZDCSyncableError.mismatchedChangeset
 			}
 		}
 	}
@@ -302,12 +301,12 @@ extension ZDCSyncable {
 			throw ZDCSyncableError.hasChanges
 		}
 		
-		if self.isMalformedChangeset(changeset) {
+		guard let parsedChangeset = parseChangeset(changeset) else {
 			throw ZDCSyncableError.malformedChangeset
 		}
 		
 		do {
-			try self._undo(changeset)
+			try self._undo(parsedChangeset)
 			
 		} catch {
 			
@@ -329,25 +328,29 @@ extension ZDCSyncable {
 		
 		// Check for malformed changesets.
 		// It's better to detect this early on, before we start modifying the object.
-		//
+		
+		var orderedParsedChangesets: [ZDCChangeset_Struct] = []
+		
 		for changeset in orderedChangesets {
 			
-			if self.isMalformedChangeset(changeset) {
+			if let parsedChangeset = parseChangeset(changeset) {
+				orderedParsedChangesets.append(parsedChangeset)
+			} else {
 				throw ZDCSyncableError.malformedChangeset
 			}
 		}
 		
-		if orderedChangesets.count == 0 {
+		if orderedParsedChangesets.count == 0 {
 			return
 		}
 		
 		var result_error: Error?
 		var changesets_redo: [ZDCChangeset] = []
 		
-		for changeset in orderedChangesets.reversed() {
+		for parsedChangeset in orderedParsedChangesets.reversed() {
 			
 			do {
-				try self._undo(changeset)
+				try self._undo(parsedChangeset)
 				
 				if let redo = self.changeset() {
 					changesets_redo.append(redo)
@@ -368,7 +371,9 @@ extension ZDCSyncable {
 		for redo in changesets_redo.reversed()	{
 			
 			do {
-				try self._undo(redo)
+				if let parsedRedo = parseChangeset(redo) {
+					try self._undo(parsedRedo)
+				}
 				
 			} catch {
 				
@@ -400,10 +405,14 @@ extension ZDCSyncable {
 		
 		// Check for malformed changesets.
 		// It's better to detect this early on, before we start modifying the object.
-		//
+		
+		var parsedChangesets: [ZDCChangeset_Struct] = []
+		
 		for changeset in pendingChangesets {
 			
-			if self.isMalformedChangeset(changeset) {
+			if let parsedChangeset = parseChangeset(changeset) {
+				parsedChangesets.append(parsedChangeset)
+			} else {
 				throw ZDCSyncableError.malformedChangeset
 			}
 		}
@@ -420,17 +429,14 @@ extension ZDCSyncable {
 		// We need to determine which keys have been changed locally, and what the original versions were.
 		// We'll need this information when comparing to the cloudVersion.
 		
-		var merged_originalValues: ZDCChangeset = [:]
+		var merged_originalValues: [String: Any] = [:]
 		
-		for changeset in pendingChangesets {
+		for parsedChangeset in parsedChangesets {
 			
-			if let changeset_originalValues = changeset[ChangesetKeys.values.rawValue] as? ZDCChangeset {
-			
-				for (key, oldValue) in changeset_originalValues {
+			for (key, oldValue) in parsedChangeset.values {
 					
-					if (merged_originalValues[key] == nil) {
-						merged_originalValues[key] = oldValue
-					}
+				if merged_originalValues[key] == nil {
+					merged_originalValues[key] = oldValue
 				}
 			}
 		}
@@ -532,16 +538,13 @@ extension ZDCSyncable {
 		
 		var refs = Set<String>()
 		
-		for changeset in pendingChangesets {
+		for parsedChangeset in parsedChangesets {
 			
-			if let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? [String: ZDCChangeset] {
+			for (key, _) in parsedChangeset.refs {
 				
-				for (key, _) in changeset_refs {
+				if merged_originalValues[key] == nil {
 					
-					if merged_originalValues[key] == nil {
-						
-						refs.insert(key)
-					}
+					refs.insert(key)
 				}
 			}
 		}
@@ -554,12 +557,9 @@ extension ZDCSyncable {
 			var pendingChangesets_ref: [ZDCChangeset] = []
 			pendingChangesets_ref.reserveCapacity(pendingChangesets.count)
 			
-			for changeset in pendingChangesets {
+			for parsedChangeset in parsedChangesets {
 				
-				let changeset_refs = changeset[ChangesetKeys.refs.rawValue] as? [String: ZDCChangeset]
-				let changeset_ref = changeset_refs?[key]
-				
-				if let changeset_ref = changeset_ref {
+				if let changeset_ref = parsedChangeset.refs[key] {
 					
 					pendingChangesets_ref.append(changeset_ref)
 				}
@@ -588,7 +588,7 @@ extension ZDCSyncable {
 			}
 		}
 		
-		return (self.changeset() ?? Dictionary())
+		return self.changeset() ?? [:]
 	}
 
 }

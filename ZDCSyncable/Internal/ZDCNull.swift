@@ -18,39 +18,15 @@ import Foundation
  *
  * ZDCNull is a singleton.
  */
-internal class ZDCNull: NSObject, NSCoding, NSCopying {
+internal struct ZDCNull: Codable {
 	
-	static let _sharedInstance = ZDCNull()
+	let reserved = "ZDCNull"
 	
-	public class func sharedInstance() -> ZDCNull {
-		return _sharedInstance
-	}
-	
-	private override init() {}
-	
-	required init?(coder decoder: NSCoder) {
-		// Do nothing.
-		// We're going to substitute the sharedInstance via awakeAfter(usingDecoder)
-	}
-	
-	override func awakeAfter(using decoder: NSCoder) -> Any? {
-		return type(of: self).sharedInstance()
-	}
-	
-	func encode(with coder: NSCoder) {
-		// Nothing internal to encode.
-		// NSCoder will record the class (S4Null) automatically.
-	}
-	
-	func copy(with zone: NSZone? = nil) -> Any {
-		return type(of: self).sharedInstance()
-	}
-	
-	override var description: String {
+	var description: String {
 		return "<ZDCNull>"
 	}
 	
-	override var debugDescription: String {
+	var debugDescription: String {
 		return "<ZDCNull>"
 	}
 }

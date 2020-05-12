@@ -12,6 +12,11 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		case deleted = "deleted"
 	}
 	
+	struct ZDCChangeset_Set {
+		let added: Set<Element>
+		let deleted: Set<Element>
+	}
+	
 	private var set: Set<Element>
 	
 	private var added: Set<Element> = Set()
@@ -285,123 +290,117 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 			return nil
 		}
 		
+		// changeset: {
+		//   added: RegisteredCodable([
+		//     RegisteredCodable(Element)
+		//   ]),
+		//   deleted: RegisteredCodable([
+		//     RegisteredCodable(Element)
+		//   ])
+		// }
+		
 		var changeset: ZDCChangeset = Dictionary(minimumCapacity: 2)
 		
 		if added.count > 0 {
 			
-			// changeset: {
-			//   added: [{
-			//     obj, ...
-			//   }],
-			//   ...
-			// }
-			
-			var changeset_added = Set<Element>(minimumCapacity: added.count)
+			var changeset_added: [RegisteredCodable] = []
 			
 			for item in added {
 				
 				if let item = item as? NSCopying {
-					changeset_added.insert(item.copy() as! Element)
+					changeset_added.append(RegisteredCodable(item.copy() as! Element))
 				}
 				else {
-					changeset_added.insert(item)
+					changeset_added.append(RegisteredCodable(item))
 				}
 			}
 			
-			changeset[ChangesetKeys.added.rawValue] = changeset_added
+			changeset[ChangesetKeys.added.rawValue] = RegisteredCodable(changeset_added)
 		}
 	
 		if deleted.count > 0 {
 			
-			// changeset: {
-			//   deleted: [{
-			//     obj, ...
-			//   }],
-			//   ...
-			// }
-			
-			var changeset_deleted = Set<Element>(minimumCapacity: deleted.count)
+			var changeset_deleted: [RegisteredCodable] = []
 			
 			for item in deleted {
 				
 				if let item = item as? NSCopying {
-					changeset_deleted.insert(item.copy() as! Element)
+					changeset_deleted.append(RegisteredCodable(item.copy() as! Element))
 				}
 				else {
-					changeset_deleted.insert(item)
+					changeset_deleted.append(RegisteredCodable(item))
 				}
 			}
 			
-			changeset[ChangesetKeys.deleted.rawValue] = changeset_deleted
+			changeset[ChangesetKeys.deleted.rawValue] = RegisteredCodable(changeset_deleted)
 		}
 	
 		return changeset
 	}
 
-	private func isMalformedChangeset(_ changeset: ZDCChangeset) -> Bool {
-		
-		if changeset.count == 0 {
-			return false
-		}
+	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Set? {
 		
 		// changeset: {
-		//   added: [{
-		//     <obj: Any>, ...
-		//   }],
-		//   deleted: [{
-		//     <obj: Any>, ...
-		//   }]
+		//   added: RegisteredCodable([
+		//     RegisteredCodable(Element)
+		//   ]),
+		//   deleted: RegisteredCodable([
+		//     RegisteredCodable(Element)
+		//   ])
 		// }
 	
-		// added
-	
-		var changeset_added: Set<Element>? = nil
-		do {
-			
-			let _added = changeset[ChangesetKeys.added.rawValue]
-			if (_added != nil) {
+		var added = Set<Element>()
+		var deleted = Set<Element>()
 		
-				if let _added = _added as? Set<Element> {
-					changeset_added = _added
-				}
-				else {
-					return true // malformed !
+		// added
+		if let registeredCodable = changeset[ChangesetKeys.added.rawValue] {
+			
+			guard let wrapped_added = registeredCodable.value as? [RegisteredCodable] else {
+				return nil // malformed
+			}
+			
+			for registeredCodable in wrapped_added {
+				
+				if let value = registeredCodable.value as? Element {
+					added.insert(value)
+				} else {
+					return nil // malformed
 				}
 			}
 		}
 		
 		// deleted
-		
-		var changeset_deleted: Set<Element>? = nil
-		do {
-		
-			let _deleted = changeset[ChangesetKeys.deleted.rawValue]
-			if (_deleted != nil) {
-		
-				if let _deleted = _deleted as? Set<Element> {
-					changeset_deleted = _deleted
-				}
-				else {
-					return true // malformed !
+		if let registeredCodable = changeset[ChangesetKeys.deleted.rawValue] {
+			
+			guard let wrapped_deleted = registeredCodable.value as? [RegisteredCodable] else {
+				return nil // malformed
+			}
+			
+			for registeredCodable in wrapped_deleted {
+				
+				if let value = registeredCodable.value as? Element {
+					deleted.insert(value)
+				} else {
+					return nil // malformed
 				}
 			}
 		}
 		
 		// Make sure there's no overlap between added & removed.
 		// That is, items in changeset_added cannot also be in changeset_removed.
-	
-		if ((changeset_added != nil) && (changeset_deleted != nil)) {
-			
-			if !changeset_added!.isDisjoint(with: changeset_deleted!) {
-				return true // malformed !
-			}
+		//
+		// Set.isDisjoint:
+		// Returns true is the set has no members in common with the given sequence.
+		
+		if !added.isDisjoint(with: deleted) {
+			return nil // malformed
 		}
 	
 		// looks good (not malformed)
-		return false
+		return ZDCChangeset_Set(added: added, deleted: deleted)
 	}
 
-	private mutating func _undo(_ changeset: ZDCChangeset) throws {
+	private mutating func _undo(_ changeset: ZDCChangeset_Set) throws {
 		
 		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
@@ -409,22 +408,16 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		//
 		// Undo added objects.
 		
-		if let changeset_added = changeset[ChangesetKeys.added.rawValue] as? Set<Element> {
-			
-			for item in changeset_added {
-				self.remove(item)
-			}
+		for item in changeset.added {
+			self.remove(item)
 		}
 		
 		// Step 2 of 2:
 		//
 		// Undo removed operations
 		
-		if let changeset_deleted = changeset[ChangesetKeys.deleted.rawValue] as? Set<Element> {
-			
-			for item in changeset_deleted {
-				self.insert(item)
-			}
+		for item in changeset.deleted {
+			self.insert(item)
 		}
 	}
 
@@ -438,12 +431,12 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 			throw ZDCSyncableError.hasChanges
 		}
 		
-		if self.isMalformedChangeset(changeset) {
+		guard let parsedChangeset = parseChangeset(changeset) else {
 			throw ZDCSyncableError.malformedChangeset
 		}
 		
 		do {
-			try self._undo(changeset)
+			try self._undo(parsedChangeset)
 			
 		} catch {
 			
@@ -465,25 +458,29 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		
 		// Check for malformed changesets.
 		// It's better to detect this early on, before we start modifying the object.
-		//
+		
+		var orderedParsedChangesets: [ZDCChangeset_Set] = []
+		
 		for changeset in orderedChangesets {
 			
-			if self.isMalformedChangeset(changeset) {
+			if let parsedChangeset = parseChangeset(changeset) {
+				orderedParsedChangesets.append(parsedChangeset)
+			} else {
 				throw ZDCSyncableError.malformedChangeset
 			}
 		}
 		
-		if orderedChangesets.count == 0 {
+		if orderedParsedChangesets.count == 0 {
 			return
 		}
 		
 		var result_error: Error?
 		var changesets_redo: [ZDCChangeset] = []
 		
-		for changeset in orderedChangesets.reversed() {
+		for parsedChangeset in orderedParsedChangesets.reversed() {
 			
 			do {
-				try self._undo(changeset)
+				try self._undo(parsedChangeset)
 				
 				if let redo = self.changeset() {
 					changesets_redo.append(redo)
@@ -504,7 +501,9 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		for redo in changesets_redo.reversed()	{
 			
 			do {
-				try self._undo(redo)
+				if let parsedRedo = parseChangeset(redo) {
+					try self._undo(parsedRedo)
+				}
 				
 			} catch {
 				
@@ -537,10 +536,14 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		
 		// Check for malformed changesets.
 		// It's better to detect this early on, before we start modifying the object.
-		//
+		
+		var parsedChangesets: [ZDCChangeset_Set] = []
+		
 		for changeset in pendingChangesets {
 			
-			if self.isMalformedChangeset(changeset) {
+			if let parsedChangeset = parseChangeset(changeset) {
+				parsedChangesets.append(parsedChangeset)
+			} else {
 				throw ZDCSyncableError.malformedChangeset
 			}
 		}
@@ -556,31 +559,25 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		var local_added = Set<Element>()
 		var local_deleted = Set<Element>()
 		
-		for changeset in pendingChangesets {
+		for parsedChangeset in parsedChangesets {
 			
-			if let changeset_added = changeset[ChangesetKeys.added.rawValue] as? Set<Element> {
+			for item in parsedChangeset.added {
 				
-				for obj in changeset_added {
-					
-					if local_deleted.contains(obj) {
-						local_deleted.remove(obj)
-					}
-					else {
-						local_added.insert(obj)
-					}
+				if local_deleted.contains(item) {
+					local_deleted.remove(item)
+				}
+				else {
+					local_added.insert(item)
 				}
 			}
 			
-			if let changeset_deleted = changeset[ChangesetKeys.deleted.rawValue] as? Set<Element> {
-			
-				for obj in changeset_deleted {
-					
-					if local_added.contains(obj) {
-						local_added.remove(obj)
-					}
-					else {
-						local_deleted.insert(obj)
-					}
+			for item in parsedChangeset.deleted {
+				
+				if local_added.contains(item) {
+					local_added.remove(item)
+				}
+				else {
+					local_deleted.insert(item)
 				}
 			}
 		}
@@ -589,18 +586,18 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		//
 		// Add objects that were added by remote devices.
 		
-		for obj in cloudVersion.set {
+		for item in cloudVersion.set {
 			
-			if !self.set.contains(obj) {
+			if !self.set.contains(item) {
 				
 				// Object exists in cloudVersion, but not in localVersion.
 				
-				if local_deleted.contains(obj) {
+				if local_deleted.contains(item) {
 					// We've deleted the object locally, but haven't pushed changes to cloud yet.
 				}
 				else {
 					// Object added by remote device.
-					self.insert(obj)
+					self.insert(item)
 				}
 			}
 		}
@@ -611,25 +608,25 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		
 		var deleteMe = Array<Element>()
 		
-		for obj in self.set { // enumerating self.set => cannot be modified during enumeration
+		for item in self.set { // enumerating self.set => cannot be modified during enumeration
 		
-			if !cloudVersion.set.contains(obj) {
+			if !cloudVersion.set.contains(item) {
 				
 				// Object exists in localVersion, but not in cloudVersion.
 				
-				if local_added.contains(obj) {
+				if local_added.contains(item) {
 					// We've added the object locally, but haven't pushed changes to cloud yet.
 				}
 				else {
 					// Object deleted by remote device.
 					
-					deleteMe.append(obj)
+					deleteMe.append(item)
 				}
 			}
 		}
 		
-		for obj in deleteMe {
-			self.remove(obj)
+		for item in deleteMe {
+			self.remove(item)
 		}
 		
 		return self.changeset() ?? Dictionary()

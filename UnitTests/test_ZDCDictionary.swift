@@ -682,4 +682,62 @@ class test_ZDCDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
+	
+	// ====================================================================================================
+	// MARK:- Changeset Codable
+	// ====================================================================================================
+/*
+	func test_changesetCodable_1() {
+		
+		let encodeDecode = {(_ inChangeset: ZDCChangeset?) -> ZDCChangeset in
+			
+			guard let changeset = inChangeset else {
+				return [:]
+			}
+			
+			do {
+				let encoder = JSONEncoder()
+				let encoded = try encoder.encode(changeset)
+				
+				let decoder = JSONDecoder()
+				let decoded = try decoder.decode(ZDCChangeset.self, from: encoded)
+				
+				return decoded
+			
+			} catch {
+				XCTAssert(false)
+				print("Threw error: \(error)")
+			}
+			
+			return [:]
+		}
+		
+		var dict_a: ZDCDictionary<String, String>? = nil
+		var dict_b: ZDCDictionary<String, String>? = nil
+		
+		var dict = ZDCDictionary<String, String>()
+		
+		dict_a = dict
+		
+		dict["cow"] = "moo"
+		dict["duck"] = "quack"
+		
+		var changeset_undo = dict.changeset() ?? [:]
+		changeset_undo = encodeDecode(changeset_undo)
+		dict_b = dict
+		
+		do {
+			var changeset_redo = try dict.undo(changeset_undo)
+			changeset_redo = encodeDecode(changeset_redo)
+			XCTAssert(dict == dict_a)
+			
+			let _ = try dict.undo(changeset_redo)
+			XCTAssert(dict == dict_b)
+		}
+		catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+*/
 }

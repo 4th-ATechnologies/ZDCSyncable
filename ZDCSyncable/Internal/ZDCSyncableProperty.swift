@@ -20,9 +20,9 @@ internal protocol ZDCSyncableProperty {
 	///
 	func getCurrentValue() -> Any?
 	
-	/// A type-erased version of Syncable<T>.originalValue.
+	/// A type-erased version of Syncable<T>.originalValue, wrapped in RegisteredCodable.
 	/// 
-	func getOriginalValue() -> Any?
+	func getOriginalValue() -> RegisteredCodable?
 	
 	/// Changes the wrapped value of the struct, without mutating the struct.
 	/// This is used by the various undo methods.
