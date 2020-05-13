@@ -686,31 +686,31 @@ class test_ZDCDictionary: XCTestCase {
 	// ====================================================================================================
 	// MARK:- Changeset Codable
 	// ====================================================================================================
-/*
-	func test_changesetCodable_1() {
+
+	func encodeDecode(_ inChangeset: ZDCChangeset?) -> ZDCChangeset {
 		
-		let encodeDecode = {(_ inChangeset: ZDCChangeset?) -> ZDCChangeset in
-			
-			guard let changeset = inChangeset else {
-				return [:]
-			}
-			
-			do {
-				let encoder = JSONEncoder()
-				let encoded = try encoder.encode(changeset)
-				
-				let decoder = JSONDecoder()
-				let decoded = try decoder.decode(ZDCChangeset.self, from: encoded)
-				
-				return decoded
-			
-			} catch {
-				XCTAssert(false)
-				print("Threw error: \(error)")
-			}
-			
+		guard let changeset = inChangeset else {
 			return [:]
 		}
+		
+		do {
+			let encoder = JSONEncoder()
+			let encoded = try encoder.encode(changeset)
+			
+			let decoder = JSONDecoder()
+			let decoded = try decoder.decode(ZDCChangeset.self, from: encoded)
+			
+			return decoded
+		
+		} catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+		
+		return [:]
+	}
+	
+	func test_changesetCodable_1() {
 		
 		var dict_a: ZDCDictionary<String, String>? = nil
 		var dict_b: ZDCDictionary<String, String>? = nil
@@ -722,13 +722,11 @@ class test_ZDCDictionary: XCTestCase {
 		dict["cow"] = "moo"
 		dict["duck"] = "quack"
 		
-		var changeset_undo = dict.changeset() ?? [:]
-		changeset_undo = encodeDecode(changeset_undo)
+		let changeset_undo = encodeDecode(dict.changeset())
 		dict_b = dict
 		
 		do {
-			var changeset_redo = try dict.undo(changeset_undo)
-			changeset_redo = encodeDecode(changeset_redo)
+			let changeset_redo = try encodeDecode(dict.undo(changeset_undo))
 			XCTAssert(dict == dict_a)
 			
 			let _ = try dict.undo(changeset_redo)
@@ -739,5 +737,107 @@ class test_ZDCDictionary: XCTestCase {
 			print("Threw error: \(error)")
 		}
 	}
-*/
+
+	func test_changesetCodable_2() {
+		
+		var dict_a: ZDCDictionary<String, String>? = nil
+		var dict_b: ZDCDictionary<String, String>? = nil
+		
+		var dict = ZDCDictionary<String, String>()
+		
+		dict["cow"] = "moo"
+		dict["duck"] = "quack"
+		
+		dict.clearChangeTracking()
+		dict_a = dict
+		
+		dict["cow"] = nil
+		
+		let changeset_undo = encodeDecode(dict.changeset())
+		dict_b = dict
+		
+		do {
+			let changeset_redo = try encodeDecode(dict.undo(changeset_undo))
+			XCTAssert(dict == dict_a)
+			
+			let _ = try dict.undo(changeset_redo)
+			XCTAssert(dict == dict_b)
+		}
+		catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_changesetCodable_3() {
+		
+		var dict_a: ZDCDictionary<String, String>? = nil
+		var dict_b: ZDCDictionary<String, String>? = nil
+		
+		var dict = ZDCDictionary<String, String>()
+		
+		dict["cow"] = "moo"
+		dict["duck"] = "quack"
+		
+		dict.clearChangeTracking()
+		dict_a = dict
+		
+		dict["cow"] = "mooo"
+		
+		let changeset_undo = encodeDecode(dict.changeset())
+		dict_b = dict
+		
+		do {
+			let changeset_redo = try encodeDecode(dict.undo(changeset_undo))
+			XCTAssert(dict == dict_a)
+			
+			let _ = try dict.undo(changeset_redo)
+			XCTAssert(dict == dict_b)
+		}
+		catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_changesetCodable_4() {
+		
+		var changesets: [ZDCChangeset] = []
+
+		var dict = ZDCDictionary<String, ZDCDictionary<String, String>>()
+		dict["pets"] = ZDCDictionary<String, String>()
+		dict["farm"] = ZDCDictionary<String, String>()
+		dict["pets"]?["dog"] = "bark"
+
+		dict.clearChangeTracking()
+		let dict_a = dict
+		XCTAssert(dict.hasChanges == false)
+
+		do { // changeset 0
+
+			dict["pets"]?["cat"] = "meow"
+			dict["farm"]?["cow"] = "moo"
+
+			changesets.append(encodeDecode(dict.changeset()))
+		}
+
+		do { // changeset 1
+
+			dict["farm"]?["horse"] = "nay"
+			dict["farm"]?["duck"] = "quack"
+			
+			changesets.append(encodeDecode(dict.changeset()))
+		}
+
+		do {
+			let _ = try dict.undo(changesets[1])
+			let _ = try dict.undo(changesets[0])
+
+			XCTAssert(dict == dict_a)
+		}
+		catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
 }

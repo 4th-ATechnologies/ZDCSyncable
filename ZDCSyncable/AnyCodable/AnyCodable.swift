@@ -43,6 +43,7 @@ public struct AnyCodable: Codable {
 	private static func StandardClosurePairs() -> [String: CodableClosure] {
 		
 		var standards: [CodableClosure] = [
+			CodableClosureGenerator(AnyCodable.self), // Needed to support nesting
 			CodableClosureGenerator(Int.self),
 			CodableClosureGenerator(String.self),
 			CodableClosureGenerator(Int.self),
