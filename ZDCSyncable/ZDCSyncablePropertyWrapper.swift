@@ -94,13 +94,8 @@ public struct Syncable<T: Equatable & Codable>: ZDCSyncableProperty, Equatable, 
 		return self.wrappedValue
 	}
 	
-	internal func getOriginalValue() -> RegisteredCodable? {
-		let oValue: Any? = self.originalValue
-		if oValue == nil {
-			return nil
-		}
-		
-		return RegisteredCodable(self.originalValue)
+	internal func getOriginalValue() -> Any? {
+		return self.originalValue
 	}
 	
 	internal func trySetValue(_ value: Any?) -> Bool {

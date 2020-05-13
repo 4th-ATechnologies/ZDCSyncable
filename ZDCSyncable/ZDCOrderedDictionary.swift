@@ -908,21 +908,21 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		var changeset: ZDCChangeset = [:]
 		
 		// changeset: {
-		//   refs: RegisteredCodable({
-		//     <key: Key> : <changeset: RegisteredCodable(ZDCChangeset)>, ...
+		//   refs: AnyCodable({
+		//     <key: Key> : <changeset: ZDCChangeset>, ...
 		//   }),
-		//   values: RegisteredCodable({
-		//     <key: Key> : <oldValue: RegisteredCodable(ZDCNull|Any)>, ...
+		//   values: AnyCodable({
+		//     <key: Key> : <oldValue: ZDCNull|Any>, ...
 		//   }),
-		//   indexes: RegisteredCodable({
-		//     <key: Key> : <oldIndex: RegisteredCodable(Int)>, ...
+		//   indexes: AnyCodable({
+		//     <key: Key> : <oldIndex: Int>, ...
 		//   }),
-		//   deleted: RegisteredCodable({
-		//     <key: Key> : <oldIndex: RegisteredCodable(Int)>, ...
+		//   deleted: AnyCodable({
+		//     <key: Key> : <oldIndex: Int>, ...
 		//   })
 		// }
 		
-		var refs: [Key: RegisteredCodable] = [:]
+		var refs: [Key: ZDCChangeset] = [:]
 		
 		for (key, value) in dict {
 			
@@ -964,7 +964,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 					}
 					
 					if let value_changeset = value_changeset {
-						refs[key] = RegisteredCodable(value_changeset)
+						refs[key] = value_changeset
 					}
 				}
 			}
@@ -997,14 +997,14 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 					}
 					
 					if let value_changeset = value_changeset {
-						refs[key] = RegisteredCodable(value_changeset)
+						refs[key] = value_changeset
 					}
 				}
 			}
 		}
 		
 		if refs.count > 0 {
-			changeset[ChangesetKeys.refs.rawValue] = RegisteredCodable(refs)
+			changeset[ChangesetKeys.refs.rawValue] = AnyCodable(refs)
 		}
 		
 		//
@@ -1013,7 +1013,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		
 		if originalValues.count > 0 {
 			
-			var values: [Key: RegisteredCodable] = [:]
+			var values: [Key: Any] = [:]
 		
 			for (key, originalValue) in originalValues {
 		
@@ -1022,21 +1022,21 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 					if let originalValue = originalValue as? Value {
 		
 						if let originalValue = originalValue as? NSCopying {
-							values[key] = RegisteredCodable(originalValue.copy() as! Value)
+							values[key] = originalValue.copy() as! Value
 						}
 						else {
-							values[key] = RegisteredCodable(originalValue)
+							values[key] = originalValue
 						}
 		
 					} else if let originalValue = originalValue as? ZDCNull {
 		
-						values[key] = RegisteredCodable(originalValue)
+						values[key] = originalValue
 					}
 				}
 			}
 		
 			if values.count > 0 {
-				changeset[ChangesetKeys.values.rawValue] = RegisteredCodable(values)
+				changeset[ChangesetKeys.values.rawValue] = AnyCodable(values)
 			}
 		}
 		
@@ -1046,17 +1046,17 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		
 		if originalIndexes.count > 0 {
 			
-			var changeset_indexes: [Key: RegisteredCodable] = [:]
+			var changeset_indexes: [Key: Int] = [:]
 			
 			for (key, oldIdx) in originalIndexes {
 				
 				if let _ = self.index(ofKey: key) {
-					changeset_indexes[key] = RegisteredCodable(oldIdx)
+					changeset_indexes[key] = oldIdx
 				}
 			}
 			
 			if changeset_indexes.count > 0 {
-				changeset[ChangesetKeys.indexes.rawValue] = RegisteredCodable(changeset_indexes)
+				changeset[ChangesetKeys.indexes.rawValue] = AnyCodable(changeset_indexes)
 			}
 		}
 		
@@ -1066,13 +1066,13 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		
 		if deletedIndexes.count > 0 {
 			
-			var changeset_deleted: [Key: RegisteredCodable] = [:]
+			var changeset_deleted: [Key: Int] = [:]
 			
 			for (key, oldIdx) in deletedIndexes {
-				changeset_deleted[key] = RegisteredCodable(oldIdx)
+				changeset_deleted[key] = oldIdx
 			}
 			
-			changeset[ChangesetKeys.deleted.rawValue] = RegisteredCodable(changeset_deleted)
+			changeset[ChangesetKeys.deleted.rawValue] = AnyCodable(changeset_deleted)
 		}
 		
 		return changeset
@@ -1081,17 +1081,17 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_OrderedDictionary? {
 		
 		// changeset: {
-		//   refs: RegisteredCodable({
-		//     <key: Key> : <changeset: RegisteredCodable(ZDCChangeset)>, ...
+		//   refs: AnyCodable({
+		//     <key: Key> : <changeset: ZDCChangeset>, ...
 		//   }),
-		//   values: RegisteredCodable({
-		//     <key: Key> : <oldValue: RegisteredCodable(ZDCNull|Any)>, ...
+		//   values: AnyCodable({
+		//     <key: Key> : <oldValue: ZDCNull|Any>, ...
 		//   }),
-		//   indexes: RegisteredCodable({
-		//     <key: Key> : <oldIndex: RegisteredCodable(Int)>, ...
+		//   indexes: AnyCodable({
+		//     <key: Key> : <oldIndex: Int>, ...
 		//   }),
-		//   deleted: RegisteredCodable({
-		//     <key: Key> : <oldIndex: RegisteredCodable(Int)>, ...
+		//   deleted: AnyCodable({
+		//     <key: Key> : <oldIndex: Int>, ...
 		//   })
 		// }
 		
@@ -1101,32 +1101,24 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		var deleted: [Key: Int] = [:]
 		
 		// refs
-		if let registeredCodable = changeset[ChangesetKeys.refs.rawValue] {
+		if let wrapped_refs = changeset[ChangesetKeys.refs.rawValue] {
 		
-			guard let wrapped_refs = registeredCodable.value as? [Key: RegisteredCodable] else {
+			guard let unwrapped_refs = wrapped_refs.value as? [Key: ZDCChangeset] else {
 				return nil // malformed !
 			}
 			
-			for (key, registeredCodable) in wrapped_refs {
-				
-				if let refChangeset = registeredCodable.value as? ZDCChangeset {
-					refs[key] = refChangeset
-				} else {
-					return nil // malformed
-				}
-			}
+			refs = unwrapped_refs
 		}
 		
 		// values
-		if let registeredCodable = changeset[ChangesetKeys.values.rawValue] {
+		if let wrapped_values = changeset[ChangesetKeys.values.rawValue] {
 			
-			guard let wrapped_values = registeredCodable.value as? [Key: RegisteredCodable] else {
+			guard let unwrapped_values = wrapped_values.value as? [Key: Any] else {
 				return nil // malformed
 			}
 			
-			for (key, registeredCodable) in wrapped_values {
+			for (key, value) in unwrapped_values {
 				
-				let value = registeredCodable.value
 				if (value is ZDCNull) || (value is Value) {
 					values[key] = value
 				} else {
@@ -1136,37 +1128,23 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		}
 		
 		// indexes
-		if let registeredCodable = changeset[ChangesetKeys.indexes.rawValue] {
+		if let wrapped_indexes = changeset[ChangesetKeys.indexes.rawValue] {
 			
-			guard let wrapped_indexes = registeredCodable.value as? [Key: RegisteredCodable] else {
+			guard let unwrapped_indexes = wrapped_indexes.value as? [Key: Int] else {
 				return nil // malformed
 			}
 			
-			for (key, registeredCodable) in wrapped_indexes {
-				
-				if let idx = registeredCodable.value as? Int {
-					indexes[key] = idx
-				} else {
-					return nil // malformed
-				}
-			}
+			indexes = unwrapped_indexes
 		}
 		
 		// deleted
-		if let registeredCodable = changeset[ChangesetKeys.deleted.rawValue] {
+		if let wrapped_deleted = changeset[ChangesetKeys.deleted.rawValue] {
 			
-			guard let wrapped_deleted = registeredCodable.value as? [Key: RegisteredCodable] else {
+			guard let unwrapped_deleted = wrapped_deleted.value as? [Key: Int] else {
 				return nil // malformed
 			}
 			
-			for (key, registeredCodable) in wrapped_deleted {
-				
-				if let idx = registeredCodable.value as? Int {
-					deleted[key] = idx
-				} else {
-					return nil // malformed
-				}
-			}
+			deleted = unwrapped_deleted
 		}
 		
 		// Looks good (not malformed)

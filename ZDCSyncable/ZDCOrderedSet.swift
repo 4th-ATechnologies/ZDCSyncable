@@ -646,14 +646,14 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		}
 		
 		// changeset: {
-		//   added: RegisteredCodable([
-		//     RegisteredCodable(Element)
+		//   added: AnyCodable([
+		//     Element
 		//   ]),
-		//   indexes: RegisteredCodable([
-		//     <key: Element>: <value: RegisteredCodable(Int)>, ...
+		//   indexes: AnyCodable([
+		//     <key: Element>: <value: Int>, ...
 		//   ]),
-		//   deleted: RegisteredCodable([
-		//     <key: Element>: <value: RegisteredCodable(Int)>, ...
+		//   deleted: AnyCodable([
+		//     <key: Element>: <value: Int>, ...
 		//   ])
 		// }
 		
@@ -661,47 +661,47 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		
 		if added.count > 0 {
 			
-			var changeset_added: [RegisteredCodable] = []
+			var changeset_added: [Element] = []
 			
 			for item in added {
 				
 				if let item = item as? NSCopying {
-					changeset_added.append(RegisteredCodable(item.copy() as! Element))
+					changeset_added.append(item.copy() as! Element)
 				}
 				else {
-					changeset_added.append(RegisteredCodable(item))
+					changeset_added.append(item)
 				}
 			}
 			
-			changeset[ChangesetKeys.added.rawValue] = RegisteredCodable(changeset_added)
+			changeset[ChangesetKeys.added.rawValue] = AnyCodable(changeset_added)
 		}
 		
 		if originalIndexes.count > 0 {
 			
-			var changeset_indexes: [Element: RegisteredCodable] = [:]
+			var changeset_indexes: [Element: Int] = [:]
 			
 			for (item, oldIdx) in originalIndexes {
 				
 				if self.contains(item) {
-					changeset_indexes[item] = RegisteredCodable(oldIdx)
+					changeset_indexes[item] = oldIdx
 				}
 			}
 			
 			if (changeset_indexes.count > 0) {
-				changeset[ChangesetKeys.indexes.rawValue] = RegisteredCodable(changeset_indexes)
+				changeset[ChangesetKeys.indexes.rawValue] = AnyCodable(changeset_indexes)
 			}
 		}
 		
 		if deletedIndexes.count > 0 {
 			
-			var changeset_deleted: [Element: RegisteredCodable] = [:]
+			var changeset_deleted: [Element: Int] = [:]
 			
 			for (item, oldIdx) in deletedIndexes  {
 				
-				changeset_deleted[item] = RegisteredCodable(oldIdx)
+				changeset_deleted[item] = oldIdx
 			}
 			
-			changeset[ChangesetKeys.deleted.rawValue] = RegisteredCodable(changeset_deleted)
+			changeset[ChangesetKeys.deleted.rawValue] = AnyCodable(changeset_deleted)
 		}
 		
 		return changeset
@@ -709,59 +709,50 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 	
 	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_OrderedSet? {
 		
+		// changeset: {
+		//   added: AnyCodable([
+		//     Element
+		//   ]),
+		//   indexes: AnyCodable([
+		//     <key: Element>: <value: Int>, ...
+		//   ]),
+		//   deleted: AnyCodable([
+		//     <key: Element>: <value: Int>, ...
+		//   ])
+		// }
+		
 		var added = Set<Element>()
 		var indexes = Dictionary<Element, Int>()
 		var deleted = Dictionary<Element, Int>()
 		
 		// added
-		if let registeredCodable = changeset[ChangesetKeys.added.rawValue] {
+		if let wrapped_added = changeset[ChangesetKeys.added.rawValue] {
 			
-			guard let wrapped_added = registeredCodable.value as? [RegisteredCodable] else {
+			guard let unwrapped_added = wrapped_added.value as? [Element] else {
 				return nil // malformed
 			}
 			
-			for registeredCodable in wrapped_added {
-				
-				if let value = registeredCodable.value as? Element {
-					added.insert(value)
-				} else  {
-					return nil // malformed
-				}
-			}
+			added = Set(unwrapped_added)
 		}
 		
 		// indexes
-		if let registeredCodable = changeset[ChangesetKeys.indexes.rawValue] {
+		if let wrapped_indexes = changeset[ChangesetKeys.indexes.rawValue] {
 			
-			guard let wrapped_indexes = registeredCodable.value as? [Element: RegisteredCodable] else {
+			guard let unwrapped_indexes = wrapped_indexes.value as? [Element: Int] else {
 				return nil // malformed
 			}
 			
-			for (item, registeredCodable) in wrapped_indexes {
-				
-				if let idx = registeredCodable.value as? Int {
-					indexes[item] = idx
-				} else {
-					return nil // malformed
-				}
-			}
+			indexes = unwrapped_indexes
 		}
 		
 		// deleted
-		if let registeredCodable = changeset[ChangesetKeys.deleted.rawValue] {
+		if let wrapped_deleted = changeset[ChangesetKeys.deleted.rawValue] {
 			
-			guard let wrapped_deleted = registeredCodable.value as? [Element: RegisteredCodable] else {
+			guard let unwrapped_deleted = wrapped_deleted.value as? [Element: Int] else {
 				return nil // malformed
 			}
 			
-			for (item, registeredCodable) in wrapped_deleted {
-				
-				if let idx = registeredCodable.value as? Int {
-					deleted[item] = idx
-				} else {
-					return nil // malformed
-				}
-			}
+			deleted = unwrapped_deleted
 		}
 		
 		// Looks good (not malformed)

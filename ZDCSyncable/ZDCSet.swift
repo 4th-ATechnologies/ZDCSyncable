@@ -291,11 +291,11 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		}
 		
 		// changeset: {
-		//   added: RegisteredCodable([
-		//     RegisteredCodable(Element)
+		//   added: AnyCodable([
+		//     Element
 		//   ]),
-		//   deleted: RegisteredCodable([
-		//     RegisteredCodable(Element)
+		//   deleted: AnyCodable([
+		//     Element
 		//   ])
 		// }
 		
@@ -303,36 +303,36 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		
 		if added.count > 0 {
 			
-			var changeset_added: [RegisteredCodable] = []
+			var changeset_added: [Element] = []
 			
 			for item in added {
 				
 				if let item = item as? NSCopying {
-					changeset_added.append(RegisteredCodable(item.copy() as! Element))
+					changeset_added.append(item.copy() as! Element)
 				}
 				else {
-					changeset_added.append(RegisteredCodable(item))
+					changeset_added.append(item)
 				}
 			}
 			
-			changeset[ChangesetKeys.added.rawValue] = RegisteredCodable(changeset_added)
+			changeset[ChangesetKeys.added.rawValue] = AnyCodable(changeset_added)
 		}
 	
 		if deleted.count > 0 {
 			
-			var changeset_deleted: [RegisteredCodable] = []
+			var changeset_deleted: [Element] = []
 			
 			for item in deleted {
 				
 				if let item = item as? NSCopying {
-					changeset_deleted.append(RegisteredCodable(item.copy() as! Element))
+					changeset_deleted.append(item.copy() as! Element)
 				}
 				else {
-					changeset_deleted.append(RegisteredCodable(item))
+					changeset_deleted.append(item)
 				}
 			}
 			
-			changeset[ChangesetKeys.deleted.rawValue] = RegisteredCodable(changeset_deleted)
+			changeset[ChangesetKeys.deleted.rawValue] = AnyCodable(changeset_deleted)
 		}
 	
 		return changeset
@@ -341,11 +341,11 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Set? {
 		
 		// changeset: {
-		//   added: RegisteredCodable([
-		//     RegisteredCodable(Element)
+		//   added: AnyCodable([
+		//     Element
 		//   ]),
-		//   deleted: RegisteredCodable([
-		//     RegisteredCodable(Element)
+		//   deleted: AnyCodable([
+		//     Element
 		//   ])
 		// }
 	
@@ -353,37 +353,23 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		var deleted = Set<Element>()
 		
 		// added
-		if let registeredCodable = changeset[ChangesetKeys.added.rawValue] {
+		if let wrapped_added = changeset[ChangesetKeys.added.rawValue] {
 			
-			guard let wrapped_added = registeredCodable.value as? [RegisteredCodable] else {
+			guard let unwrapped_added = wrapped_added.value as? [Element] else {
 				return nil // malformed
 			}
 			
-			for registeredCodable in wrapped_added {
-				
-				if let value = registeredCodable.value as? Element {
-					added.insert(value)
-				} else {
-					return nil // malformed
-				}
-			}
+			added = Set(unwrapped_added)
 		}
 		
 		// deleted
-		if let registeredCodable = changeset[ChangesetKeys.deleted.rawValue] {
+		if let wrapped_deleted = changeset[ChangesetKeys.deleted.rawValue] {
 			
-			guard let wrapped_deleted = registeredCodable.value as? [RegisteredCodable] else {
+			guard let unwrapped_deleted = wrapped_deleted.value as? [Element] else {
 				return nil // malformed
 			}
 			
-			for registeredCodable in wrapped_deleted {
-				
-				if let value = registeredCodable.value as? Element {
-					deleted.insert(value)
-				} else {
-					return nil // malformed
-				}
-			}
+			deleted = Set(unwrapped_deleted)
 		}
 		
 		// Make sure there's no overlap between added & removed.

@@ -16,7 +16,7 @@ public typealias ZDCSyncableStruct = ZDCSyncable
 
 /// A changeset is really just a dictionary.
 ///
-public typealias ZDCChangeset = [String: RegisteredCodable]
+public typealias ZDCChangeset = [String: AnyCodable]
 
 /// The ZDCSyncable protocol defines the common methods for:
 /// - tracking changes

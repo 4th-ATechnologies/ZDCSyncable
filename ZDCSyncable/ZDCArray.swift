@@ -764,14 +764,14 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		}
 		
 		// changeset: {
-		//   added: RegisteredCodable([
-		//     RegisteredCodable(Int)
+		//   added: AnyCodable([
+		//     Int
 		//   ]),
-		//   moved: RegisteredCodable([
-		//     <key: Int>: <value: RegisteredCodable(Int)>, ...
+		//   moved: AnyCodable([
+		//     <key: Int>: <value: Int>, ...
 		//   ]),
-		//   deleted: RegisteredCodable([
-		//     <key: Int>: <value: RegisteredCodable(Element)>, ...
+		//   deleted: AnyCodable([
+		//     <key: Int>: <value: Element>, ...
 		//   ])
 		// }
 		
@@ -785,35 +785,23 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		
 		if added.count > 0 {
 			
-			var changeset_added: [RegisteredCodable] = []
+			var changeset_added: [Int] = []
 			
 			for idx in added {
-				changeset_added.append(RegisteredCodable(idx))
+				changeset_added.append(idx)
 			}
 			
-			changeset[ChangesetKeys.added.rawValue] = RegisteredCodable(changeset_added)
+			changeset[ChangesetKeys.added.rawValue] = AnyCodable(changeset_added)
 		}
 		
 		if moved.count > 0 {
 			
-			var changeset_moved: [Int: RegisteredCodable] = [:]
-			
-			for (key, value) in moved {
-				changeset_moved[key] = RegisteredCodable(value)
-			}
-			
-			changeset[ChangesetKeys.moved.rawValue] = RegisteredCodable(changeset_moved)
+			changeset[ChangesetKeys.moved.rawValue] = AnyCodable(moved)
 		}
 		
 		if deleted.count > 0 {
 			
-			var changeset_deleted: [Int: RegisteredCodable] = [:]
-			
-			for (key, value) in deleted {
-				changeset_deleted[key] = RegisteredCodable(value)
-			}
-			
-			changeset[ChangesetKeys.deleted.rawValue] = RegisteredCodable(changeset_deleted)
+			changeset[ChangesetKeys.deleted.rawValue] = AnyCodable(deleted)
 		}
 		
 		return changeset
@@ -822,14 +810,14 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Array? {
 		
 		// changeset: {
-		//   added: RegisteredCodable([
-		//     RegisteredCodable(Int)
+		//   added: AnyCodable([
+		//     Int
 		//   ]),
-		//   moved: RegisteredCodable([
-		//     <key: Int>: <value: RegisteredCodable(Int)>, ...
+		//   moved: AnyCodable([
+		//     <key: Int>: <value: Int>, ...
 		//   ]),
-		//   deleted: RegisteredCodable([
-		//     <key: Int>: <value: RegisteredCodable(Element)>, ...
+		//   deleted: AnyCodable([
+		//     <key: Int>: <value: Element>, ...
 		//   ])
 		// }
 		
@@ -838,54 +826,35 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		var deleted: [Int: Element] = [:]
 		
 		// added
-		if let registeredCodable = changeset[ChangesetKeys.added.rawValue] {
+		if let wrapped_added = changeset[ChangesetKeys.added.rawValue] {
 			
-			guard let wrapped_added = registeredCodable.value as? [RegisteredCodable] else {
+			guard let unwrapped_added = wrapped_added.value as? [Int] else {
 				return nil // malformed
 			}
 			
-			for registeredCodable in wrapped_added {
-				
-				if let value = registeredCodable.value as? Int {
-					added.insert(value)
-				} else {
-					return nil // malformed
-				}
+			for idx in unwrapped_added {
+				added.insert(idx)
 			}
 		}
 		
 		// moved
-		if let registeredCodable = changeset[ChangesetKeys.moved.rawValue] {
+		if let wrapped_moved = changeset[ChangesetKeys.moved.rawValue] {
 			
-			guard let wrapped_moved = registeredCodable.value as? [Int: RegisteredCodable] else {
+			guard let unwrapped_moved = wrapped_moved.value as? [Int: Int] else {
 				return nil // malformed
 			}
 			
-			for (key, registeredCodable) in wrapped_moved {
-				
-				if let value = registeredCodable.value as? Int {
-					moved[key] = value
-				} else {
-					return nil // malformed
-				}
-			}
+			moved = unwrapped_moved
 		}
 		
 		// deleted
-		if let registeredCodable = changeset[ChangesetKeys.deleted.rawValue] {
+		if let wrapped_deleted = changeset[ChangesetKeys.deleted.rawValue] {
 			
-			guard let wrapped_deleted = registeredCodable.value as? [Int: RegisteredCodable] else {
+			guard let unwrapped_deleted = wrapped_deleted.value as? [Int: Element] else {
 				return nil // malformed
 			}
 			
-			for (key, registeredCodable) in wrapped_deleted {
-				
-				if let value = registeredCodable.value as? Element {
-					deleted[key] = value
-				} else {
-					return nil // malformed
-				}
-			}
+			deleted = unwrapped_deleted
 		}
 		
 		// Looks good (not malformed)

@@ -172,17 +172,17 @@ open class ZDCRecord: ZDCSyncableClass {
 		}
 		
 		// changeset: {
-		//   refs: {
-		//     key: changeset, ...
-		//   },
-		//   values: {
-		//     key: oldValue, ...
-		//   },
+		//   refs: AnyCodable({
+		//     <key: String>: <value: ZDCChangeset>, ...
+		//   }),
+		//   values: AnyCodable({
+		//     <key: String>: <oldValue: ZDCNull|Any>, ...
+		//   }),
 		//   ...
 		// }
 		
-		var refs: ZDCChangeset = [:]
-		var values: ZDCChangeset = [:]
+		var refs: [String: ZDCChangeset] = [:]
+		var values: [String: Any] = [:]
 		
 		self.enumerateSyncable { (key, value, _) in
 			
@@ -190,7 +190,7 @@ open class ZDCRecord: ZDCSyncableClass {
 				
 				if let changeset = zdc_obj.peakChangeset() {
 					
-					refs[key] = RegisteredCodable(changeset)
+					refs[key] = changeset
 				}
 			}
 			else if let zdc_prop = value as? ZDCSyncableProperty {
@@ -200,7 +200,7 @@ open class ZDCRecord: ZDCSyncableClass {
 					let originalValue = zdc_prop.getOriginalValue()
 					
 					if originalValue == nil {
-						values[key] = RegisteredCodable(ZDCNull())
+						values[key] = ZDCNull()
 					} else {
 						values[key] = originalValue
 					}
@@ -210,17 +210,17 @@ open class ZDCRecord: ZDCSyncableClass {
 				
 				if let changeset = zdc_struct.peakChangeset() {
 					
-					refs[key] = RegisteredCodable(changeset)
+					refs[key] = changeset
 				}
 			}
 		}
 		
 		var changeset: ZDCChangeset = [:]
 		if (refs.count > 0) {
-			changeset[ChangesetKeys.refs.rawValue] = RegisteredCodable(refs)
+			changeset[ChangesetKeys.refs.rawValue] = AnyCodable(refs)
 		}
 		if (values.count > 0) {
-			changeset[ChangesetKeys.values.rawValue] = RegisteredCodable(values)
+			changeset[ChangesetKeys.values.rawValue] = AnyCodable(values)
 		}
 		
 		return changeset
@@ -229,11 +229,11 @@ open class ZDCRecord: ZDCSyncableClass {
 	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Record? {
 		
 		// changeset: {
-		//   refs: RegisteredCodable({
-		//     <key: String> : <changeset: RegisteredCodable(ZDCChangeset)>, ...
+		//   refs: AnyCodable({
+		//     <key: String> : <changeset: ZDCChangeset>, ...
 		//   }),
-		//   values: RegisteredCodable({
-		//     <key: String> : <oldValue: RegisteredCodable(ZDCNull|Any)>, ...
+		//   values: AnyCodable({
+		//     <key: String> : <oldValue: ZDCNull|Any>, ...
 		//   })
 		// }
 		
@@ -241,32 +241,23 @@ open class ZDCRecord: ZDCSyncableClass {
 		var values: [String: Any] = [:]
 		
 		// refs
-		if let registeredCodable = changeset[ChangesetKeys.refs.rawValue] {
+		if let wrapped_refs = changeset[ChangesetKeys.refs.rawValue] {
 			
-			guard let unwrapped_refs = registeredCodable.value as? [String: RegisteredCodable] else {
+			guard let unwrapped_refs = wrapped_refs.value as? [String: ZDCChangeset] else {
 				return nil // malformed
 			}
 			
-			for (key, registeredCodable) in unwrapped_refs {
-				
-				if let refChangeset = registeredCodable.value as? ZDCChangeset {
-					refs[key] = refChangeset
-				} else {
-					return nil // malformed
-				}
-			}
+			refs = unwrapped_refs
 		}
 		
 		// values
-		if let registeredCodable = changeset[ChangesetKeys.values.rawValue] {
+		if let wrapped_values = changeset[ChangesetKeys.values.rawValue] {
 			
-			guard let wrapped_values = registeredCodable.value as? [String: RegisteredCodable] else {
+			guard let unwrapped_values = wrapped_values.value as? [String: Any] else {
 				return nil // malformed
 			}
 			
-			for (key, registeredCodable) in wrapped_values {
-				values[key] = registeredCodable.value
-			}
+			values = unwrapped_values
 		}
 		
 		// looks good (not malformed)

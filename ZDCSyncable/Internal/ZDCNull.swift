@@ -20,8 +20,6 @@ import Foundation
  */
 internal struct ZDCNull: Codable {
 	
-	let reserved = "ZDCNull"
-	
 	var description: String {
 		return "<ZDCNull>"
 	}

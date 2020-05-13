@@ -307,16 +307,16 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 			return nil
 		}
 		
-		var changeset: ZDCChangeset = Dictionary(minimumCapacity: 2)
-		
 		// changeset: {
-		//   refs: {
-		//     key: changeset, ...
+		//   refs: AnyCodable({
+		//     <key: Key>: <value: ZDCChangeset>, ...
 		//   },
-		//   ...
+		//   values AnyCodable({
+		//     <key: Key>: <oldValue: ZDCNull|Value>, ...
+		//   })
 		// }
 		
-		var refs: [Key: RegisteredCodable] = [:]
+		var refs: [Key: ZDCChangeset] = [:]
 		
 		for (key, value) in dict {
 			
@@ -358,7 +358,7 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 					}
 					
 					if let value_changeset = value_changeset {
-						refs[key] = RegisteredCodable(value_changeset)
+						refs[key] = value_changeset
 					}
 				}
 			}
@@ -391,24 +391,13 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 					}
 					
 					if let value_changeset = value_changeset {
-						refs[key] = RegisteredCodable(value_changeset)
+						refs[key] = value_changeset
 					}
 				}
 			}
 		}
 		
-		if refs.count > 0 {
-			changeset[ChangesetKeys.refs.rawValue] = RegisteredCodable(refs)
-		}
-		
-		// changeset: {
-		//   values: {
-		//     key: oldValue, ...
-		//   },
-		//   ...
-		// }
-		
-		var values: [Key: RegisteredCodable] = [:]
+		var values: [Key: Any] = [:]
 		
 		for (key, originalValue) in originalValues {
 			
@@ -417,21 +406,25 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 				if let originalValue = originalValue as? Value {
 					
 					if let originalValue = originalValue as? NSCopying {
-						values[key] = RegisteredCodable(originalValue.copy() as! Value)
+						values[key] = originalValue.copy() as! Value
 					}
 					else {
-						values[key] = RegisteredCodable(originalValue)
+						values[key] = originalValue
 					}
 				
 				} else if let originalValue = originalValue as? ZDCNull {
 					
-					values[key] = RegisteredCodable(originalValue)
+					values[key] = originalValue
 				}
 			}
 		}
 		
+		var changeset: ZDCChangeset = Dictionary(minimumCapacity: 2)
+		if refs.count > 0 {
+			changeset[ChangesetKeys.refs.rawValue] = AnyCodable(refs)
+		}
 		if values.count > 0 {
-			changeset[ChangesetKeys.values.rawValue] = RegisteredCodable(values)
+			changeset[ChangesetKeys.values.rawValue] = AnyCodable(values)
 		}
 		
 		return changeset
@@ -440,11 +433,11 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Dictionary? {
 		
 		// changeset: {
-		//   refs: RegisteredCodable({
-		//     <key: Key> : <changeset: RegisteredCodable(ZDCChangeset)>, ...
+		//   refs: AnyCodable({
+		//     <key: Key> : <changeset: ZDCChangeset>, ...
 		//   }),
-		//   values: RegisteredCodable({
-		//     <key: Key> : <oldValue: RegisteredCodable(ZDCNull|Any)>, ...
+		//   values: AnyCodable({
+		//     <key: Key> : <oldValue: ZDCNull|Any>, ...
 		//   })
 		// }
 		
@@ -452,32 +445,24 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		var values: [Key: Any] = [:]
 		
 		// refs
-		if let registeredCodable = changeset[ChangesetKeys.refs.rawValue] {
+		if let wrapped_refs = changeset[ChangesetKeys.refs.rawValue] {
 		
-			guard let wrapped_refs = registeredCodable.value as? [Key: RegisteredCodable] else {
+			guard let unwrapped_refs = wrapped_refs.value as? [Key: ZDCChangeset] else {
 				return nil // malformed
 			}
 			
-			for (key, registeredCodable) in wrapped_refs {
-				
-				if let refChangeset = registeredCodable.value as? ZDCChangeset {
-					refs[key] = refChangeset
-				} else {
-					return nil // malformed
-				}
-			}
+			refs = unwrapped_refs
 		}
 	
 		// values
-		if let registeredCodable = changeset[ChangesetKeys.values.rawValue] {
+		if let wrapped_values = changeset[ChangesetKeys.values.rawValue] {
 		
-			guard let wrapped_values = registeredCodable.value as? [Key: RegisteredCodable] else {
+			guard let unwrapped_values = wrapped_values.value as? [Key: Any] else {
 				return nil // malformed
 			}
 			
-			for (key, registeredCodable) in wrapped_values {
+			for (key, value) in unwrapped_values {
 				
-				let value = registeredCodable.value
 				if (value is ZDCNull) || (value is Value) {
 					values[key] = value
 				} else {
