@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 	s.name         = "ZDCSyncable"
-	s.version      = "2.0.3"
+	s.version      = "2.1"
 	s.summary      = "Undo, redo & merge capabilities for structs & classes in pure Swift."
 	s.homepage     = "https://github.com/4th-ATechnologies/ZDCSyncable"
 	s.license      = 'MIT'
@@ -18,6 +18,6 @@ Pod::Spec.new do |s|
 	s.tvos.deployment_target = '10.0'
 
 	s.swift_version = '5.1'
-	s.source_files = 'ZDCSyncable/*.{swift}', 'ZDCSyncable/{Protocols,Utilities,Internal}/*.{swift,h,m}'
+	s.source_files = 'ZDCSyncable/*.{swift}', 'ZDCSyncable/{AnyCodable,Protocols,Utilities,Internal}/*.{swift,h,m}'
 
 end
