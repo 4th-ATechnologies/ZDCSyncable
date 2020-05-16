@@ -1153,8 +1153,6 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 
 	private mutating func _undo(_ changeset: ZDCChangeset_OrderedDictionary) throws {
 		
-		// Important: `isMalformedChangeset:` must be called before invoking this method.
-		
 		// This method is called from both `undo::` & `importChangesets::`.
 		//
 		// When called from `undo::`, there aren't any existing changes,
@@ -1175,7 +1173,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		//     we have the 'key', an 'oldValue', and a 'newValue'.
 		//
 		//     If an item was added, then the 'oldValue' will be ZDCNull.
-		//     If an item was deleted, the new 'newValue' will be ZDCNull.
+		//     If an item was deleted, then the 'newValue' will be ZDCNull.
 		//
 		// - Moved items
 		//

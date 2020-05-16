@@ -134,7 +134,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 
 	public mutating func append(_ item: Element) {
 		
-		self._willInsert(at: array.count)
+		self._willInsert(item, at: array.count)
 		array.append(item)
 	}
 	
@@ -142,7 +142,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		
 		let idx = (index > array.count) ? array.count : index
 		
-		self._willInsert(at: idx)
+		self._willInsert(item, at: idx)
 		array.insert(item, at: idx)
 	}
 	
@@ -173,14 +173,13 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		})
 	}
 	
-	public mutating func remove(at index: Int) {
+	@discardableResult
+	public mutating func remove(at index: Int) -> Element {
 		
-		if index >= array.count {
-			return
-		}
+		precondition(index < array.count, "Index out of range: index(\(index)) >= count(\(array.count))")
 		
 		self._willRemove(at: index)
-		array.remove(at: index)
+		return array.remove(at: index)
 	}
 	
 	public mutating func removeAll(where shouldBeRemoved: (Element) throws -> Bool) rethrows {
@@ -256,25 +255,88 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 	// MARK: Change Tracking Internals
 	// ====================================================================================================
 	
-	private mutating func _willInsert(at insertionIdx: Int) {
+	private mutating func _willInsert(_ newElement: Element, at insertionIdx: Int) {
 		
 		precondition(insertionIdx <= array.count)
 		
-		// ADD: Step 1 of 2
+		// ADD: Step 0
 		//
-		// Update the 'added' indexSet.
+		// Determine if this will be counted as an ADD, or simply undoing a previous delete.
 		
-		self.shiftAddedIndexes(startingAt: insertionIdx, by:1)
+		var wasDeletedThenAdded = false
+		var deletedIdx = 0
 		
-		assert(!added.contains(insertionIdx))
-		added.insert(insertionIdx)
+		for (idx, oldElement) in deleted {
+			
+			if oldElement == newElement {
+				
+				wasDeletedThenAdded = true
+				deletedIdx = idx
+				break
+			}
+		}
 		
-		// ADD: Step 2 of 2
-		//
-		// The currentIndex of some items may be increasing.
-		// So we need to update the 'moved' dictionary accordingly.
+		if wasDeletedThenAdded {
+			
+			// RE-ADD: Step 1 of 4
+			//
+			// Remove item from the deleted list
+			
+			deleted[deletedIdx] = nil
+			
+			// RE-ADD: Step 2 of 4
+			//
+			// Calculate the correct oldIdx for the item.
+			
+			var oldIdx = deletedIdx
+			
+			var decrement = 0
+			for (key, _) in deleted {
+				
+				if key < oldIdx {
+					decrement += 1
+				}
+			}
+			
+			oldIdx -= decrement
+			
+			// RE-ADD: Step 3 of 4
+			//
+			// We're about to insert an item.
+			// Which affects both `added` & `moved`.
+			
+			self.shiftAddedIndexes(startingAt: insertionIdx, by:1)
+			
+			self.incrementMovedCurrentIndexes(startingAt: insertionIdx)
+			self.incrementMovedPreviousIndexes(startingAt: oldIdx)
+			
+			// RE-ADD: Step 4 of 4
+			//
+			// Insert the entry that reflects this move action.
+			
+			moved[insertionIdx] = oldIdx
+		#if DEBUG
+			self.checkMoved()
+		#endif
+			
+		} else { // if !wasDeletedThenAdded
+			
+			// ADD: Step 1 of 2
+			//
+			// Update the 'added' indexSet.
 		
-		self.incrementMovedCurrentIndexes(startingAt: insertionIdx)
+			self.shiftAddedIndexes(startingAt: insertionIdx, by:1)
+		
+			assert(!added.contains(insertionIdx))
+			added.insert(insertionIdx)
+			
+			// ADD: Step 2 of 2
+			//
+			// The currentIndex of some items may be increasing.
+			// So we need to update the 'moved' dictionary accordingly.
+			
+			self.incrementMovedCurrentIndexes(startingAt: insertionIdx)
+		}
 	}
 	
 	private mutating func _willRemove(at deletionIdx: Int) {
@@ -622,6 +684,21 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 	// MARK: Utilities
 	// ====================================================================================================
 	
+	private mutating func incrementMovedPreviousIndexes(startingAt offset: Int) {
+		
+		let copy = moved
+		moved.removeAll(keepingCapacity: true)
+		
+		for (currentIdx, previousIdx) in copy {
+			
+			if previousIdx >= offset {
+				moved[currentIdx] = previousIdx + 1
+			} else {
+				moved[currentIdx] = previousIdx
+			}
+		}
+	}
+	
 	private mutating func incrementMovedCurrentIndexes(startingAt offset: Int) {
 		
 		let sortedKeys = moved.keys.sorted { (num1: Int, num2: Int) -> Bool in
@@ -708,6 +785,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 			for item in array {
 				
 				if let zdc_obj = item as? ZDCSyncableClass {
+					
 					if zdc_obj.hasChanges {
 						return true
 					}
@@ -821,9 +899,9 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		//   ])
 		// }
 		
-		var added = IndexSet()
-		var moved: [Int: Int] = [:]
-		var deleted: [Int: Element] = [:]
+		var p_added = IndexSet()
+		var p_moved: [Int: Int] = [:]
+		var p_deleted: [Int: Element] = [:]
 		
 		// added
 		if let wrapped_added = changeset[ChangesetKeys.added.rawValue] {
@@ -833,7 +911,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 			}
 			
 			for idx in unwrapped_added {
-				added.insert(idx)
+				p_added.insert(idx)
 			}
 		}
 		
@@ -844,7 +922,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 				return nil // malformed
 			}
 			
-			moved = unwrapped_moved
+			p_moved = unwrapped_moved
 		}
 		
 		// deleted
@@ -854,16 +932,14 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 				return nil // malformed
 			}
 			
-			deleted = unwrapped_deleted
+			p_deleted = unwrapped_deleted
 		}
 		
 		// Looks good (not malformed)
-		return ZDCChangeset_Array(added: added, moved: moved, deleted: deleted)
+		return ZDCChangeset_Array(added: p_added, moved: p_moved, deleted: p_deleted)
 	}
 	
 	private mutating func _undo(_ changeset: ZDCChangeset_Array) throws {
-		
-		// Important: `isMalformedChangeset:` must be called before invoking this method.
 		
 		// This method is called from both `undo` & `importChangesets`.
 		//

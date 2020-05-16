@@ -761,8 +761,6 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 	
 	private mutating func _undo(_ changeset: ZDCChangeset_OrderedSet) throws {
 		
-		// Important: `isMalformedChangeset:` must be called before invoking this method.
-		
 		// This method is called from both `undo()` & `importChangesets()`.
 		//
 		// When called from `undo()`, there aren't any existing changes,

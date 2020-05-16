@@ -388,8 +388,6 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 
 	private mutating func _undo(_ changeset: ZDCChangeset_Set) throws {
 		
-		// Important: `isMalformedChangeset:` must be called before invoking this method.
-		
 		// Step 1 of 2:
 		//
 		// Undo added objects.

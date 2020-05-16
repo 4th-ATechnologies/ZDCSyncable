@@ -38,7 +38,7 @@ class test_ZDCArray: XCTestCase {
 		
 		XCTAssert(array.count == 2)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -73,7 +73,7 @@ class test_ZDCArray: XCTestCase {
 		
 		array.remove("cow")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -108,7 +108,7 @@ class test_ZDCArray: XCTestCase {
 		
 		array[0] = "horse"
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -146,7 +146,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[0] == "duck")
 		XCTAssert(array[1] == "cow")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -188,7 +188,7 @@ class test_ZDCArray: XCTestCase {
 		
 		XCTAssert(array.count == 4);
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 	
 		do {
@@ -226,7 +226,7 @@ class test_ZDCArray: XCTestCase {
 		
 		XCTAssert(array.count == 2);
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -268,7 +268,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[2] == "duck")
 		XCTAssert(array[3] == "dog")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -306,7 +306,7 @@ class test_ZDCArray: XCTestCase {
 		
 		XCTAssert(array.count == 3)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -348,7 +348,45 @@ class test_ZDCArray: XCTestCase {
 		
 		XCTAssert(array.count == 2);
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
+		array_b = array
+		
+		do {
+			let changeset_redo = try array.undo(changeset_undo) // a <- b
+			XCTAssert(array == array_a)
+			
+			let _ = try array.undo(changeset_redo) // a -> b
+			XCTAssert(array == array_b)
+		}
+		catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_undo_remove_readd() {
+		
+		var array_a: ZDCArray<String>? = nil
+		var array_b: ZDCArray<String>? = nil
+		
+		// Basic undo/redo functionality.
+		//
+		// Remove + Add
+		
+		var array = ZDCArray<String>()
+		
+		array.append("cow")
+		array.append("duck")
+		
+		array.clearChangeTracking()
+		array_a = array
+		
+		array.remove("cow")
+		array.append("cow")
+		
+		XCTAssert(array.count == 2);
+		
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -386,7 +424,7 @@ class test_ZDCArray: XCTestCase {
 		
 		XCTAssert(array.count == 0);
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -426,7 +464,49 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[0] == "dog")
 		XCTAssert(array[1] == "duck")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
+		array_b = array
+		
+		do {
+			let changeset_redo = try array.undo(changeset_undo) // a <- b
+			XCTAssert(array == array_a)
+			
+			let _ = try array.undo(changeset_redo) // a -> b
+			XCTAssert(array == array_b)
+		}
+		catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_undo_remove_reinsert() {
+		
+		var array_a: ZDCArray<String>? = nil
+		var array_b: ZDCArray<String>? = nil
+		
+		// Basic undo/redo functionality.
+		//
+		// Remove + Insert
+		
+		var array = ZDCArray<String>()
+		
+		array.append("cow")
+		array.append("duck")
+		array.append("goat")
+		
+		array.clearChangeTracking()
+		array_a = array
+		
+		array.remove("cow")
+		array.insert("cow", at: 1)
+		
+		XCTAssert(array.count == 3);
+		XCTAssert(array[0] == "duck")
+		XCTAssert(array[1] == "cow")
+		XCTAssert(array[2] == "goat")
+		
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -467,7 +547,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[0] == "dog")
 		XCTAssert(array[1] == "duck")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -513,7 +593,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[2] == "duck")
 		XCTAssert(array[3] == "cat")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -553,7 +633,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[0] == "dog")
 		XCTAssert(array[1] == "duck")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -595,7 +675,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[2] == "dog")
 		XCTAssert(array[3] == "duck")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -636,7 +716,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[1] == "cow")
 		XCTAssert(array[2] == "dog")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -677,7 +757,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[1] == "duck")
 		XCTAssert(array[2] == "cow")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -722,7 +802,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[1] == "cow")
 		XCTAssert(array[2] == "dog")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -761,7 +841,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array.count == 1);
 		XCTAssert(array[0] == "duck")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -802,7 +882,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[1] == "dog")
 		XCTAssert(array[2] == "cow")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -841,7 +921,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[0] == "cow")
 		XCTAssert(array[1] == "duck")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -884,7 +964,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[2] == "dog")
 		XCTAssert(array[3] == "duck")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -922,7 +1002,7 @@ class test_ZDCArray: XCTestCase {
 		array.move(fromIndex: 0, toIndex: 3)
 		array.move(fromIndex: 2, toIndex: 1)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -965,7 +1045,7 @@ class test_ZDCArray: XCTestCase {
 		XCTAssert(array[2] == "dog")
 		XCTAssert(array[3] == "cow")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -1014,7 +1094,7 @@ class test_ZDCArray: XCTestCase {
 		array.remove(at: 1)
 		array.remove(at: 2)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -1057,7 +1137,7 @@ class test_ZDCArray: XCTestCase {
 		array.move(fromIndex: 1, toIndex:3)
 		array.move(fromIndex: 1, toIndex:3)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -1102,7 +1182,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("zion")
 		array.move(fromIndex: 5, toIndex:0)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -1147,7 +1227,7 @@ class test_ZDCArray: XCTestCase {
 		array.append("zion")
 		array.move(fromIndex: 3, toIndex:6)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -1190,7 +1270,7 @@ class test_ZDCArray: XCTestCase {
 		array.move(fromIndex: 4, toIndex:1)
 		array.remove(at: 0)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -1235,7 +1315,7 @@ class test_ZDCArray: XCTestCase {
 		array.move(fromIndex: 3, toIndex:0)
 		array.remove(at: 3)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -1280,7 +1360,7 @@ class test_ZDCArray: XCTestCase {
 		array.move(fromIndex: 2, toIndex:3)
 		array.remove(at: 3)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -1325,7 +1405,7 @@ class test_ZDCArray: XCTestCase {
 		array.move(fromIndex: 2, toIndex:3)
 		array.remove(at: 1)
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -1369,7 +1449,172 @@ class test_ZDCArray: XCTestCase {
 		array.remove(at: 4)
 		array.append("gwen")
 		
-		let changeset_undo = array.changeset() ?? Dictionary()
+		let changeset_undo = array.changeset() ?? [:]
+		array_b = array
+		
+		do {
+			let changeset_redo = try array.undo(changeset_undo) // a <- b
+			XCTAssert(array == array_a)
+			
+			let _ = try array.undo(changeset_redo) // a -> b
+			XCTAssert(array == array_b)
+		}
+		catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_failure_10() {
+		
+		// Initial array.count: 10
+		//
+		// remove(at: 8)
+		// remove(at: 8)
+		// reAdd(_, at: 8)
+		// remove(at: 4)
+		
+		var array_a: ZDCArray<String>? = nil
+		var array_b: ZDCArray<String>? = nil
+		
+		var array = ZDCArray<String>()
+		
+		array.append("alice")  // 0
+		array.append("bob")    // 1
+		array.append("carol")  // 2
+		array.append("dave")   // 3
+		array.append("emily")  // 4
+		array.append("frank")  // 5
+		array.append("gwen")   // 6
+		array.append("hank")   // 7
+		array.append("ivy")    // 8
+		array.append("jack")   // 9
+		
+		array.clearChangeTracking()
+		array_a = array
+		
+		array.remove(at: 8)
+		array.remove(at: 8)
+		array.insert("jack", at: 5)
+		array.remove(at: 4)
+		
+		let changeset_undo = array.changeset() ?? [:]
+		array_b = array
+		
+		do {
+			let changeset_redo = try array.undo(changeset_undo) // a <- b
+			XCTAssert(array == array_a)
+			
+			let _ = try array.undo(changeset_redo) // a -> b
+			XCTAssert(array == array_b)
+		}
+		catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_failure_11() {
+		
+		// Initial array.count: 10
+		// 0: jmhdvxnd
+		// 1: dosmxlgk
+		// 2: qbuxbvhc
+		// 3: egxxnbpr
+		// 4: usnkbszn
+		// 5: mjodostn
+		// 6: fxtbwmwp
+		// 7: endqkrhr
+		// 8: pfkuwsxm
+		// 9: xlaoagyg
+		// removeObjectAtIndex:1
+		// removeObjectAtIndex:0
+		// reAdd:dosmxlgk atIndex:4
+		// reAdd:jmhdvxnd atIndex:3
+		
+		var array_a: ZDCArray<String>? = nil
+		var array_b: ZDCArray<String>? = nil
+		
+		var array = ZDCArray<String>()
+		
+		array.append("alice")  // 0
+		array.append("bob")    // 1
+		array.append("carol")  // 2
+		array.append("dave")   // 3
+		array.append("emily")  // 4
+		array.append("frank")  // 5
+		array.append("gwen")   // 6
+		array.append("hank")   // 7
+		array.append("ivy")    // 8
+		array.append("jack")   // 9
+		
+		array.clearChangeTracking()
+		array_a = array
+		
+		array.remove(at: 1)
+		array.remove(at: 0)
+		array.insert("bob", at: 5)
+		array.insert("alice", at: 4)
+		
+		let changeset_undo = array.changeset() ?? [:]
+		array_b = array
+		
+		do {
+			let changeset_redo = try array.undo(changeset_undo) // a <- b
+			XCTAssert(array == array_a)
+			
+			let _ = try array.undo(changeset_redo) // a -> b
+			XCTAssert(array == array_b)
+		}
+		catch {
+			XCTAssert(false)
+			print("Threw error: \(error)")
+		}
+	}
+	
+	func test_failure_12() {
+		
+		// Initial array.count: 10
+		// 0: hrcjmzpi
+		// 1: ominnrmf
+		// 2: idyllzib
+		// 3: vhxylcdf
+		// 4: lpdciyaq
+		// 5: dhsclhla
+		// 6: vxuugdxc
+		// 7: tdgpuast
+		// 8: moecvkfk
+		// 9: nsmfotji
+		// removeObjectAtIndex:6
+		// removeObjectAtIndex:5
+		// reAdd:dhsclhla atIndex:2
+		// reAdd:vxuugdxc atIndex:2
+		
+		var array_a: ZDCArray<String>? = nil
+		var array_b: ZDCArray<String>? = nil
+		
+		var array = ZDCArray<String>()
+		
+		array.append("alice")  // 0
+		array.append("bob")    // 1
+		array.append("carol")  // 2
+		array.append("dave")   // 3
+		array.append("emily")  // 4
+		array.append("frank")  // 5
+		array.append("gwen")   // 6
+		array.append("hank")   // 7
+		array.append("ivy")    // 8
+		array.append("jack")   // 9
+		
+		array.clearChangeTracking()
+		array_a = array
+		
+		array.remove(at: 6)
+		array.remove(at: 5)
+		array.insert("frank", at: 2)
+		array.insert("gwen", at: 2)
+		
+		let changeset_undo = array.changeset() ?? [:]
 		array_b = array
 		
 		do {
@@ -1423,7 +1668,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -1498,7 +1743,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -1570,7 +1815,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -1653,7 +1898,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -1756,7 +2001,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -1854,7 +2099,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -1954,7 +2199,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -2058,7 +2303,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -2160,7 +2405,119 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
+			array_b = array
+			
+			do {
+				let changeset_redo = try array.undo(changeset_undo) // a <- b
+				if DEBUG_THIS_METHOD && (array != array_a) {
+					print("It's going to FAIL")
+				}
+				XCTAssert(array == array_a)
+				
+				let _ = try array.undo(changeset_redo) // a -> b
+				if DEBUG_THIS_METHOD && (array != array_b) {
+					print("It's going to FAIL")
+				}
+				XCTAssert(array == array_b)
+			}
+			catch {
+				XCTAssert(false)
+				print("Threw error: \(error)")
+			}
+			
+			if DEBUG_THIS_METHOD {
+				print("-------------------------------------------------")
+			}
+		}}
+	}
+	
+	func test_undo_fuzz_remove_readd() {
+		
+		let DEBUG_THIS_METHOD = false
+		
+		for _ in 0 ..< 1_000 { autoreleasepool {
+			
+			var array_a: ZDCArray<String>? = nil
+			var array_b: ZDCArray<String>? = nil
+			
+			var array = ZDCArray<String>()
+			
+			var removed: [String] = []
+			
+			// Start with an object that has a random number of objects [20 - 30)
+			do {
+				
+				var startCount: Int
+				if DEBUG_THIS_METHOD {
+					startCount = 10
+				} else {
+					startCount = 20 + Int(arc4random_uniform(UInt32(10)))
+				}
+				
+				for _ in 0 ..< startCount {
+					
+					let key = self.randomLetters(8)
+					array.append(key)
+				}
+			}
+			
+			if DEBUG_THIS_METHOD {
+				print("Initial array.count: \(array.count)")
+				for (idx, str) in array.enumerated() {
+					print("\(idx): \(str)")
+				}
+			}
+			
+			array.clearChangeTracking()
+			array_a = array
+			
+			// Now make a random number of changes: [1 - 30)
+			
+			var changeCount: Int
+			if DEBUG_THIS_METHOD {
+				changeCount = 9
+			} else {
+				changeCount = 1 + Int(arc4random_uniform(UInt32(29)))
+			}
+			
+			for _ in 0 ..< changeCount {
+				
+				if (arc4random_uniform(UInt32(2)) == 0)
+				{
+					// Remove an item
+					
+					if array.count > 0 {
+						
+						let idx = Int(arc4random_uniform(UInt32(array.count)))
+					
+						if DEBUG_THIS_METHOD {
+							print("removeObjectAtIndex:\(idx)")
+						}
+						removed.append(array[idx])
+						array.remove(at: idx)
+					}
+				}
+				else
+				{
+					// Re-add an item
+					
+					if removed.count > 0 {
+						
+						let idx = Int(arc4random_uniform(UInt32(removed.count)))
+						let key = removed.remove(at: idx)
+						
+						let newIdx = Int(arc4random_uniform(UInt32(array.count)))
+						
+						if DEBUG_THIS_METHOD {
+							print("reAdd:\(key) atIndex:\(newIdx)")
+						}
+						array.insert(key, at: newIdx)
+					}
+				}
+			}
+			
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -2261,7 +2618,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -2374,7 +2731,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -2489,7 +2846,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -2599,7 +2956,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -2711,7 +3068,7 @@ class test_ZDCArray: XCTestCase {
 				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -2753,6 +3110,8 @@ class test_ZDCArray: XCTestCase {
 			
 			var array = ZDCArray<String>()
 			
+			var removed: [String] = []
+			
 			// Start with an object that has a random number of objects [20 - 30)
 			do {
 				
@@ -2784,7 +3143,7 @@ class test_ZDCArray: XCTestCase {
 			
 			for _ in 0 ..< changeCount {
 				
-				let random = arc4random_uniform(UInt32(5))
+				let random = arc4random_uniform(UInt32(6))
 			
 				if (random == 0)
 				{
@@ -2800,27 +3159,31 @@ class test_ZDCArray: XCTestCase {
 				else if (random == 1)
 				{
 					// Remove an item
-					
-					let idx = Int(arc4random_uniform(UInt32(array.count)))
-					
-					if DEBUG_THIS_METHOD {
-						print("removeObjectAtIndex:\(idx)")
-					}
 					if (array.count > 0) {
-						array.remove(at: idx)
+						
+						let idx = Int(arc4random_uniform(UInt32(array.count)))
+						
+						if DEBUG_THIS_METHOD {
+							print("removeObjectAtIndex:\(idx)")
+						}
+						
+						let item = array.remove(at: idx)
+						removed.append(item)
 					}
 				}
 				else if (random == 2)
 				{
 					// Modify an item
+					if (array.count > 0) {
+						
+						let idx = Int(arc4random_uniform(UInt32(array.count)))
+						let value = self.randomLetters(4)
 					
-					let idx = Int(arc4random_uniform(UInt32(array.count)))
-					let value = self.randomLetters(4)
-					
-					if DEBUG_THIS_METHOD {
-						print("modify:\(idx) value:\(value)")
+						if DEBUG_THIS_METHOD {
+							print("modify:\(idx) value:\(value)")
+						}
+						array[idx] = value
 					}
-					array[idx] = value
 				}
 				else if (random == 3)
 				{
@@ -2834,23 +3197,40 @@ class test_ZDCArray: XCTestCase {
 					}
 					array.insert(key, at: idx)
 				}
-				else
+				else if (random == 4)
 				{
 					// Move an item
-					
-					let oldIdx = Int(arc4random_uniform(UInt32(array.count)))
-					let newIdx = Int(arc4random_uniform(UInt32(array.count)))
-					
-					if DEBUG_THIS_METHOD {
-						print("moveObjectAtIndex:\(oldIdx) toIndex:\(newIdx)")
-					}
 					if (array.count > 0) {
+						
+						let oldIdx = Int(arc4random_uniform(UInt32(array.count)))
+						let newIdx = Int(arc4random_uniform(UInt32(array.count)))
+					
+						if DEBUG_THIS_METHOD {
+							print("moveObjectAtIndex:\(oldIdx) toIndex:\(newIdx)")
+						}
 						array.move(fromIndex: oldIdx, toIndex: newIdx)
 					}
 				}
+				else // if (random == 5)
+				{
+					// Re-add an item
+					if removed.count > 0 {
+						
+						let idx = Int(arc4random_uniform(UInt32(removed.count)))
+						let key = removed.remove(at: idx)
+						
+						let newIdx = Int(arc4random_uniform(UInt32(array.count)))
+						
+						if DEBUG_THIS_METHOD {
+							print("reAddObject:\(key) atIndex:\(idx)")
+						}
+						array.insert(key, at: newIdx)
+					}
+					
+				}
 			}
 			
-			let changeset_undo = array.changeset() ?? Dictionary()
+			let changeset_undo = array.changeset() ?? [:]
 			array_b = array
 			
 			do {
@@ -2897,14 +3277,14 @@ class test_ZDCArray: XCTestCase {
 			array.append("cow")
 			array.append("duck")
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 		do { // changeset: B
 	
 			array.append("dog")
 			array.append("cat")
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 	
 		array_b = array
@@ -2913,7 +3293,7 @@ class test_ZDCArray: XCTestCase {
 			try array.importChangesets(changesets)
 			XCTAssert(array == array_b)
 			
-			let changeset_merged = array.changeset() ?? Dictionary()
+			let changeset_merged = array.changeset() ?? [:]
 			
 			let changeset_redo = try array.undo(changeset_merged)
 			XCTAssert(array == array_a)
@@ -2947,14 +3327,14 @@ class test_ZDCArray: XCTestCase {
 	
 			array.remove(at: 0)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 		do { // changeset: B
 	
 			array.remove(at: 0)
 			array.remove(at: 0)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 	
 		array_b = array
@@ -2963,7 +3343,7 @@ class test_ZDCArray: XCTestCase {
 			try array.importChangesets(changesets)
 			XCTAssert(array == array_b)
 			
-			let changeset_merged = array.changeset() ?? Dictionary()
+			let changeset_merged = array.changeset() ?? [:]
 			
 			let changeset_redo = try array.undo(changeset_merged)
 			XCTAssert(array == array_a)
@@ -2994,14 +3374,14 @@ class test_ZDCArray: XCTestCase {
 	
 			array.insert("duck", at: 0)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 		do { // changeset: B
 	
 			array.insert("dog", at: 1)
 			array.insert("cat", at: 0)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 	
 		array_b = array
@@ -3010,7 +3390,7 @@ class test_ZDCArray: XCTestCase {
 			try array.importChangesets(changesets)
 			XCTAssert(array == array_b)
 			
-			let changeset_merged = array.changeset() ?? Dictionary()
+			let changeset_merged = array.changeset() ?? [:]
 			
 			let changeset_redo = try array.undo(changeset_merged)
 			XCTAssert(array == array_a)
@@ -3044,14 +3424,14 @@ class test_ZDCArray: XCTestCase {
 	
 			array.move(fromIndex: 2, toIndex: 3) // dog
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 		do { // changeset: B
 	
 			array.move(fromIndex: 2, toIndex:0) // cat
 			array.move(fromIndex: 3, toIndex:2) // dog
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 	
 		array_b = array
@@ -3060,7 +3440,7 @@ class test_ZDCArray: XCTestCase {
 			try array.importChangesets(changesets)
 			XCTAssert(array == array_b)
 		
-			let changeset_merged = array.changeset() ?? Dictionary()
+			let changeset_merged = array.changeset() ?? [:]
 		
 			let changeset_redo = try array.undo(changeset_merged)
 			XCTAssert(array == array_a)
@@ -3109,13 +3489,13 @@ class test_ZDCArray: XCTestCase {
 	
 			array.move(fromIndex: 0, toIndex: 1)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 		do { // changeset: B
 	
 			array.move(fromIndex: 0, toIndex: 3)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 	
 		array_b = array
@@ -3124,7 +3504,7 @@ class test_ZDCArray: XCTestCase {
 			try array.importChangesets(changesets)
 			XCTAssert(array == array_b)
 		
-			let changeset_merged = array.changeset() ?? Dictionary()
+			let changeset_merged = array.changeset() ?? [:]
 		
 			let changeset_redo = try array.undo(changeset_merged)
 			XCTAssert(array == array_a)
@@ -3172,14 +3552,14 @@ class test_ZDCArray: XCTestCase {
 			array.move(fromIndex: 0, toIndex: 3)
 			array.move(fromIndex: 2, toIndex: 2)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 		do { // changeset: B
 	
 			array.move(fromIndex: 4, toIndex: 3)
 			array.move(fromIndex: 0, toIndex: 3)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 	
 		array_b = array
@@ -3188,7 +3568,7 @@ class test_ZDCArray: XCTestCase {
 			try array.importChangesets(changesets)
 			XCTAssert(array == array_b)
 		
-			let changeset_merged = array.changeset() ?? Dictionary()
+			let changeset_merged = array.changeset() ?? [:]
 		
 			let changeset_redo = try array.undo(changeset_merged)
 			XCTAssert(array == array_a)
@@ -3236,14 +3616,14 @@ class test_ZDCArray: XCTestCase {
 			array.append("frank")
 			array.move(fromIndex: 3, toIndex: 4)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 		do { // changeset: B
 	
 			array.insert("gwen", at: 3)
 			array.move(fromIndex: 2, toIndex: 6)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 	
 		array_b = array
@@ -3252,7 +3632,7 @@ class test_ZDCArray: XCTestCase {
 			try array.importChangesets(changesets)
 			XCTAssert(array == array_b)
 		
-			let changeset_merged = array.changeset() ?? Dictionary()
+			let changeset_merged = array.changeset() ?? [:]
 		
 			let changeset_redo = try array.undo(changeset_merged)
 			XCTAssert(array == array_a)
@@ -3300,14 +3680,14 @@ class test_ZDCArray: XCTestCase {
 			array.move(fromIndex: 2, toIndex: 1)
 			array.append("frank")
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 		do { // changeset: B
 	
 			array.remove(at: 3)
 			array.move(fromIndex: 4, toIndex: 1)
 	
-			changesets.append(array.changeset() ?? Dictionary())
+			changesets.append(array.changeset() ?? [:])
 		}
 	
 		array_b = array
@@ -3316,7 +3696,7 @@ class test_ZDCArray: XCTestCase {
 			try array.importChangesets(changesets)
 			XCTAssert(array == array_b)
 		
-			let changeset_merged = array.changeset() ?? Dictionary()
+			let changeset_merged = array.changeset() ?? [:]
 		
 			let changeset_redo = try array.undo(changeset_merged)
 			XCTAssert(array == array_a)
@@ -3398,7 +3778,7 @@ class test_ZDCArray: XCTestCase {
 					array.append(key)
 				}
 	
-				changesets.append(array.changeset() ?? Dictionary())
+				changesets.append(array.changeset() ?? [:])
 	
 				if DEBUG_THIS_METHOD {
 					print("********************")
@@ -3411,7 +3791,7 @@ class test_ZDCArray: XCTestCase {
 				try array.importChangesets(changesets)
 				XCTAssert(array == array_b)
 		
-				let changeset_merged = array.changeset() ?? Dictionary()
+				let changeset_merged = array.changeset() ?? [:]
 		
 				let changeset_redo = try array.undo(changeset_merged)
 				if DEBUG_THIS_METHOD && (array != array_a) {
@@ -3502,7 +3882,7 @@ class test_ZDCArray: XCTestCase {
 					}
 				}
 	
-				changesets.append(array.changeset() ?? Dictionary())
+				changesets.append(array.changeset() ?? [:])
 	
 				if DEBUG_THIS_METHOD {
 					print("********************")
@@ -3515,7 +3895,7 @@ class test_ZDCArray: XCTestCase {
 				try array.importChangesets(changesets)
 				XCTAssert(array == array_b)
 		
-				let changeset_merged = array.changeset() ?? Dictionary()
+				let changeset_merged = array.changeset() ?? [:]
 		
 				let changeset_redo = try array.undo(changeset_merged)
 				if DEBUG_THIS_METHOD && (array != array_a) {
@@ -3605,7 +3985,7 @@ class test_ZDCArray: XCTestCase {
 					array.insert(key, at: idx)
 				}
 	
-				changesets.append(array.changeset() ?? Dictionary())
+				changesets.append(array.changeset() ?? [:])
 	
 				if DEBUG_THIS_METHOD {
 					print("********************")
@@ -3618,7 +3998,7 @@ class test_ZDCArray: XCTestCase {
 				try array.importChangesets(changesets)
 				XCTAssert(array == array_b)
 		
-				let changeset_merged = array.changeset() ?? Dictionary()
+				let changeset_merged = array.changeset() ?? [:]
 		
 				let changeset_redo = try array.undo(changeset_merged)
 				if DEBUG_THIS_METHOD && (array != array_a) {
@@ -3712,7 +4092,7 @@ class test_ZDCArray: XCTestCase {
 					array.move(fromIndex: oldIdx, toIndex: newIdx)
 				}
 	
-				changesets.append(array.changeset() ?? Dictionary())
+				changesets.append(array.changeset() ?? [:])
 	
 				if DEBUG_THIS_METHOD {
 					print("********************");
@@ -3725,7 +4105,7 @@ class test_ZDCArray: XCTestCase {
 				try array.importChangesets(changesets)
 				XCTAssert(array == array_b)
 		
-				let changeset_merged = array.changeset() ?? Dictionary()
+				let changeset_merged = array.changeset() ?? [:]
 		
 				let changeset_redo = try array.undo(changeset_merged)
 				if DEBUG_THIS_METHOD && (array != array_a) {
@@ -3866,7 +4246,7 @@ class test_ZDCArray: XCTestCase {
 					}
 				}
 	
-				changesets.append(array.changeset() ?? Dictionary())
+				changesets.append(array.changeset() ?? [:])
 	
 				if DEBUG_THIS_METHOD {
 					print("********************");
@@ -3879,7 +4259,7 @@ class test_ZDCArray: XCTestCase {
 				try array.importChangesets(changesets)
 				XCTAssert(array == array_b)
 				
-				let changeset_merged = array.changeset() ?? Dictionary()
+				let changeset_merged = array.changeset() ?? [:]
 	
 				let changeset_redo = try array.undo(changeset_merged)
 				if DEBUG_THIS_METHOD && (array != array_a) {
@@ -3923,7 +4303,7 @@ class test_ZDCArray: XCTestCase {
 	
 			local.remove("alice")
 			local.append("carol")
-			changesets.append(local.changeset() ?? Dictionary())
+			changesets.append(local.changeset() ?? [:])
 		}
 		do { // cloud changes
 	
@@ -3961,7 +4341,7 @@ class test_ZDCArray: XCTestCase {
 	
 			local.remove("alice")
 			local.append("carol")
-			changesets.append(local.changeset() ?? Dictionary())
+			changesets.append(local.changeset() ?? [:])
 		}
 		do { // cloud changes
 	
@@ -4000,7 +4380,7 @@ class test_ZDCArray: XCTestCase {
 		do { // local changes
 	
 			local.append("bob")
-			changesets.append(local.changeset() ?? Dictionary())
+			changesets.append(local.changeset() ?? [:])
 		}
 		do { // cloud changes
 	
@@ -4037,7 +4417,7 @@ class test_ZDCArray: XCTestCase {
 		do { // local changes
 	
 			local.append("bob")
-			changesets.append(local.changeset() ?? Dictionary())
+			changesets.append(local.changeset() ?? [:])
 		}
 		do { // cloud changes
 	
@@ -4074,7 +4454,7 @@ class test_ZDCArray: XCTestCase {
 	
 			local.remove("bob")
 			local.append("carol")
-			changesets.append(local.changeset() ?? Dictionary())
+			changesets.append(local.changeset() ?? [:])
 		}
 		do { // cloud changes
 	
@@ -4113,7 +4493,7 @@ class test_ZDCArray: XCTestCase {
 		do { // local changes
 	
 			local.append("alice")
-			changesets.append(local.changeset() ?? Dictionary())
+			changesets.append(local.changeset() ?? [:])
 		}
 		do { // cloud changes
 	
@@ -4147,7 +4527,7 @@ class test_ZDCArray: XCTestCase {
 		do { // local changes
 	
 			local.append("bob")
-			changesets.append(local.changeset() ?? Dictionary())
+			changesets.append(local.changeset() ?? [:])
 		}
 		do { // cloud changes
 	
@@ -4183,7 +4563,7 @@ class test_ZDCArray: XCTestCase {
 	
 			local.remove(at: 0)
 			local.append("bob")
-			changesets.append(local.changeset() ?? Dictionary())
+			changesets.append(local.changeset() ?? [:])
 		}
 		do { // cloud changes
 	
