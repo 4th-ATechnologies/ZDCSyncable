@@ -309,6 +309,19 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		}
 	}
 	
+	public var orderedValues: Array<Value> {
+		get {
+			var result: [Value] = []
+			result.reserveCapacity(order.count)
+			
+			for key in order {
+				result.append(dict[key]!)
+			}
+			
+			return result
+		}
+	}
+	
 	public var isEmpty: Bool {
 		get {
 			return dict.isEmpty
@@ -327,10 +340,30 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		}
 	}
 	
+	public var first: Value? {
+		get {
+			if let firstKey = order.first {
+				return dict[firstKey]
+			} else {
+				return nil
+			}
+		}
+	}
+	
+	public var last: Value? {
+		get {
+			if let lastKey = order.last {
+				return dict[lastKey]
+			} else {
+				return nil
+			}
+		}
+	}
+	
 	// ====================================================================================================
 	// MARK: Reading
 	// ====================================================================================================
-
+	
 	public func keyAtIndex(_ index: Int) -> Key? {
 		
 		if index < order.count {
