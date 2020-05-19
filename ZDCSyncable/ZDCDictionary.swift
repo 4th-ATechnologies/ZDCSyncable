@@ -17,17 +17,20 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 	
 	enum ChangesetKeys: String {
 		case refs = "refs"
-		case values = "values"
+		case added = "added"
+		case modified = "modified"
 	}
 	
 	struct ZDCChangeset_Dictionary {
 		let refs: [Key: ZDCChangeset]
-		let values: [Key: Any]
+		let added: Set<Key>
+		let modified: [Key: Value]
 	}
 	
 	private var dict: Dictionary<Key, Value>
 	
-	private var originalValues: Dictionary<Key, Any> = Dictionary()
+	private var addedValues: Set<Key> = Set()
+	private var originalValues: Dictionary<Key, Value> = Dictionary()
 	
 	// ====================================================================================================
 	// MARK: Init
@@ -53,6 +56,9 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		
 		if retainChangeTracking {
 			
+			for key in source.addedValues {
+				self.addedValues.insert(key)
+			}
 			for (key, originalValue) in source.originalValues {
 				self.originalValues[key] = originalValue
 			}
@@ -126,7 +132,7 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 	public mutating func removeValue(forKey key: Key) -> Value? {
 		
 		let value = dict[key]
-		if (value != nil) {
+		if value != nil {
 			self._willRemove(forKey: key)
 			dict[key] = nil
 		}
@@ -154,21 +160,27 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		
 		set(value) {
 		
-			if value == nil {
+			if let value = value {
+				
+				if let existingValue = dict[key] {
+					
+					if existingValue != value {
+						self._willUpdate(key: key, newValue: value)
+					}
+					
+				} else {
+					self._willInsert(key: key, newValue: value)
+				}
+				
+				dict[key] = value
+				
+			} else { // value == nil
 		
 				if dict[key] != nil {
 					self._willRemove(forKey: key)
 					dict[key] = nil
 				}
 		
-			} else {
-		
-				if dict[key] == nil {
-					self._willInsert(forKey: key)
-				} else {
-					self._willUpdate(forKey: key)
-				}
-				dict[key] = value
 			}
 		}
 	}
@@ -211,31 +223,54 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 	// MARK: Change Tracking Internals
 	// ====================================================================================================
 
-	private mutating func _willUpdate(forKey key: Key) {
+	private mutating func _willUpdate(key: Key, newValue: Value) {
 		
-		if originalValues[key] == nil {
-			originalValues[key] = dict[key]
+		let wasAdded = addedValues.contains(key)
+		if !wasAdded {
+			
+			if let originalValue = originalValues[key] {
+				
+				if originalValue == newValue {
+					// Reverting value to its original.
+					originalValues[key] = nil
+				}
+				
+			} else {
+				originalValues[key] = dict[key]
+			}
 		}
 	}
 
-	private mutating func _willInsert(forKey key: Key) {
+	private mutating func _willInsert(key: Key, newValue: Value) {
 		
-		if originalValues[key] == nil {
-			originalValues[key] = ZDCNull()
+		if let originalValue = originalValues[key] {
+			
+			if originalValue == newValue {
+				// Reverting value to its original.
+				originalValues[key] = nil
+			}
+			
+		} else {
+			
+			addedValues.insert(key)
 		}
 	}
 
 	private mutating func _willRemove(forKey key: Key) {
 		
-		let originalValue = originalValues[key]
-		if originalValue == nil {
-			
-			originalValues[key] = dict[key]
-		
-		} else if originalValue is ZDCNull {
+		let wasAdded = addedValues.contains(key)
+		if wasAdded {
 			
 			// Value was added within snapshot, and is now being removed
-			originalValues[key] = nil
+			addedValues.remove(key)
+		
+		} else {
+			
+			let originalValue = originalValues[key]
+			if originalValue == nil {
+				
+				originalValues[key] = dict[key]
+			}
 		}
 	}
 	
@@ -247,7 +282,7 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		
 		get {
 			
-			if originalValues.count  > 0 {
+			if addedValues.count > 0 || originalValues.count  > 0 {
 				return true
 			}
 			
@@ -271,6 +306,7 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 
 	public mutating func clearChangeTracking() {
 		
+		addedValues.removeAll()
 		originalValues.removeAll()
 		
 		var changes: Dictionary<Key, Value>? = nil
@@ -309,10 +345,13 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		
 		// changeset: {
 		//   refs: AnyCodable({
-		//     <key: Key>: <value: ZDCChangeset>, ...
-		//   },
-		//   values AnyCodable({
-		//     <key: Key>: <oldValue: ZDCNull|Value>, ...
+		//     <key: Key> : <changeset: ZDCChangeset>, ...
+		//   }),
+		//   added: AnyCodable([
+		//     <key: Key>, ...
+		//   ]),
+		//   modified: AnyCodable({
+		//     <key: Key> : <oldValue: Value>, ...
 		//   })
 		// }
 		
@@ -329,7 +368,7 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 				
 				// ZDCSyncableClass => reference semantics
 				//
-				// - If value was added, then originalValue will be ZDCNull.
+				// - If value was added, then key is in addedValues.
 				//   If this is the case, we should not add to refs.
 				//
 				// - If value was swapped out, then originalValue will be some other value.
@@ -337,7 +376,7 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 				
 				let originalValue = originalValues[key]
 				
-				let wasAdded = (originalValue is ZDCNull)
+				let wasAdded = addedValues.contains(key)
 				let wasSwapped = (originalValue as AnyObject?) !== (value as AnyObject)
 				
 				if !wasAdded && !wasSwapped {
@@ -346,7 +385,11 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 					if value_changeset == nil {
 						
 						// Edge case:
-						//   If the value was modified, but ultimately unchanged,
+						//   We add to originalValues dictionary based on equality test (old != new).
+						//   We add to refs based on changeset result.
+						//   But these queries may not be in agreement.
+						//   This would be the case if the equality test included non-synced properties.
+						//   So, as a guard, if the value was "modified", but is reporting no changeset,
 						//   then we add an empty dictionary to refs,
 						//   in order to prevent it from going into values.
 						//
@@ -366,23 +409,26 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 				
 				// ZDCSyncableStruct => value semantics
 				//
-				// - If value was added, then originalValue will be ZDCNull.
+				// - If value was added, then key is in addedValues.
 				//   If this is the case, we should not add to refs.
 				
-				let originalValue = originalValues[key]
-				
-				let wasAdded = (originalValue is ZDCNull)
-				
+				let wasAdded = addedValues.contains(key)
 				if !wasAdded {
 					
 					var value_changeset = zdc_struct.peakChangeset()
-					if (value_changeset == nil) {
+					if value_changeset == nil {
 						
 						// Edge case:
-						//   If the value was modified, but ultimately unchanged,
+						//   We add to originalValues dictionary based on equality test (old != new).
+						//   We add to refs based on changeset result.
+						//   But these queries may not be in agreement.
+						//   This would be the case if the equality test included non-synced properties.
+						//   So, as a guard, if the value was "modified", but is reporting no changeset,
 						//   then we add an empty dictionary to refs,
 						//   in order to prevent it from going into values.
 						//
+						
+						let originalValue = originalValues[key]
 						let wasModified = originalValue != nil
 						if wasModified {
 							
@@ -397,34 +443,31 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 			}
 		}
 		
-		var values: [Key: Any] = [:]
+		let added = Array<Key>(addedValues)
 		
+		var modified: [Key: Any] = [:]
 		for (key, originalValue) in originalValues {
 			
 			if refs[key] == nil {
 				
-				if let originalValue = originalValue as? Value {
-					
-					if let originalValue = originalValue as? NSCopying {
-						values[key] = originalValue.copy() as! Value
-					}
-					else {
-						values[key] = originalValue
-					}
-				
-				} else if let originalValue = originalValue as? ZDCNull {
-					
-					values[key] = originalValue
+				if let originalValue = originalValue as? NSCopying {
+					modified[key] = originalValue.copy() as! Value
+				}
+				else {
+					modified[key] = originalValue
 				}
 			}
 		}
 		
-		var changeset: ZDCChangeset = Dictionary(minimumCapacity: 2)
+		var changeset: ZDCChangeset = Dictionary(minimumCapacity: 3)
 		if refs.count > 0 {
 			changeset[ChangesetKeys.refs.rawValue] = AnyCodable(refs)
 		}
-		if values.count > 0 {
-			changeset[ChangesetKeys.values.rawValue] = AnyCodable(values)
+		if added.count > 0 {
+			changeset[ChangesetKeys.added.rawValue] = AnyCodable(added)
+		}
+		if modified.count > 0 {
+			changeset[ChangesetKeys.modified.rawValue] = AnyCodable(modified)
 		}
 		
 		return changeset
@@ -436,13 +479,17 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		//   refs: AnyCodable({
 		//     <key: Key> : <changeset: ZDCChangeset>, ...
 		//   }),
-		//   values: AnyCodable({
-		//     <key: Key> : <oldValue: ZDCNull|Any>, ...
+		//   added: AnyCodable([
+		//     <key: Key>, ...
+		//   ]),
+		//   modified: AnyCodable({
+		//     <key: Key> : <oldValue: Value>, ...
 		//   })
 		// }
 		
 		var refs: [Key: ZDCChangeset] = [:]
-		var values: [Key: Any] = [:]
+		var added = Set<Key>()
+		var modified: [Key: Value] = [:]
 		
 		// refs
 		if let wrapped_refs = changeset[ChangesetKeys.refs.rawValue] {
@@ -454,25 +501,40 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 			refs = unwrapped_refs
 		}
 	
-		// values
-		if let wrapped_values = changeset[ChangesetKeys.values.rawValue] {
-		
-			guard let unwrapped_values = wrapped_values.value as? [Key: Any] else {
+		// added
+		if let wrapped_added = changeset[ChangesetKeys.added.rawValue] {
+			
+			guard let unwrapped_added = wrapped_added.value as? [Key] else {
 				return nil // malformed
 			}
 			
-			for (key, value) in unwrapped_values {
-				
-				if (value is ZDCNull) || (value is Value) {
-					values[key] = value
-				} else {
-					return nil // malformed
-				}
+			added = Set(unwrapped_added)
+		}
+		
+		// modified
+		if let wrapped_modified = changeset[ChangesetKeys.modified.rawValue] {
+		
+			guard let unwrapped_modified = wrapped_modified.value as? [Key: Value] else {
+				return nil // malformed
 			}
+			
+			modified = unwrapped_modified
+		}
+		
+		// Make sure there's no overlap between added & removed.
+		// That is, items in changeset_added cannot also be in changeset_removed.
+		//
+		// Set.isDisjoint:
+		// Returns true is the set has no members in common with the given sequence.
+		
+		let modifiedKeys = Set<Key>(modified.keys)
+		
+		if !added.isDisjoint(with: modifiedKeys) {
+			return nil // malformed
 		}
 		
 		// Looks good (not malformed)
-		return ZDCChangeset_Dictionary(refs: refs, values: values)
+		return ZDCChangeset_Dictionary(refs: refs, added: added, modified: modified)
 	}
 
 	private mutating func _undo(_ changeset: ZDCChangeset_Dictionary) throws {
@@ -498,14 +560,14 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 			}
 		}
 		
-		for (key, oldValue) in changeset.values {
+		for key in changeset.added {
 			
-			if oldValue is ZDCNull {
-				self[key] = nil
-			}
-			else if let oldValue = oldValue as? Value {
-				self[key] = oldValue
-			}
+			self[key] = nil
+		}
+		
+		for (key, oldValue) in changeset.modified {
+			
+			self[key] = oldValue
 		}
 	}
 	
@@ -644,13 +706,22 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		// We need to determine which keys have been changed locally, and what the original versions were.
 		// We'll need this information when comparing to the cloudVersion.
 		
-		var merged_originalValues = Dictionary<Key, Any>()
+		var merged_addedValues = Set<Key>()
+		var merged_originalValues = Dictionary<Key, Value>()
 		
 		for parsedChangeset in parsedChangesets {
 			
-			for (key, oldValue) in parsedChangeset.values {
+			for key in parsedChangeset.added {
 				
 				if merged_originalValues[key] == nil {
+					merged_addedValues.insert(key)
+				}
+			}
+			for (key, oldValue) in parsedChangeset.modified {
+				
+				if !merged_addedValues.contains(key) &&
+				    merged_originalValues[key] == nil
+				{
 					merged_originalValues[key] = oldValue
 				}
 			}
@@ -664,12 +735,11 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		for (key, cloudValue) in cloudVersion {
 			
 			let currentLocalValue = self.dict[key]
-			var originalLocalValue = merged_originalValues[key]
 			
-			let modifiedValueLocally = (originalLocalValue != nil)
-			if originalLocalValue is ZDCNull {
-				originalLocalValue = nil
-			}
+			let wasLocalAdded = merged_addedValues.contains(key)
+			let originalLocalValue = merged_originalValues[key]
+			
+			let modifiedValueLocally = wasLocalAdded || (originalLocalValue != nil)
 			
 			if !modifiedValueLocally {
 				
@@ -693,7 +763,7 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 				
 				if modifiedValueLocally {
 					
-					if let originalLocalValue = originalLocalValue as? Value,
+					if let originalLocalValue = originalLocalValue,
 						originalLocalValue == cloudValue
 					{
 						// modified by local only
@@ -722,17 +792,20 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		// Step 3 of 4:
 		//
 		// Next we need to determine if any values were deleted by remote devices.
+		
 		do {
 			var baseKeys = Set<Key>(dict.keys)
 			
-			for (key, originalValue) in merged_originalValues {
+			for key in merged_addedValues {
 				
-				if originalValue is ZDCNull { // Null => we added this tuple.
-					baseKeys.remove(key)       // So it's not part of the set the cloud is expected to have.
-				}
-				else {
-					baseKeys.insert(key)       // For items that we may have deleted (no longer in dict.keys)
-				}
+				// We added this key.
+				// So it's not part of the set the cloud is expected to have.
+				baseKeys.remove(key)
+			}
+			for (key, _) in merged_originalValues {
+				
+				// For items that we may have deleted (no longer in dict.keys)
+				baseKeys.insert(key)
 			}
 			
 			for key in baseKeys {
@@ -757,8 +830,9 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		
 			for (key, _) in parsedChangeset.refs {
 				
+				let wasAdded = merged_addedValues.contains(key)
 				let originalValue = merged_originalValues[key]
-				if originalValue == nil {
+				if !wasAdded && originalValue == nil {
 					
 					refs.insert(key)
 				}

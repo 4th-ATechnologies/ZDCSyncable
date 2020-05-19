@@ -125,6 +125,86 @@ class test_ZDCDictionary: XCTestCase {
 	}
 	
 	// ====================================================================================================
+	// MARK:- Equality
+	// ====================================================================================================
+	
+	func test_equality_1() {
+		
+		var dict = ZDCDictionary<String, String>()
+		
+		dict["cow"] = "moo"
+		dict["duck"] = "quack"
+		
+		dict.clearChangeTracking()
+		
+		dict["cow"] = "moo"
+		
+		let changeset = dict.changeset()
+		XCTAssert(changeset == nil)
+	}
+	
+	func test_equality_2() {
+		
+		var dict = ZDCDictionary<String, String>()
+		
+		dict["cow"] = "moo"
+		dict["duck"] = "quack"
+		
+		dict.clearChangeTracking()
+		
+		dict["cow"] = nil
+		dict["cow"] = "moo"
+		
+		let changeset = dict.changeset()
+		XCTAssert(changeset == nil)
+	}
+	
+	func test_equality_3() {
+		
+		var dict = ZDCDictionary<String, ZDCDictionary<String, String>>()
+		
+		dict["or"] = ZDCDictionary()
+		dict["wa"] = ZDCDictionary()
+		
+		dict["or"]?["cow"] = "moo"
+		dict["or"]?["duck"] = "quack"
+		
+		dict["wa"]?["cow"] = "moo"
+		dict["wa"]?["duck"] = "quack"
+		
+		dict.clearChangeTracking()
+		XCTAssert(dict.hasChanges == false)
+		
+		dict["or"]?["cow"] = "moo"
+		
+		let changeset = dict.changeset()
+		XCTAssert(changeset == nil)
+	}
+	
+	func test_equality_4() {
+		
+		var dict = ZDCDictionary<String, ZDCDictionary<String, String>>()
+		
+		dict["or"] = ZDCDictionary()
+		dict["wa"] = ZDCDictionary()
+		
+		dict["or"]?["cow"] = "moo"
+		dict["or"]?["duck"] = "quack"
+		
+		dict["wa"]?["cow"] = "moo"
+		dict["wa"]?["duck"] = "quack"
+		
+		dict.clearChangeTracking()
+		XCTAssert(dict.hasChanges == false)
+		
+		dict["or"]?["cow"] = nil
+		dict["or"]?["cow"] = "moo"
+		
+		let changeset = dict.changeset()
+		XCTAssert(changeset == nil)
+	}
+	
+	// ====================================================================================================
 	// MARK:- Fuzz
 	// ====================================================================================================
 
