@@ -55,13 +55,8 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		dict = source.dict
 		
 		if retainChangeTracking {
-			
-			for key in source.addedValues {
-				self.addedValues.insert(key)
-			}
-			for (key, originalValue) in source.originalValues {
-				self.originalValues[key] = originalValue
-			}
+			self.addedValues = source.addedValues
+			self.originalValues = source.originalValues
 		}
 	}
 	
@@ -158,23 +153,23 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 			return dict[key]
 		}
 		
-		set(value) {
+		set(newValue) {
 		
-			if let value = value {
+			if let newValue = newValue {
 				
 				if let existingValue = dict[key] {
 					
-					if existingValue != value {
-						self._willUpdate(key: key, newValue: value)
+					if existingValue != newValue {
+						self._willUpdate(key: key, newValue: newValue)
 					}
 					
 				} else {
-					self._willInsert(key: key, newValue: value)
+					self._willInsert(key: key, newValue: newValue)
 				}
 				
-				dict[key] = value
+				dict[key] = newValue
 				
-			} else { // value == nil
+			} else { // newValue == nil
 		
 				if dict[key] != nil {
 					self._willRemove(forKey: key)
