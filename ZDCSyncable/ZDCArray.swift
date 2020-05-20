@@ -13,7 +13,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		case deleted = "deleted"
 	}
 	
-	struct ZDCChangeset_Array {
+	public struct ZDCChangeset_Array {
 		let added: IndexSet
 		let moved: [Int: Int]
 		let deleted: [Int: Element]
@@ -885,7 +885,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		return changeset
 	}
 	
-	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Array? {
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Array? {
 		
 		// changeset: {
 		//   added: AnyCodable([

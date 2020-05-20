@@ -5,7 +5,7 @@
 
 import Foundation
 
-fileprivate struct ZDCChangeset_Record {
+public struct ZDCChangeset_Record {
 	let refs: [String: ZDCChangeset]
 	let values: [String: Any]
 }
@@ -226,7 +226,7 @@ open class ZDCRecord: ZDCSyncableClass {
 		return changeset
 	}
 	
-	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Record? {
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Record? {
 		
 		// changeset: {
 		//   refs: AnyCodable({

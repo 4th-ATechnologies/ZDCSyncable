@@ -17,7 +17,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		case deleted  = "deleted"
 	}
 	
-	struct ZDCChangeset_OrderedDictionary {
+	public struct ZDCChangeset_OrderedDictionary {
 		let refs: [Key: ZDCChangeset]
 		let added: Set<Key>
 		let modified: [Key: Value]
@@ -1135,7 +1135,7 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 		return changeset
 	}
 
-	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_OrderedDictionary? {
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_OrderedDictionary? {
 		
 		// changeset: {
 		//   refs: AnyCodable({

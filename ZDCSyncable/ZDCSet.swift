@@ -12,7 +12,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		case deleted = "deleted"
 	}
 	
-	struct ZDCChangeset_Set {
+	public struct ZDCChangeset_Set {
 		let added: Set<Element>
 		let deleted: Set<Element>
 	}
@@ -338,7 +338,7 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 		return changeset
 	}
 
-	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Set? {
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Set? {
 		
 		// changeset: {
 		//   added: AnyCodable([

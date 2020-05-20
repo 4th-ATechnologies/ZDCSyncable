@@ -8,7 +8,7 @@ fileprivate enum ChangesetKeys: String {
 	case values = "values"
 }
 
-fileprivate struct ZDCChangeset_Struct {
+public struct ZDCChangeset_Struct {
 	let refs: [String: ZDCChangeset]
 	let values: [String: Any]
 }
@@ -194,7 +194,7 @@ extension ZDCSyncable {
 		return changeset
 	}
 	
-	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Struct? {
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Struct? {
 		
 		// changeset: {
 		//   refs: AnyCodable({

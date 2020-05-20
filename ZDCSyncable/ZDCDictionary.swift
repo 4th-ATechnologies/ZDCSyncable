@@ -21,7 +21,7 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		case modified = "modified"
 	}
 	
-	struct ZDCChangeset_Dictionary {
+	public struct ZDCChangeset_Dictionary {
 		let refs: [Key: ZDCChangeset]
 		let added: Set<Key>
 		let modified: [Key: Value]
@@ -468,7 +468,7 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 		return changeset
 	}
 	
-	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Dictionary? {
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Dictionary? {
 		
 		// changeset: {
 		//   refs: AnyCodable({

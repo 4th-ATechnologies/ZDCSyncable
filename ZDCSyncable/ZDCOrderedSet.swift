@@ -21,7 +21,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		case indexes = "indexes"
 	}
 	
-	struct ZDCChangeset_OrderedSet {
+	public struct ZDCChangeset_OrderedSet {
 		let added: Set<Element>
 		let deleted: [Element: Int]
 		let indexes: [Element: Int]
@@ -707,7 +707,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		return changeset
 	}
 	
-	private func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_OrderedSet? {
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_OrderedSet? {
 		
 		// changeset: {
 		//   added: AnyCodable([
