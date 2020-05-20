@@ -885,7 +885,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		return changeset
 	}
 	
-	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Array? {
+	public static func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Array? {
 		
 		// changeset: {
 		//   added: AnyCodable([
@@ -899,9 +899,9 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 		//   ])
 		// }
 		
-		var p_added = IndexSet()
-		var p_moved: [Int: Int] = [:]
-		var p_deleted: [Int: Element] = [:]
+		var added = IndexSet()
+		var moved: [Int: Int] = [:]
+		var deleted: [Int: Element] = [:]
 		
 		// added
 		if let wrapped_added = changeset[ChangesetKeys.added.rawValue] {
@@ -911,7 +911,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 			}
 			
 			for idx in unwrapped_added {
-				p_added.insert(idx)
+				added.insert(idx)
 			}
 		}
 		
@@ -922,7 +922,7 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 				return nil // malformed
 			}
 			
-			p_moved = unwrapped_moved
+			moved = unwrapped_moved
 		}
 		
 		// deleted
@@ -932,11 +932,16 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 				return nil // malformed
 			}
 			
-			p_deleted = unwrapped_deleted
+			deleted = unwrapped_deleted
 		}
 		
 		// Looks good (not malformed)
-		return ZDCChangeset_Array(added: p_added, moved: p_moved, deleted: p_deleted)
+		return ZDCChangeset_Array(added: added, moved: moved, deleted: deleted)
+	}
+	
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Array? {
+		
+		return type(of: self).parseChangeset(changeset)
 	}
 	
 	private mutating func _undo(_ changeset: ZDCChangeset_Array) throws {

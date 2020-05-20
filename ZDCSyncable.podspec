@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 	s.name         = "ZDCSyncable"
-	s.version      = "2.2.2"
+	s.version      = "2.2.3"
 	s.summary      = "Undo, redo & merge capabilities for structs & classes in pure Swift."
 	s.homepage     = "https://github.com/4th-ATechnologies/ZDCSyncable"
 	s.license      = 'MIT'

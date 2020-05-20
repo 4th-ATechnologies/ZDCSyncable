@@ -194,7 +194,7 @@ extension ZDCSyncable {
 		return changeset
 	}
 	
-	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Struct? {
+	public static func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Struct? {
 		
 		// changeset: {
 		//   refs: AnyCodable({
@@ -230,6 +230,11 @@ extension ZDCSyncable {
 		
 		// looks good (not malformed)
 		return ZDCChangeset_Struct(refs: refs, values: values)
+	}
+	
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Struct? {
+		
+		return type(of: self).parseChangeset(changeset)
 	}
 	
 	private mutating func _undo(_ changeset: ZDCChangeset_Struct) throws {

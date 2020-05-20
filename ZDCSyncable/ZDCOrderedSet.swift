@@ -707,7 +707,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		return changeset
 	}
 	
-	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_OrderedSet? {
+	public static func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_OrderedSet? {
 		
 		// changeset: {
 		//   added: AnyCodable([
@@ -757,6 +757,11 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		
 		// Looks good (not malformed)
 		return ZDCChangeset_OrderedSet(added: added, deleted: deleted, moved: moved)
+	}
+	
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_OrderedSet? {
+		
+		return type(of: self).parseChangeset(changeset)
 	}
 	
 	private mutating func _undo(_ changeset: ZDCChangeset_OrderedSet) throws {

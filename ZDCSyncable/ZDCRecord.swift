@@ -226,7 +226,7 @@ open class ZDCRecord: ZDCSyncableClass {
 		return changeset
 	}
 	
-	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Record? {
+	public static func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Record? {
 		
 		// changeset: {
 		//   refs: AnyCodable({
@@ -262,6 +262,11 @@ open class ZDCRecord: ZDCSyncableClass {
 		
 		// looks good (not malformed)
 		return ZDCChangeset_Record(refs: refs, values: values)
+	}
+	
+	public func parseChangeset(_ changeset: ZDCChangeset) -> ZDCChangeset_Record? {
+		
+		return type(of: self).parseChangeset(changeset)
 	}
 	
 	private func _undo(_ changeset: ZDCChangeset_Record) throws {

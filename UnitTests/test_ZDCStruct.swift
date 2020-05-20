@@ -238,4 +238,47 @@ class test_ZDCStruct: XCTestCase {
 		XCTAssert(localStruct.dict["duck"] == "quack")
 	}
 
+	// ====================================================================================================
+	// MARK: ParseChangeset
+	// ====================================================================================================
+	
+	func test_parseChangeset_1() {
+		
+		var local = SimpleStruct(someString: "abc123", someInteger: 42)
+		
+		local.clearChangeTracking()
+		XCTAssert(!local.hasChanges)
+		
+		local.someString = "def456"
+		local.someInteger = 23
+		
+		let changeset = local.changeset() ?? Dictionary()
+		
+		let parsed = SimpleStruct.parseChangeset(changeset)
+		XCTAssert(parsed != nil)
+	}
+	
+	func test_parseChangeset_2() {
+		
+		var local = ComplexStruct(someString: "abc123", someInteger: 42)
+		local.dict["dog"] = "bark"
+		
+		local.clearChangeTracking()
+		XCTAssert(!local.hasChanges)
+		
+		local.someString = "abc123"
+		local.dict["cat"] = "meow"
+		
+		let changeset = local.changeset() ?? [:]
+		
+		let parsed = ComplexStruct.parseChangeset(changeset)
+		XCTAssert(parsed != nil)
+		
+		let changeset_dict = parsed!.refs["dict"] ?? [:]
+		XCTAssert(changeset_dict.count > 0)
+		
+		let parsed_dict = ZDCDictionary<String, String>.parseChangeset(changeset_dict)
+		XCTAssert(parsed_dict != nil)
+		
+	}
 }
