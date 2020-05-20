@@ -13,8 +13,8 @@ public struct ZDCSet<Element: Hashable & Codable> : ZDCSyncable, Codable, Collec
 	}
 	
 	public struct ZDCChangeset_Set {
-		let added: Set<Element>
-		let deleted: Set<Element>
+		public let added: Set<Element>
+		public let deleted: Set<Element>
 	}
 	
 	private var set: Set<Element>

@@ -6,8 +6,8 @@
 import Foundation
 
 public struct ZDCChangeset_Record {
-	let refs: [String: ZDCChangeset]
-	let values: [String: Any]
+	public let refs: [String: ZDCChangeset]
+	public let values: [String: Any]
 }
 
 /// ZDCRecord is a base class the implements ZDCSyncableClass, and is designed to be subclassed.

@@ -22,9 +22,9 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 	}
 	
 	public struct ZDCChangeset_OrderedSet {
-		let added: Set<Element>
-		let deleted: [Element: Int] // key=oldElement, value=oldIndex
-		let moved: [Element: Int] // key=movedElement, value=oldIndex
+		public let added: Set<Element>
+		public let deleted: [Element: Int] // key=oldElement, value=oldIndex
+		public let moved: [Element: Int] // key=movedElement, value=oldIndex
 	}
 	
 	private var set: Set<Element>

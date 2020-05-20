@@ -22,9 +22,9 @@ public struct ZDCDictionary<Key: Hashable & Codable, Value: Equatable & Codable>
 	}
 	
 	public struct ZDCChangeset_Dictionary {
-		let refs: [Key: ZDCChangeset]
-		let added: Set<Key>
-		let modified: [Key: Value]
+		public let refs: [Key: ZDCChangeset]
+		public let added: Set<Key>
+		public let modified: [Key: Value]
 	}
 	
 	private var dict: Dictionary<Key, Value>

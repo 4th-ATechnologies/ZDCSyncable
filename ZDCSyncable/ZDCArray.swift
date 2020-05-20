@@ -14,9 +14,9 @@ public struct ZDCArray<Element: Codable & Equatable> : ZDCSyncable, Codable, Col
 	}
 	
 	public struct ZDCChangeset_Array {
-		let added: IndexSet
-		let moved: [Int: Int]
-		let deleted: [Int: Element]
+		public let added: IndexSet
+		public let moved: [Int: Int]
+		public let deleted: [Int: Element]
 	}
 	
 	private var array: Array<Element>

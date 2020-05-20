@@ -18,11 +18,11 @@ public struct ZDCOrderedDictionary<Key: Hashable & Codable, Value: Equatable & C
 	}
 	
 	public struct ZDCChangeset_OrderedDictionary {
-		let refs: [Key: ZDCChangeset]
-		let added: Set<Key>
-		let modified: [Key: Value]
-		let moved: [Key: Int]
-		let deleted: [Key: Int]
+		public let refs: [Key: ZDCChangeset]
+		public let added: Set<Key>
+		public let modified: [Key: Value]
+		public let moved: [Key: Int]
+		public let deleted: [Key: Int]
 	}
 	
 	struct DictionaryCodingKey: CodingKey {

@@ -9,8 +9,8 @@ fileprivate enum ChangesetKeys: String {
 }
 
 public struct ZDCChangeset_Struct {
-	let refs: [String: ZDCChangeset]
-	let values: [String: Any]
+	public let refs: [String: ZDCChangeset]
+	public let values: [String: Any]
 }
 
 extension ZDCSyncable {
