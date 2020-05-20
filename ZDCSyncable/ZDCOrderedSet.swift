@@ -18,13 +18,13 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 	enum ChangesetKeys: String {
 		case added = "added"
 		case deleted = "deleted"
-		case indexes = "indexes"
+		case moved = "moved"
 	}
 	
 	public struct ZDCChangeset_OrderedSet {
 		let added: Set<Element>
-		let deleted: [Element: Int]
-		let indexes: [Element: Int]
+		let deleted: [Element: Int] // key=oldElement, value=oldIndex
+		let moved: [Element: Int] // key=movedElement, value=oldIndex
 	}
 	
 	private var set: Set<Element>
@@ -649,7 +649,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		//   added: AnyCodable([
 		//     Element
 		//   ]),
-		//   indexes: AnyCodable([
+		//   moved: AnyCodable([
 		//     <key: Element>: <value: Int>, ...
 		//   ]),
 		//   deleted: AnyCodable([
@@ -678,17 +678,17 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		
 		if originalIndexes.count > 0 {
 			
-			var changeset_indexes: [Element: Int] = [:]
+			var changeset_moved: [Element: Int] = [:]
 			
 			for (item, oldIdx) in originalIndexes {
 				
-				if self.contains(item) {
-					changeset_indexes[item] = oldIdx
+				if self.contains(item) { // sanity check
+					changeset_moved[item] = oldIdx
 				}
 			}
 			
-			if (changeset_indexes.count > 0) {
-				changeset[ChangesetKeys.indexes.rawValue] = AnyCodable(changeset_indexes)
+			if (changeset_moved.count > 0) {
+				changeset[ChangesetKeys.moved.rawValue] = AnyCodable(changeset_moved)
 			}
 		}
 		
@@ -713,7 +713,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		//   added: AnyCodable([
 		//     Element
 		//   ]),
-		//   indexes: AnyCodable([
+		//   moved: AnyCodable([
 		//     <key: Element>: <value: Int>, ...
 		//   ]),
 		//   deleted: AnyCodable([
@@ -722,7 +722,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		// }
 		
 		var added = Set<Element>()
-		var indexes = Dictionary<Element, Int>()
+		var moved = Dictionary<Element, Int>()
 		var deleted = Dictionary<Element, Int>()
 		
 		// added
@@ -735,14 +735,14 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 			added = Set(unwrapped_added)
 		}
 		
-		// indexes
-		if let wrapped_indexes = changeset[ChangesetKeys.indexes.rawValue] {
+		// moved
+		if let wrapped_moved = changeset[ChangesetKeys.moved.rawValue] {
 			
-			guard let unwrapped_indexes = wrapped_indexes.value as? [Element: Int] else {
+			guard let unwrapped_moved = wrapped_moved.value as? [Element: Int] else {
 				return nil // malformed
 			}
 			
-			indexes = unwrapped_indexes
+			moved = unwrapped_moved
 		}
 		
 		// deleted
@@ -756,7 +756,7 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 		}
 		
 		// Looks good (not malformed)
-		return ZDCChangeset_OrderedSet(added: added, deleted: deleted, indexes: indexes)
+		return ZDCChangeset_OrderedSet(added: added, deleted: deleted, moved: moved)
 	}
 	
 	private mutating func _undo(_ changeset: ZDCChangeset_OrderedSet) throws {
@@ -819,12 +819,10 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 			//
 			// And we need to keep track of the changeset (originalIndexes) as we're doing this.
 			
-			let changeset_moves = changeset.indexes
-			
 			var moved_items = Array<Element>()
 			var moved_indexes = IndexSet()
 			
-			for (item, _) in changeset_moves {
+			for (item, _) in changeset.moved {
 				
 				if let idx = self.index(of: item) {
 					
@@ -890,15 +888,15 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 			// We want to add them from lowest idx to highest idx.
 			moved_items.sort(by: {
 				
-				let idx1 = changeset_moves[$0]!
-				let idx2 = changeset_moves[$1]!
+				let idx1 = changeset.moved[$0]!
+				let idx2 = changeset.moved[$1]!
 				
 				return idx1 < idx2
 			})
 
 			for moved_item in moved_items {
 				
-				let idx = changeset_moves[moved_item]!
+				let idx = changeset.moved[moved_item]!
 				if (idx > order.count) {
 					throw ZDCSyncableError.mismatchedChangeset
 				}
@@ -1068,12 +1066,10 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 				// - remove it from it's currentIndex
 				// - add it back in it's originalIndex
 				
-				let changeset_moves = changeset.indexes
-				
 				var moved_items: Array<Element> = Array()
 				var moved_indexes = IndexSet()
 				
-				for (item, _) in changeset_moves {
+				for (item, _) in changeset.moved {
 					
 					if let idx = order.firstIndex(of: item) {
 						
@@ -1091,15 +1087,15 @@ public struct ZDCOrderedSet<Element: Hashable & Codable>: ZDCSyncable, Codable, 
 				// We want to add them from lowest idx to highest idx.
 				moved_items.sort(by: {
 					
-					let idx1 = changeset_moves[$0]!
-					let idx2 = changeset_moves[$1]!
+					let idx1 = changeset.moved[$0]!
+					let idx2 = changeset.moved[$1]!
 					
 					return idx1 < idx2
 				})
 				
 				for moved_item in moved_items {
 					
-					let idx = changeset_moves[moved_item]!
+					let idx = changeset.moved[moved_item]!
 					if (idx > order.count) {
 						return nil
 					}
