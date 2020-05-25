@@ -44,24 +44,24 @@ public struct AnyCodable: Codable {
 		
 		var standards: [CodableClosure] = [
 			CodableClosureGenerator(AnyCodable.self), // Needed to support nesting
-			CodableClosureGenerator(Int.self),
-			CodableClosureGenerator(String.self),
-			CodableClosureGenerator(Int.self),
-			CodableClosureGenerator(Int8.self),
-			CodableClosureGenerator(Int16.self),
-			CodableClosureGenerator(Int32.self),
-			CodableClosureGenerator(Int64.self),
-			CodableClosureGenerator(UInt.self),
-			CodableClosureGenerator(UInt8.self),
-			CodableClosureGenerator(UInt16.self),
-			CodableClosureGenerator(UInt32.self),
-			CodableClosureGenerator(UInt64.self),
-			CodableClosureGenerator(Float.self),
-			CodableClosureGenerator(Double.self),
-			CodableClosureGenerator(Bool.self),
-			CodableClosureGenerator(Data.self),
-			CodableClosureGenerator(Date.self),
-			CodableClosureGenerator(URL.self),
+			
+			CodableClosureGenerator(String.self),  CodableClosureGenerator(Optional<String>.self),
+			CodableClosureGenerator(Int.self),     CodableClosureGenerator(Optional<Int>.self),
+			CodableClosureGenerator(Int8.self),    CodableClosureGenerator(Optional<Int8>.self),
+			CodableClosureGenerator(Int16.self),   CodableClosureGenerator(Optional<Int16>.self),
+			CodableClosureGenerator(Int32.self),   CodableClosureGenerator(Optional<Int32>.self),
+			CodableClosureGenerator(Int64.self),   CodableClosureGenerator(Optional<Int64>.self),
+			CodableClosureGenerator(UInt.self),    CodableClosureGenerator(Optional<UInt>.self),
+			CodableClosureGenerator(UInt8.self),   CodableClosureGenerator(Optional<UInt8>.self),
+			CodableClosureGenerator(UInt16.self),  CodableClosureGenerator(Optional<UInt16>.self),
+			CodableClosureGenerator(UInt32.self),  CodableClosureGenerator(Optional<UInt32>.self),
+			CodableClosureGenerator(UInt64.self),  CodableClosureGenerator(Optional<UInt64>.self),
+			CodableClosureGenerator(Float.self),   CodableClosureGenerator(Optional<Float>.self),
+			CodableClosureGenerator(Double.self),  CodableClosureGenerator(Optional<Double>.self),
+			CodableClosureGenerator(Bool.self),    CodableClosureGenerator(Optional<Bool>.self),
+			CodableClosureGenerator(Data.self),    CodableClosureGenerator(Optional<Data>.self),
+			CodableClosureGenerator(Date.self),    CodableClosureGenerator(Optional<Date>.self),
+			CodableClosureGenerator(URL.self),     CodableClosureGenerator(Optional<URL>.self),
 		]
 		
 		// Array

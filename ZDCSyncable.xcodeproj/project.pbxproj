@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC3A3559247C45A200579347 /* test_AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3A3558247C45A200579347 /* test_AnyCodable.swift */; };
+		DC3A355A247C45A200579347 /* test_AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3A3558247C45A200579347 /* test_AnyCodable.swift */; };
+		DC3A355B247C45A200579347 /* test_AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3A3558247C45A200579347 /* test_AnyCodable.swift */; };
 		DC3AE27E227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */; };
 		DC3AE280227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */; };
 		DC3CE111243FDE41005024B3 /* ZDCSynable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3CE110243FDE41005024B3 /* ZDCSynable.swift */; };
@@ -144,6 +147,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DC3A3558247C45A200579347 /* test_AnyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_AnyCodable.swift; sourceTree = "<group>"; };
 		DC3AE27D227C7D3A006FC3DC /* ZDCOrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZDCOrderedDictionary.swift; sourceTree = "<group>"; };
 		DC3AE281227C9ADC006FC3DC /* test_ZDCOrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_ZDCOrderedDictionary.swift; sourceTree = "<group>"; };
 		DC3CE110243FDE41005024B3 /* ZDCSynable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCSynable.swift; sourceTree = "<group>"; };
@@ -267,6 +271,7 @@
 				DCE62638225A952D000D19E3 /* test_ZDCSet.swift */,
 				DC9ACBCE22762A680031FE3E /* test_ZDCOrderedSet.swift */,
 				DCEC303122999C6E00BE7A79 /* test_ZDCArray.swift */,
+				DC3A3558247C45A200579347 /* test_AnyCodable.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -712,6 +717,7 @@
 			files = (
 				DCA1B535229D685E00AD8ACF /* test_ZDCArray.swift in Sources */,
 				DCA1B530229D685E00AD8ACF /* test_ZDCOrderedSet.swift in Sources */,
+				DC3A3559247C45A200579347 /* test_AnyCodable.swift in Sources */,
 				DCA1B533229D685E00AD8ACF /* test_ZDCDictionary.swift in Sources */,
 				DCA1B52F229D685E00AD8ACF /* test_ZDCOrder.swift in Sources */,
 				DCA1B532229D685E00AD8ACF /* test_ZDCRecord.swift in Sources */,
@@ -731,6 +737,7 @@
 			files = (
 				DCA1B54D229D68FD00AD8ACF /* test_ZDCArray.swift in Sources */,
 				DCA1B548229D68FD00AD8ACF /* test_ZDCOrderedSet.swift in Sources */,
+				DC3A355B247C45A200579347 /* test_AnyCodable.swift in Sources */,
 				DCA1B54B229D68FD00AD8ACF /* test_ZDCDictionary.swift in Sources */,
 				DCA1B547229D68FD00AD8ACF /* test_ZDCOrder.swift in Sources */,
 				DCA1B54A229D68FD00AD8ACF /* test_ZDCRecord.swift in Sources */,
@@ -834,6 +841,7 @@
 			files = (
 				DCF9D4812443F287009755CA /* test_ZDCStruct.swift in Sources */,
 				DCD4C7B5246C6DFB00580332 /* test_ZDCOrderedDictionary.swift in Sources */,
+				DC3A355A247C45A200579347 /* test_AnyCodable.swift in Sources */,
 				DCD4C7B3246C6B8300580332 /* test_ZDCDictionary.swift in Sources */,
 				DCD4C7B0246C6B6400580332 /* ComplexStruct.swift in Sources */,
 				DC7C2BFE2443E2D500B2FB06 /* SimpleStruct.swift in Sources */,
