@@ -98,6 +98,18 @@ open class ZDCRecord: ZDCSyncableClass {
 		return result ?? _result
 	}
 	
+	private func setSyncableValueFailed(for key: String) {
+		
+		let message = """
+		Contract Violation!
+		A call to setSyncableValue(_:for:) failed for: \(key).
+		You must implement the function setSyncableProperty(_:for:),
+		and ensure you properly handle all syncable properties.
+		"""
+		
+		preconditionFailure(message)
+	}
+	
 	// ====================================================================================================
 	// MARK: ZDCSyncableClass Protocol
 	// ====================================================================================================
@@ -159,7 +171,8 @@ open class ZDCRecord: ZDCSyncableClass {
 				// struct value semantics means we need to write the modified value back to self
 				
 				if !setSyncableValue(zdc_struct, for: propertyName) {
-					ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: propertyName)
+					
+					setSyncableValueFailed(for: propertyName)
 				}
 			}
 		}
@@ -286,7 +299,8 @@ open class ZDCRecord: ZDCSyncableClass {
 				// struct value semantics means we need to write the modified value back to self
 				
 				if !setSyncableValue(zdc_struct, for: key) {
-					ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: key)
+					
+					setSyncableValueFailed(for: key)
 				}
 				
 			} else {
@@ -603,7 +617,8 @@ open class ZDCRecord: ZDCSyncableClass {
 				// struct value semantics means we need to write the modified value back to self
 				
 				if !setSyncableValue(local_struct, for: key) {
-					ZDCSwiftWorkarounds.throwSyncableException(type(of: self), forKey: key)
+					
+					setSyncableValueFailed(for: key)
 				}
 			}
 		}

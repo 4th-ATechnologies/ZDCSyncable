@@ -59,19 +59,13 @@
 		DCBF10DB243E6ABC003806C5 /* ZDCSyncableProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBF10D5243E682A003806C5 /* ZDCSyncableProperty.swift */; };
 		DCBF10DC243E6ABD003806C5 /* ZDCSyncableProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBF10D5243E682A003806C5 /* ZDCSyncableProperty.swift */; };
 		DCC6976E22514F9300284C12 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC6976C22514F9300284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DCC6977D2251504900284C12 /* ZDCSwiftWorkarounds.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697752251504900284C12 /* ZDCSwiftWorkarounds.m */; };
-		DCC6977E2251504900284C12 /* ZDCSwiftWorkarounds.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697762251504900284C12 /* ZDCSwiftWorkarounds.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DCC697812251504900284C12 /* ZDCNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977A2251504900284C12 /* ZDCNull.swift */; };
 		DCC697A32251531D00284C12 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697A12251531D00284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DCC697A72251535300284C12 /* ZDCSynableClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977C2251504900284C12 /* ZDCSynableClass.swift */; };
 		DCC697A92251535C00284C12 /* ZDCSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977B2251504900284C12 /* ZDCSet.swift */; };
 		DCC697AB2251536700284C12 /* ZDCNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977A2251504900284C12 /* ZDCNull.swift */; };
-		DCC697AC2251536900284C12 /* ZDCSwiftWorkarounds.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697752251504900284C12 /* ZDCSwiftWorkarounds.m */; };
-		DCC697AD2251536F00284C12 /* ZDCSwiftWorkarounds.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697762251504900284C12 /* ZDCSwiftWorkarounds.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DCC697B72251541800284C12 /* ZDCSyncable.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697B52251541800284C12 /* ZDCSyncable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DCC697BC2251544500284C12 /* ZDCNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977A2251504900284C12 /* ZDCNull.swift */; };
-		DCC697BD2251544800284C12 /* ZDCSwiftWorkarounds.h in Headers */ = {isa = PBXBuildFile; fileRef = DCC697762251504900284C12 /* ZDCSwiftWorkarounds.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DCC697BE2251544D00284C12 /* ZDCSwiftWorkarounds.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC697752251504900284C12 /* ZDCSwiftWorkarounds.m */; };
 		DCC697BF2251545100284C12 /* ZDCSynableClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977C2251504900284C12 /* ZDCSynableClass.swift */; };
 		DCC697C12251545700284C12 /* ZDCSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6977B2251504900284C12 /* ZDCSet.swift */; };
 		DCD4C778246A114700580332 /* ZDCArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEC302D22997D4D00BE7A79 /* ZDCArray.swift */; };
@@ -167,8 +161,6 @@
 		DCC6976A22514F9300284C12 /* ZDCSyncable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZDCSyncable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC6976C22514F9300284C12 /* ZDCSyncable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZDCSyncable.h; sourceTree = "<group>"; };
 		DCC6976D22514F9300284C12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DCC697752251504900284C12 /* ZDCSwiftWorkarounds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZDCSwiftWorkarounds.m; sourceTree = "<group>"; };
-		DCC697762251504900284C12 /* ZDCSwiftWorkarounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDCSwiftWorkarounds.h; sourceTree = "<group>"; };
 		DCC6977A2251504900284C12 /* ZDCNull.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCNull.swift; sourceTree = "<group>"; };
 		DCC6977B2251504900284C12 /* ZDCSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCSet.swift; sourceTree = "<group>"; };
 		DCC6977C2251504900284C12 /* ZDCSynableClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDCSynableClass.swift; sourceTree = "<group>"; };
@@ -365,8 +357,6 @@
 		DCC697742251504900284C12 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				DCC697762251504900284C12 /* ZDCSwiftWorkarounds.h */,
-				DCC697752251504900284C12 /* ZDCSwiftWorkarounds.m */,
 				DCEA81942278858300FBC86B /* ZDCOrder.swift */,
 			);
 			path = Utilities;
@@ -446,7 +436,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCC6977E2251504900284C12 /* ZDCSwiftWorkarounds.h in Headers */,
 				DCC6976E22514F9300284C12 /* ZDCSyncable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,7 +444,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCC697AD2251536F00284C12 /* ZDCSwiftWorkarounds.h in Headers */,
 				DCC697A32251531D00284C12 /* ZDCSyncable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,7 +452,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCC697BD2251544800284C12 /* ZDCSwiftWorkarounds.h in Headers */,
 				DCC697B72251541800284C12 /* ZDCSyncable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -771,7 +758,6 @@
 				DCEA81962278858300FBC86B /* ZDCOrder.swift in Sources */,
 				DCD4C7AF246C697500580332 /* ZDCDictionary.swift in Sources */,
 				DCBF10DB243E6ABC003806C5 /* ZDCSyncableProperty.swift in Sources */,
-				DCC6977D2251504900284C12 /* ZDCSwiftWorkarounds.m in Sources */,
 				DCD4C7B4246C6BD000580332 /* ZDCOrderedDictionary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -782,7 +768,6 @@
 			files = (
 				DC3CE111243FDE41005024B3 /* ZDCSynable.swift in Sources */,
 				DC3AE27E227C7D3A006FC3DC /* ZDCOrderedDictionary.swift in Sources */,
-				DCC697AC2251536900284C12 /* ZDCSwiftWorkarounds.m in Sources */,
 				DCBF10D6243E682B003806C5 /* ZDCSyncableProperty.swift in Sources */,
 				DC7C2BF92443851000B2FB06 /* ZDCSyncable+Struct.swift in Sources */,
 				DC7C2BF42443843900B2FB06 /* ZDCSyncableClass+Common.swift in Sources */,
@@ -819,7 +804,6 @@
 				DCD4C778246A114700580332 /* ZDCArray.swift in Sources */,
 				DCC697C12251545700284C12 /* ZDCSet.swift in Sources */,
 				DCEA81972278858300FBC86B /* ZDCOrder.swift in Sources */,
-				DCC697BE2251544D00284C12 /* ZDCSwiftWorkarounds.m in Sources */,
 				DCEA819F2279CDA700FBC86B /* ZDCDictionary.swift in Sources */,
 				DCBF10DC243E6ABD003806C5 /* ZDCSyncableProperty.swift in Sources */,
 				DCC697BF2251545100284C12 /* ZDCSynableClass.swift in Sources */,
