@@ -461,10 +461,10 @@ extension ZDCSyncable {
 			
 			} else {
 				
-				let objA = a as AnyObject
-				let objB = b as AnyObject
+				let objA = a as AnyObject?
+				let objB = b as AnyObject?
 				
-				return objA.isEqual(objB)
+				return objA?.isEqual(objB) ?? false
 			}
 		}
 		
