@@ -3,6 +3,8 @@
 ///
 /// Undo, redo & merge capabilities for structs & classes in pure Swift.
 
+import Foundation
+
 fileprivate enum ChangesetKeys: String {
 	case refs = "refs"
 	case values = "values"
